@@ -1,0 +1,44 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Student {
+  id       String           @id @default(cuid())
+  name     String
+  province String?
+  school   String?
+  grade    String?
+  classes  StudentInClass[]
+}
+
+model Class {
+  id            String           @id @default(cuid())
+  name          String
+  section_fee   Int?
+  section_count Int?
+  students      StudentInClass[]
+  sections      Section[]
+}
+
+model Section {
+  id      String @id @default(cuid())
+  name    String
+  class   Class  @relation(fields: [classId], references: [id])
+  classId String
+}
+
+model StudentInClass {
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String
+  class     Class   @relation(fields: [classId], references: [id])
+  classId   String
+
+  @@id([studentId, classId])
+  @@map("Student_in_Class")
+}
