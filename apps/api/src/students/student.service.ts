@@ -16,24 +16,16 @@ export class StudentService {
         return this.prisma.student.findMany()
     }
 
-    async getStudentById(id: string) {
-        return this.prisma.student.findUnique({
-            where: { id }
-        })
-    }
-
-    async updateStudent(id: string, student: studentCreateDto) {
-        return this.prisma.student.update({
-            where: { id },
-            data: student
-        })
-    }
-
     async deleteStudent(id: string) {
         return this.prisma.student.delete({
             where: { id }
         })
     }
 
-
+    async editStudent(id: string, student: studentCreateDto) {
+        return this.prisma.student.update({
+            where: { id },
+            data: student
+        })
+    }
 }
