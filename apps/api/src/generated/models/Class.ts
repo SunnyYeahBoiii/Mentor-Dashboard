@@ -29,11 +29,13 @@ export type AggregateClass = {
 export type ClassAvgAggregateOutputType = {
   section_fee: number | null
   section_count: number | null
+  students_count: number | null
 }
 
 export type ClassSumAggregateOutputType = {
   section_fee: number | null
   section_count: number | null
+  students_count: number | null
 }
 
 export type ClassMinAggregateOutputType = {
@@ -41,6 +43,7 @@ export type ClassMinAggregateOutputType = {
   name: string | null
   section_fee: number | null
   section_count: number | null
+  students_count: number | null
 }
 
 export type ClassMaxAggregateOutputType = {
@@ -48,6 +51,7 @@ export type ClassMaxAggregateOutputType = {
   name: string | null
   section_fee: number | null
   section_count: number | null
+  students_count: number | null
 }
 
 export type ClassCountAggregateOutputType = {
@@ -55,6 +59,7 @@ export type ClassCountAggregateOutputType = {
   name: number
   section_fee: number
   section_count: number
+  students_count: number
   _all: number
 }
 
@@ -62,11 +67,13 @@ export type ClassCountAggregateOutputType = {
 export type ClassAvgAggregateInputType = {
   section_fee?: true
   section_count?: true
+  students_count?: true
 }
 
 export type ClassSumAggregateInputType = {
   section_fee?: true
   section_count?: true
+  students_count?: true
 }
 
 export type ClassMinAggregateInputType = {
@@ -74,6 +81,7 @@ export type ClassMinAggregateInputType = {
   name?: true
   section_fee?: true
   section_count?: true
+  students_count?: true
 }
 
 export type ClassMaxAggregateInputType = {
@@ -81,6 +89,7 @@ export type ClassMaxAggregateInputType = {
   name?: true
   section_fee?: true
   section_count?: true
+  students_count?: true
 }
 
 export type ClassCountAggregateInputType = {
@@ -88,6 +97,7 @@ export type ClassCountAggregateInputType = {
   name?: true
   section_fee?: true
   section_count?: true
+  students_count?: true
   _all?: true
 }
 
@@ -182,6 +192,7 @@ export type ClassGroupByOutputType = {
   name: string
   section_fee: number | null
   section_count: number | null
+  students_count: number | null
   _count: ClassCountAggregateOutputType | null
   _avg: ClassAvgAggregateOutputType | null
   _sum: ClassSumAggregateOutputType | null
@@ -212,6 +223,7 @@ export type ClassWhereInput = {
   name?: Prisma.StringFilter<"Class"> | string
   section_fee?: Prisma.IntNullableFilter<"Class"> | number | null
   section_count?: Prisma.IntNullableFilter<"Class"> | number | null
+  students_count?: Prisma.IntNullableFilter<"Class"> | number | null
   students?: Prisma.StudentInClassListRelationFilter
   sections?: Prisma.SectionListRelationFilter
 }
@@ -221,6 +233,7 @@ export type ClassOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   section_fee?: Prisma.SortOrderInput | Prisma.SortOrder
   section_count?: Prisma.SortOrderInput | Prisma.SortOrder
+  students_count?: Prisma.SortOrderInput | Prisma.SortOrder
   students?: Prisma.StudentInClassOrderByRelationAggregateInput
   sections?: Prisma.SectionOrderByRelationAggregateInput
 }
@@ -233,6 +246,7 @@ export type ClassWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Class"> | string
   section_fee?: Prisma.IntNullableFilter<"Class"> | number | null
   section_count?: Prisma.IntNullableFilter<"Class"> | number | null
+  students_count?: Prisma.IntNullableFilter<"Class"> | number | null
   students?: Prisma.StudentInClassListRelationFilter
   sections?: Prisma.SectionListRelationFilter
 }, "id">
@@ -242,6 +256,7 @@ export type ClassOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   section_fee?: Prisma.SortOrderInput | Prisma.SortOrder
   section_count?: Prisma.SortOrderInput | Prisma.SortOrder
+  students_count?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ClassCountOrderByAggregateInput
   _avg?: Prisma.ClassAvgOrderByAggregateInput
   _max?: Prisma.ClassMaxOrderByAggregateInput
@@ -257,6 +272,7 @@ export type ClassScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Class"> | string
   section_fee?: Prisma.IntNullableWithAggregatesFilter<"Class"> | number | null
   section_count?: Prisma.IntNullableWithAggregatesFilter<"Class"> | number | null
+  students_count?: Prisma.IntNullableWithAggregatesFilter<"Class"> | number | null
 }
 
 export type ClassCreateInput = {
@@ -264,6 +280,7 @@ export type ClassCreateInput = {
   name: string
   section_fee?: number | null
   section_count?: number | null
+  students_count?: number | null
   students?: Prisma.StudentInClassCreateNestedManyWithoutClassInput
   sections?: Prisma.SectionCreateNestedManyWithoutClassInput
 }
@@ -273,6 +290,7 @@ export type ClassUncheckedCreateInput = {
   name: string
   section_fee?: number | null
   section_count?: number | null
+  students_count?: number | null
   students?: Prisma.StudentInClassUncheckedCreateNestedManyWithoutClassInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutClassInput
 }
@@ -282,6 +300,7 @@ export type ClassUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   section_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   section_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   students?: Prisma.StudentInClassUpdateManyWithoutClassNestedInput
   sections?: Prisma.SectionUpdateManyWithoutClassNestedInput
 }
@@ -291,6 +310,7 @@ export type ClassUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   section_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   section_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   students?: Prisma.StudentInClassUncheckedUpdateManyWithoutClassNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutClassNestedInput
 }
@@ -300,6 +320,7 @@ export type ClassCreateManyInput = {
   name: string
   section_fee?: number | null
   section_count?: number | null
+  students_count?: number | null
 }
 
 export type ClassUpdateManyMutationInput = {
@@ -307,6 +328,7 @@ export type ClassUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   section_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   section_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type ClassUncheckedUpdateManyInput = {
@@ -314,6 +336,7 @@ export type ClassUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   section_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   section_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type ClassCountOrderByAggregateInput = {
@@ -321,11 +344,13 @@ export type ClassCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   section_fee?: Prisma.SortOrder
   section_count?: Prisma.SortOrder
+  students_count?: Prisma.SortOrder
 }
 
 export type ClassAvgOrderByAggregateInput = {
   section_fee?: Prisma.SortOrder
   section_count?: Prisma.SortOrder
+  students_count?: Prisma.SortOrder
 }
 
 export type ClassMaxOrderByAggregateInput = {
@@ -333,6 +358,7 @@ export type ClassMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   section_fee?: Prisma.SortOrder
   section_count?: Prisma.SortOrder
+  students_count?: Prisma.SortOrder
 }
 
 export type ClassMinOrderByAggregateInput = {
@@ -340,24 +366,18 @@ export type ClassMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   section_fee?: Prisma.SortOrder
   section_count?: Prisma.SortOrder
+  students_count?: Prisma.SortOrder
 }
 
 export type ClassSumOrderByAggregateInput = {
   section_fee?: Prisma.SortOrder
   section_count?: Prisma.SortOrder
+  students_count?: Prisma.SortOrder
 }
 
 export type ClassScalarRelationFilter = {
   is?: Prisma.ClassWhereInput
   isNot?: Prisma.ClassWhereInput
-}
-
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type ClassCreateNestedOneWithoutSectionsInput = {
@@ -393,6 +413,7 @@ export type ClassCreateWithoutSectionsInput = {
   name: string
   section_fee?: number | null
   section_count?: number | null
+  students_count?: number | null
   students?: Prisma.StudentInClassCreateNestedManyWithoutClassInput
 }
 
@@ -401,6 +422,7 @@ export type ClassUncheckedCreateWithoutSectionsInput = {
   name: string
   section_fee?: number | null
   section_count?: number | null
+  students_count?: number | null
   students?: Prisma.StudentInClassUncheckedCreateNestedManyWithoutClassInput
 }
 
@@ -425,6 +447,7 @@ export type ClassUpdateWithoutSectionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   section_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   section_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   students?: Prisma.StudentInClassUpdateManyWithoutClassNestedInput
 }
 
@@ -433,6 +456,7 @@ export type ClassUncheckedUpdateWithoutSectionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   section_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   section_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   students?: Prisma.StudentInClassUncheckedUpdateManyWithoutClassNestedInput
 }
 
@@ -441,6 +465,7 @@ export type ClassCreateWithoutStudentsInput = {
   name: string
   section_fee?: number | null
   section_count?: number | null
+  students_count?: number | null
   sections?: Prisma.SectionCreateNestedManyWithoutClassInput
 }
 
@@ -449,6 +474,7 @@ export type ClassUncheckedCreateWithoutStudentsInput = {
   name: string
   section_fee?: number | null
   section_count?: number | null
+  students_count?: number | null
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutClassInput
 }
 
@@ -473,6 +499,7 @@ export type ClassUpdateWithoutStudentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   section_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   section_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   sections?: Prisma.SectionUpdateManyWithoutClassNestedInput
 }
 
@@ -481,6 +508,7 @@ export type ClassUncheckedUpdateWithoutStudentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   section_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   section_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   sections?: Prisma.SectionUncheckedUpdateManyWithoutClassNestedInput
 }
 
@@ -529,6 +557,7 @@ export type ClassSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   name?: boolean
   section_fee?: boolean
   section_count?: boolean
+  students_count?: boolean
   students?: boolean | Prisma.Class$studentsArgs<ExtArgs>
   sections?: boolean | Prisma.Class$sectionsArgs<ExtArgs>
   _count?: boolean | Prisma.ClassCountOutputTypeDefaultArgs<ExtArgs>
@@ -539,6 +568,7 @@ export type ClassSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   name?: boolean
   section_fee?: boolean
   section_count?: boolean
+  students_count?: boolean
 }, ExtArgs["result"]["class"]>
 
 export type ClassSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -546,6 +576,7 @@ export type ClassSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   name?: boolean
   section_fee?: boolean
   section_count?: boolean
+  students_count?: boolean
 }, ExtArgs["result"]["class"]>
 
 export type ClassSelectScalar = {
@@ -553,9 +584,10 @@ export type ClassSelectScalar = {
   name?: boolean
   section_fee?: boolean
   section_count?: boolean
+  students_count?: boolean
 }
 
-export type ClassOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "section_fee" | "section_count", ExtArgs["result"]["class"]>
+export type ClassOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "section_fee" | "section_count" | "students_count", ExtArgs["result"]["class"]>
 export type ClassInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   students?: boolean | Prisma.Class$studentsArgs<ExtArgs>
   sections?: boolean | Prisma.Class$sectionsArgs<ExtArgs>
@@ -575,6 +607,7 @@ export type $ClassPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     name: string
     section_fee: number | null
     section_count: number | null
+    students_count: number | null
   }, ExtArgs["result"]["class"]>
   composites: {}
 }
@@ -1004,6 +1037,7 @@ export interface ClassFieldRefs {
   readonly name: Prisma.FieldRef<"Class", 'String'>
   readonly section_fee: Prisma.FieldRef<"Class", 'Int'>
   readonly section_count: Prisma.FieldRef<"Class", 'Int'>
+  readonly students_count: Prisma.FieldRef<"Class", 'Int'>
 }
     
 

@@ -9,21 +9,24 @@ datasource db {
 }
 
 model Student {
-  id       String           @id @default(cuid())
-  name     String
-  province String?
-  school   String?
-  grade    String?
-  classes  StudentInClass[]
+  id         String           @id @default(cuid())
+  firstName  String
+  middleName String
+  lastName   String
+  birthyear  Int?
+  school     String?
+  province   String?
+  classes    StudentInClass[]
 }
 
 model Class {
-  id            String           @id @default(cuid())
-  name          String
-  section_fee   Int?
-  section_count Int?
-  students      StudentInClass[]
-  sections      Section[]
+  id             String           @id @default(cuid())
+  name           String
+  section_fee    Int?
+  section_count  Int?
+  students_count Int?
+  students       StudentInClass[]
+  sections       Section[]
 }
 
 model Section {

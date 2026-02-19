@@ -75,10 +75,12 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const StudentScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  province: 'province',
+  firstName: 'firstName',
+  middleName: 'middleName',
+  lastName: 'lastName',
+  birthyear: 'birthyear',
   school: 'school',
-  grade: 'grade'
+  province: 'province'
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
@@ -88,7 +90,8 @@ export const ClassScalarFieldEnum = {
   id: 'id',
   name: 'name',
   section_fee: 'section_fee',
-  section_count: 'section_count'
+  section_count: 'section_count',
+  students_count: 'students_count'
 } as const
 
 export type ClassScalarFieldEnum = (typeof ClassScalarFieldEnum)[keyof typeof ClassScalarFieldEnum]
