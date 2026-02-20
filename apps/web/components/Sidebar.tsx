@@ -8,7 +8,7 @@ import { SlNotebook } from "react-icons/sl";
 
 const icons = [(< SlPeople />), (< SlNote />), (< SlNotebook />)];
 const buttonTexts: string[] = ["Học Sinh", "Lớp Học", "Buổi Học"];
-const links: string[] = ["/students", "/classes", "/sessions"];
+const links: string[] = ["/students?page=1", "/classes", "/sessions"];
 
 export default function Sidebar() {
     return (
