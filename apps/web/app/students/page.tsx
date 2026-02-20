@@ -7,9 +7,25 @@ import { studentCreateDto } from "@/dtos/student.dto";
 import { FaSearch, FaEdit, FaTrash } from "react-icons/fa";
 
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
+import { usePathname, useSearchParams } from "next/navigation";
+import { getStudentPage, getTotalPages } from "@/utils/mock-api";
+import { useRouter } from "next/navigation";
+import clsx from "clsx";
+
 
 export default function StudentPage() {
-    const students = Students.slice(0, 8);
+    const searchParams = useSearchParams();
+    const totalPages = getTotalPages();
+    const students = getStudentPage(parseInt(searchParams.get("page") || "1"));
+    const { replace } = useRouter();
+    const pathname = usePathname();
+
+    const setPage = (page: number) => {
+        if (page < 1 || page > totalPages) return;
+        const params = new URLSearchParams(searchParams);
+        params.set("page", page.toString());
+        replace(pathname + "?" + params.toString());
+    }
 
     return (
         <div className="w-4/5 m-2 ml-0">
@@ -51,17 +67,39 @@ export default function StudentPage() {
                 </div>
             </div>
             <div className="flex flex-row justify-center items-center">
-                <div className="flex flex-row">
-                    <IoIosArrowRoundBack className="text-4xl px-1 py-1 bg-white rounded-sm mr-1" />
-                    <p className="flex flex-row justify-center items-center px-2 py-1 bg-white rounded-sm mx-1">1</p>
-                    <p className="flex flex-row justify-center items-center px-2 py-1 bg-white rounded-sm mx-1">2</p>
-                    <p className="flex flex-row justify-center items-center px-2 py-1 bg-white rounded-sm mx-1">3</p>
-                    <p className="flex flex-row justify-center items-center px-2 py-1 bg-white rounded-sm mx-1">4</p>
-                    <p className="flex flex-row justify-center items-center px-2 py-1 bg-white rounded-sm mx-1">5</p>
-                    <p className="flex flex-row justify-center items-center px-2 py-1">...</p>
-                    <p className="flex flex-row justify-center items-center px-2 py-1 bg-white rounded-sm mx-1">99</p>
-                    <IoIosArrowRoundForward className="text-4xl px-1 py-1 bg-white rounded-sm ml-1" />
-                </div>
+                {
+                    totalPages > 6 && <div className="flex flex-row">
+                        <IoIosArrowRoundBack onClick={() => setPage(parseInt(searchParams.get("page") || "1") - 1)} className="text-4xl px-1 py-1 bg-white rounded-sm mr-1" />
+                        <button onClick={() => setPage(1)} className={clsx("w-10 border cursor-pointer flex flex-row justify-center items-center px-2 py-1 hover:bg-black/10 hover:border rounded-sm mx-1", searchParams.get("page") === "1" ? "bg-white border border-black/10" : "border-transparent")}>1</button>
+                        <button onClick={() => setPage(2)} className={clsx("w-10 border cursor-pointer flex flex-row justify-center items-center px-2 py-1 hover:bg-black/10 hover:border rounded-sm mx-1", searchParams.get("page") === "2" ? "bg-white border border-black/10" : "border-transparent")}>2</button>
+                        {parseInt(searchParams.get("page") || "1") <= 4 && <button onClick={() => setPage(3)} className={clsx("w-10 border cursor-pointer flex flex-row justify-center items-center px-2 py-1 hover:bg-black/10 hover:border rounded-sm mx-1", searchParams.get("page") === "3" ? "bg-white border border-black/10" : "border-transparent")}>3</button>}
+                        {parseInt(searchParams.get("page") || "1") <= 4 && <button onClick={() => setPage(4)} className={clsx("w-10 border cursor-pointer flex flex-row justify-center items-center px-2 py-1 hover:bg-black/10 hover:border rounded-sm mx-1", searchParams.get("page") === "4" ? "bg-white border border-black/10" : "border-transparent")}>4</button>}
+
+                        {parseInt(searchParams.get("page") || "1") > 4 &&
+                            <p className="border border-transparent w-10 cursor-pointer flex flex-row justify-center items-center px-2 py-1 mx-1">...</p>}
+                        {parseInt(searchParams.get("page") || "1") > 4 &&
+                            parseInt(searchParams.get("page") || "1") < totalPages - 2 &&
+                            <button onClick={() => setPage(parseInt(searchParams.get("page") || "1"))} className={clsx(" w-10 border cursor-pointer flex flex-row justify-center items-center px-2 py-1 hover:bg-black/10 hover:border rounded-sm mx-1", parseInt(searchParams.get("page") || "1") === parseInt(searchParams.get("page") || "1") ? "bg-white border border-black/10" : "border-transparent")}>{parseInt(searchParams.get("page") || "1")}</button>}
+                        {parseInt(searchParams.get("page") || "1") < totalPages - 2 &&
+                            <p className="border border-transparent w-10 cursor-pointer flex flex-row justify-center items-center px-2 py-1 mx-1">...</p>}
+
+                        {parseInt(searchParams.get("page") || "1") >= totalPages - 2 && <button onClick={() => setPage(totalPages - 2)} className={clsx("w-10 border cursor-pointer flex flex-row justify-center items-center px-2 py-1 hover:bg-black/10 hover:border rounded-sm mx-1", parseInt(searchParams.get("page") || "1") === totalPages - 2 ? "bg-white border border-black/10" : "border-transparent")}>{totalPages - 2}</button>}
+                        {parseInt(searchParams.get("page") || "1") >= totalPages - 2 && <button onClick={() => setPage(totalPages - 1)} className={clsx("w-10 border cursor-pointer flex flex-row justify-center items-center px-2 py-1 hover:bg-black/10 hover:border rounded-sm mx-1", parseInt(searchParams.get("page") || "1") === totalPages - 1 ? "bg-white border border-black/10" : "border-transparent")}>{totalPages - 1}</button>}
+                        <button onClick={() => setPage(totalPages)} className={clsx("w-10 border cursor-pointer flex flex-row justify-center items-center px-2 py-1 hover:bg-black/10 hover:border rounded-sm mx-1", parseInt(searchParams.get("page")) === totalPages ? "bg-white border border-black/10" : "border-transparent")}>{totalPages}</button>
+
+                        <IoIosArrowRoundForward onClick={() => setPage(parseInt(searchParams.get("page") || "1") + 1)} className="cursor-pointer text-4xl px-1 py-1 bg-white rounded-sm ml-1" />
+                    </div>
+                }
+
+                {
+                    totalPages <= 6 && <div className="flex flex-row">
+                        <IoIosArrowRoundBack onClick={() => setPage(parseInt(searchParams.get("page") || "1") - 1)} className="text-4xl px-1 py-1 bg-white rounded-sm mr-1" />
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                            <button onClick={() => setPage(page)} className={clsx("w-10 border cursor-pointer flex flex-row justify-center items-center px-2 py-1 hover:bg-black/10 hover:border rounded-sm mx-1", searchParams.get("page") === page.toString() ? "bg-white border border-black/10" : "border-transparent")}>{page}</button>
+                        ))}
+                        <IoIosArrowRoundForward onClick={() => setPage(parseInt(searchParams.get("page") || "1") + 1)} className="cursor-pointer text-4xl px-1 py-1 bg-white rounded-sm ml-1" />
+                    </div>
+                }
             </div>
         </div >
     );
