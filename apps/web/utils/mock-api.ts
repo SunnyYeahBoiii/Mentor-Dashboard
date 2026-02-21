@@ -1,5 +1,6 @@
 import { studentCreateDto } from "@/dtos/student.dto";
-import { students } from "./mock-data";
+import { classInfoCreateDto } from "@/dtos/class.dto";
+import { students, studentInClasses } from "./mock-data";
 import { classes } from "./mock-data";
 
 const NUMBER_STUDENT_PER_PAGE = 8
@@ -41,4 +42,30 @@ export function getClassPage(pageNumber: number) {
 
 export function getClassTotalPages() {
     return Math.ceil(classes.length / NUMBER_CLASS_PER_PAGE);
+}
+
+export function getClassById(id: string) {
+    if (id === "None")
+        return null;
+    return classes.find((c) => c.id === id);
+}
+
+export async function createClass(newClass: classInfoCreateDto) {
+    classes.push(newClass);
+    return classes[classes.length - 1];
+}
+
+export async function updateClass(newClass: classInfoCreateDto) {
+    return classes.filter((c) => c.id === newClass.id).map((c) => {
+        c.name = newClass.name;
+        c.section_count = newClass.section_count;
+        c.section_fee = newClass.section_fee;
+        c.students_count = newClass.students_count;
+    });
+}
+
+export const getStudentInClass = (classId: string) => {
+    const studentList = studentInClasses.filter((student) => student.classId === classId);
+    const studentIds = studentList.map((student) => student.studentId);
+    return students.filter((student) => studentIds.includes(student.id));
 }
