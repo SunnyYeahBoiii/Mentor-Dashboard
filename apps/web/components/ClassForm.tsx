@@ -132,20 +132,20 @@ export function ClassForm({ class_id }: classFormProps) {
                 </div>
                 <div className="flex flex-row gap-4">
                     <div className="flex-1 h-60 bg-white px-2 py-1 rounded-sm">
-                        <p className="text-xs text-black/50">Danh sách buổi học</p>
+                        <p className="text-xs text-black/50">Danh sách buổi học | Tổng số buổi học: {classInfo?.section_count}</p>
 
                     </div>
 
                     <div className="flex-1 flex flex-col h-60 bg-white px-2 py-1 rounded-sm">
-                        <p className="text-xs text-black/50">Danh sách học sinh</p>
+                        <p className="text-xs text-black/50">Danh sách học sinh | Tổng số học sinh: {classInfo?.students_count}</p>
                         <div className="flex-1 overflow-y-scroll no-scrollbar">
 
                             {studentList?.map((student, index) => (
                                 <div key={student.id} className={`flex flex-row py-3 border-black/10  ${index < studentList.length - 1 ? 'border-b' : 'border-none'}`}>
-                                    <p className="w-[40%]">{student.firstName} {student.middleName} {student.lastName}</p>
-                                    <p className="w-[20%]">{student.birthyear}</p>
-                                    <p className="w-[20%]">{student.province}</p>
-                                    <p className="w-[20%] text-center flex flex-row justify-center items-center">
+                                    <p className="w-[35%]">{student.firstName} {student.middleName} {student.lastName}</p>
+                                    <p className="w-[15%]">{student.birthyear}</p>
+                                    <p className="w-[35%]">{student.province}</p>
+                                    <p className="w-[15%] text-center flex flex-row justify-center items-center">
                                         <Link href={`/students/${student.id}`}>
                                             <FaEdit className="text-2xl px-1 py-1 text-black/50 hover:text-black cursor-pointer" />
                                         </Link>

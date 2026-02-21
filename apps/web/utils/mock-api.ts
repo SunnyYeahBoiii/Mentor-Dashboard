@@ -2,9 +2,11 @@ import { studentCreateDto } from "@/dtos/student.dto";
 import { classInfoCreateDto } from "@/dtos/class.dto";
 import { students, studentInClasses } from "./mock-data";
 import { classes } from "./mock-data";
+import { sessions as sections } from "./mock-data";
 
 const NUMBER_STUDENT_PER_PAGE = 8
 const NUMBER_CLASS_PER_PAGE = 3
+const NUMBER_SECTION_PER_PAGE = 3
 
 export function getStudentPage(pageNumber: number) {
     return students.slice((pageNumber - 1) * NUMBER_STUDENT_PER_PAGE, pageNumber * NUMBER_STUDENT_PER_PAGE);
@@ -68,4 +70,12 @@ export const getStudentInClass = (classId: string) => {
     const studentList = studentInClasses.filter((student) => student.classId === classId);
     const studentIds = studentList.map((student) => student.studentId);
     return students.filter((student) => studentIds.includes(student.id));
+}
+
+export const getSectionPage = (page: number) => {
+    return sections.slice((page - 1) * NUMBER_SECTION_PER_PAGE, page * NUMBER_SECTION_PER_PAGE);
+}
+
+export const getSectionTotalPages = () => {
+    return Math.ceil(sections.length / NUMBER_SECTION_PER_PAGE);
 }

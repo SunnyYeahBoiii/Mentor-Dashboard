@@ -27,18 +27,24 @@ export type AggregateSection = {
 export type SectionMinAggregateOutputType = {
   id: string | null
   name: string | null
+  startTime: Date | null
+  endTime: Date | null
   classId: string | null
 }
 
 export type SectionMaxAggregateOutputType = {
   id: string | null
   name: string | null
+  startTime: Date | null
+  endTime: Date | null
   classId: string | null
 }
 
 export type SectionCountAggregateOutputType = {
   id: number
   name: number
+  startTime: number
+  endTime: number
   classId: number
   _all: number
 }
@@ -47,18 +53,24 @@ export type SectionCountAggregateOutputType = {
 export type SectionMinAggregateInputType = {
   id?: true
   name?: true
+  startTime?: true
+  endTime?: true
   classId?: true
 }
 
 export type SectionMaxAggregateInputType = {
   id?: true
   name?: true
+  startTime?: true
+  endTime?: true
   classId?: true
 }
 
 export type SectionCountAggregateInputType = {
   id?: true
   name?: true
+  startTime?: true
+  endTime?: true
   classId?: true
   _all?: true
 }
@@ -138,6 +150,8 @@ export type SectionGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type SectionGroupByOutputType = {
   id: string
   name: string
+  startTime: Date | null
+  endTime: Date | null
   classId: string
   _count: SectionCountAggregateOutputType | null
   _min: SectionMinAggregateOutputType | null
@@ -165,6 +179,8 @@ export type SectionWhereInput = {
   NOT?: Prisma.SectionWhereInput | Prisma.SectionWhereInput[]
   id?: Prisma.StringFilter<"Section"> | string
   name?: Prisma.StringFilter<"Section"> | string
+  startTime?: Prisma.DateTimeNullableFilter<"Section"> | Date | string | null
+  endTime?: Prisma.DateTimeNullableFilter<"Section"> | Date | string | null
   classId?: Prisma.StringFilter<"Section"> | string
   class?: Prisma.XOR<Prisma.ClassScalarRelationFilter, Prisma.ClassWhereInput>
 }
@@ -172,6 +188,8 @@ export type SectionWhereInput = {
 export type SectionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  startTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  endTime?: Prisma.SortOrderInput | Prisma.SortOrder
   classId?: Prisma.SortOrder
   class?: Prisma.ClassOrderByWithRelationInput
 }
@@ -182,6 +200,8 @@ export type SectionWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.SectionWhereInput[]
   NOT?: Prisma.SectionWhereInput | Prisma.SectionWhereInput[]
   name?: Prisma.StringFilter<"Section"> | string
+  startTime?: Prisma.DateTimeNullableFilter<"Section"> | Date | string | null
+  endTime?: Prisma.DateTimeNullableFilter<"Section"> | Date | string | null
   classId?: Prisma.StringFilter<"Section"> | string
   class?: Prisma.XOR<Prisma.ClassScalarRelationFilter, Prisma.ClassWhereInput>
 }, "id">
@@ -189,6 +209,8 @@ export type SectionWhereUniqueInput = Prisma.AtLeast<{
 export type SectionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  startTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  endTime?: Prisma.SortOrderInput | Prisma.SortOrder
   classId?: Prisma.SortOrder
   _count?: Prisma.SectionCountOrderByAggregateInput
   _max?: Prisma.SectionMaxOrderByAggregateInput
@@ -201,47 +223,63 @@ export type SectionScalarWhereWithAggregatesInput = {
   NOT?: Prisma.SectionScalarWhereWithAggregatesInput | Prisma.SectionScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Section"> | string
   name?: Prisma.StringWithAggregatesFilter<"Section"> | string
+  startTime?: Prisma.DateTimeNullableWithAggregatesFilter<"Section"> | Date | string | null
+  endTime?: Prisma.DateTimeNullableWithAggregatesFilter<"Section"> | Date | string | null
   classId?: Prisma.StringWithAggregatesFilter<"Section"> | string
 }
 
 export type SectionCreateInput = {
   id?: string
   name: string
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   class: Prisma.ClassCreateNestedOneWithoutSectionsInput
 }
 
 export type SectionUncheckedCreateInput = {
   id?: string
   name: string
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   classId: string
 }
 
 export type SectionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   class?: Prisma.ClassUpdateOneRequiredWithoutSectionsNestedInput
 }
 
 export type SectionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type SectionCreateManyInput = {
   id?: string
   name: string
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   classId: string
 }
 
 export type SectionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type SectionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -258,18 +296,24 @@ export type SectionOrderByRelationAggregateInput = {
 export type SectionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  startTime?: Prisma.SortOrder
+  endTime?: Prisma.SortOrder
   classId?: Prisma.SortOrder
 }
 
 export type SectionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  startTime?: Prisma.SortOrder
+  endTime?: Prisma.SortOrder
   classId?: Prisma.SortOrder
 }
 
 export type SectionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  startTime?: Prisma.SortOrder
+  endTime?: Prisma.SortOrder
   classId?: Prisma.SortOrder
 }
 
@@ -315,14 +359,22 @@ export type SectionUncheckedUpdateManyWithoutClassNestedInput = {
   deleteMany?: Prisma.SectionScalarWhereInput | Prisma.SectionScalarWhereInput[]
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type SectionCreateWithoutClassInput = {
   id?: string
   name: string
+  startTime?: Date | string | null
+  endTime?: Date | string | null
 }
 
 export type SectionUncheckedCreateWithoutClassInput = {
   id?: string
   name: string
+  startTime?: Date | string | null
+  endTime?: Date | string | null
 }
 
 export type SectionCreateOrConnectWithoutClassInput = {
@@ -357,27 +409,37 @@ export type SectionScalarWhereInput = {
   NOT?: Prisma.SectionScalarWhereInput | Prisma.SectionScalarWhereInput[]
   id?: Prisma.StringFilter<"Section"> | string
   name?: Prisma.StringFilter<"Section"> | string
+  startTime?: Prisma.DateTimeNullableFilter<"Section"> | Date | string | null
+  endTime?: Prisma.DateTimeNullableFilter<"Section"> | Date | string | null
   classId?: Prisma.StringFilter<"Section"> | string
 }
 
 export type SectionCreateManyClassInput = {
   id?: string
   name: string
+  startTime?: Date | string | null
+  endTime?: Date | string | null
 }
 
 export type SectionUpdateWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type SectionUncheckedUpdateWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type SectionUncheckedUpdateManyWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -385,6 +447,8 @@ export type SectionUncheckedUpdateManyWithoutClassInput = {
 export type SectionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  startTime?: boolean
+  endTime?: boolean
   classId?: boolean
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["section"]>
@@ -392,6 +456,8 @@ export type SectionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 export type SectionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  startTime?: boolean
+  endTime?: boolean
   classId?: boolean
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["section"]>
@@ -399,6 +465,8 @@ export type SectionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type SectionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  startTime?: boolean
+  endTime?: boolean
   classId?: boolean
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["section"]>
@@ -406,10 +474,12 @@ export type SectionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type SectionSelectScalar = {
   id?: boolean
   name?: boolean
+  startTime?: boolean
+  endTime?: boolean
   classId?: boolean
 }
 
-export type SectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "classId", ExtArgs["result"]["section"]>
+export type SectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "startTime" | "endTime" | "classId", ExtArgs["result"]["section"]>
 export type SectionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
 }
@@ -428,6 +498,8 @@ export type $SectionPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
+    startTime: Date | null
+    endTime: Date | null
     classId: string
   }, ExtArgs["result"]["section"]>
   composites: {}
@@ -855,6 +927,8 @@ export interface Prisma__SectionClient<T, Null = never, ExtArgs extends runtime.
 export interface SectionFieldRefs {
   readonly id: Prisma.FieldRef<"Section", 'String'>
   readonly name: Prisma.FieldRef<"Section", 'String'>
+  readonly startTime: Prisma.FieldRef<"Section", 'DateTime'>
+  readonly endTime: Prisma.FieldRef<"Section", 'DateTime'>
   readonly classId: Prisma.FieldRef<"Section", 'String'>
 }
     

@@ -30,10 +30,12 @@ model Class {
 }
 
 model Section {
-  id      String @id @default(cuid())
-  name    String
-  class   Class  @relation(fields: [classId], references: [id])
-  classId String
+  id        String    @id @default(cuid())
+  name      String
+  class     Class     @relation(fields: [classId], references: [id])
+  startTime DateTime?
+  endTime   DateTime?
+  classId   String
 }
 
 model StudentInClass {
