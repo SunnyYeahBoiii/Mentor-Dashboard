@@ -3,10 +3,12 @@ import { classInfoCreateDto } from "@/dtos/class.dto";
 import { students, studentInClasses } from "./mock-data";
 import { classes } from "./mock-data";
 import { sessions as sections } from "./mock-data";
+import { sectionCreateDto, sectionEndDto, sectionUpdateDto } from "@/dtos/section.dto";
 
 const NUMBER_STUDENT_PER_PAGE = 8
 const NUMBER_CLASS_PER_PAGE = 3
 const NUMBER_SECTION_PER_PAGE = 3
+const NUMBER_RUNNING_SECTION_PER_PAGE = 4
 
 export function getStudentPage(pageNumber: number) {
     return students.slice((pageNumber - 1) * NUMBER_STUDENT_PER_PAGE, pageNumber * NUMBER_STUDENT_PER_PAGE);
@@ -73,17 +75,30 @@ export const getStudentInClass = (classId: string) => {
 }
 
 export const getSectionPage = (page: number) => {
-    return sections.slice((page - 1) * NUMBER_SECTION_PER_PAGE, page * NUMBER_SECTION_PER_PAGE);
+    return sections.filter((section) => section.endTime).slice((page - 1) * NUMBER_SECTION_PER_PAGE, page * NUMBER_SECTION_PER_PAGE);
 }
 
 export const getSectionTotalPages = () => {
-    return Math.ceil(sections.length / NUMBER_SECTION_PER_PAGE);
+    return Math.ceil(sections.filter((section) => section.endTime).length / NUMBER_SECTION_PER_PAGE);
 }
 
 export const getRunningSectionPage = (page: number) => {
-    return sections.filter((section) => !section.endTime).slice((page - 1) * NUMBER_SECTION_PER_PAGE, page * NUMBER_SECTION_PER_PAGE);
+    return sections.filter((section) => !section.endTime).slice((page - 1) * NUMBER_RUNNING_SECTION_PER_PAGE, page * NUMBER_RUNNING_SECTION_PER_PAGE);
 }
 
 export const getRunningSectionTotalPages = () => {
-    return Math.ceil(sections.filter((section) => !section.endTime).length / NUMBER_SECTION_PER_PAGE);
+    return Math.ceil(sections.filter((section) => !section.endTime).length / NUMBER_RUNNING_SECTION_PER_PAGE);
+}
+
+export const getSectionById = (id: string) => {
+    return sections.find((section) => section.id === id);
+}
+
+export const updateSectionById = async (section: sectionUpdateDto) => {
+    return sections.filter((s) => s.id === section.id).map((s) => {
+        s.name = section.name;
+        s.classId = section.classId;
+        s.startTime = new Date(section.startTime).toISOString();
+        s.endTime = new Date(section.endTime).toISOString();
+    });
 }

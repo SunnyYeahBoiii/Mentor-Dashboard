@@ -931,7 +931,7 @@ export const classes = [
 ];
 
 export const sessions = [
-  { "id": "sec-001", "classId": "cls-001", "name": "Buổi học 1", "startTime": "2024-02-21T08:00:00.000Z", "endTime": "2024-02-21T10:00:00.000Z" },
+  { "id": "sec-001", "classId": "cls-001", "name": "Buổi học 1", "startTime": "2024-02-21T08:00:00.000Z" },
   { "id": "sec-002", "classId": "cls-001", "name": "Buổi học 2", "startTime": "2024-02-23T08:00:00.000Z", "endTime": "2024-02-23T10:00:00.000Z" },
   { "id": "sec-003", "classId": "cls-002", "name": "Buổi học 1", "startTime": "2024-02-21T10:00:00.000Z", "endTime": "2024-02-21T12:00:00.000Z" },
   { "id": "sec-004", "classId": "cls-002", "name": "Buổi học 2", "startTime": "2024-02-23T10:00:00.000Z", "endTime": "2024-02-23T12:00:00.000Z" },
@@ -989,8 +989,8 @@ export const sessions = [
   { "id": "sec-056", "classId": "cls-006", "name": "Buổi học 3", "startTime": "2024-02-25T09:00:00.000Z", "endTime": "2024-02-25T11:00:00.000Z" },
   { "id": "sec-057", "classId": "cls-007", "name": "Buổi học 3", "startTime": "2024-02-26T10:00:00.000Z", "endTime": "2024-02-26T12:00:00.000Z" },
   { "id": "sec-058", "classId": "cls-008", "name": "Buổi học 3", "startTime": "2024-02-25T13:30:00.000Z" },
-  { "id": "sec-059", "classId": "cls-009", "name": "Buổi học 3", "startTime": "2024-02-26T15:00:00.000Z", "endTime": "2024-02-26T17:00:00.000Z" },
-  { "id": "sec-060", "classId": "cls-010", "name": "Buổi học 3", "startTime": "2024-02-25T15:00:00.000Z", "endTime": "2024-02-25T17:00:00.000Z" },
+  { "id": "sec-059", "classId": "cls-009", "name": "Buổi học 3", "startTime": "2024-02-26T15:00:00.000Z" },
+  { "id": "sec-060", "classId": "cls-010", "name": "Buổi học 3", "startTime": "2024-02-25T15:00:00.000Z" },
   { "id": "sec-061", "classId": "cls-011", "name": "Buổi học 3", "startTime": "2024-02-25T08:00:00.000Z" },
   { "id": "sec-062", "classId": "cls-012", "name": "Buổi học 3", "startTime": "2024-02-26T08:00:00.000Z", "endTime": "2024-02-26T10:00:00.000Z" },
   { "id": "sec-063", "classId": "cls-013", "name": "Buổi học 3", "startTime": "2024-02-25T10:00:00.000Z", "endTime": "2024-02-25T12:00:00.000Z" },

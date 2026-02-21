@@ -58,20 +58,7 @@ export default function SectionPage() {
         <div className="w-4/5 m-2 ml-0">
             <h3 className={`${lusitana.className} text-2xl my-4 mb-6`}>Danh sách buổi học hiện tại</h3>
 
-            <div className="flex flex-row justify-between my-4">
-                <div className="w-[68%] px-3 py-2 flex flex-row items-center border rounded-md">
-                    <FaSearch className="opacity-50" />
-                    <input placeholder="Tìm kiếm" className="ml-1 border-none outline-none rounded-xl pl-1" />
-                </div>
-                <div className="rounded-lg bg-(--blue-light) w-[30%] flex flex-row justify-center">
-                    <div className="w-full opacity-50 hover:opacity-100 cursor-pointer flex flex-row justify-around items-center px-8">
-                        <p className="text-white">Thêm buổi học</p>
-                        <p className="text-white">+</p>
-                    </div>
-                </div>
-            </div>
-
-            <div className="overflow-y-hidden flex flex-col gap-2 my-8">
+            <div className="overflow-y-hidden flex flex-col gap-2 my-4">
                 {
                     sections.map((section) => (
                         <CurrentSectionCard key={section.id} id={section.id} name={section.name} className={section.classId} startTime={new Date(section.startTime)} endTime={new Date(section.endTime ?? "")} />

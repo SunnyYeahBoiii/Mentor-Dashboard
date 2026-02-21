@@ -16,7 +16,7 @@ export default function CurrentSectionCard({ id, name, className, startTime }: S
                     <p className="text-left text-xs text-black/50">Lớp học</p>
                     <p className="text-left">{className}</p>
                 </div>
-                <Link className="flex flex-1 px-2 py-1 rounded-sm justify-center items-center bg-white hover:bg-green-300 cursor-pointer" href={`/sessions/${id}`}>
+                <Link className="flex flex-1 px-2 py-1 rounded-sm justify-center items-center bg-white hover:bg-green-300 cursor-pointer" href={`/current-sessions/end-session/${id}`}>
                     <div className="flex">
                         <p className="text-center">Kết thúc</p>
                     </div>
