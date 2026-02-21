@@ -79,3 +79,11 @@ export const getSectionPage = (page: number) => {
 export const getSectionTotalPages = () => {
     return Math.ceil(sections.length / NUMBER_SECTION_PER_PAGE);
 }
+
+export const getRunningSectionPage = (page: number) => {
+    return sections.filter((section) => !section.endTime).slice((page - 1) * NUMBER_SECTION_PER_PAGE, page * NUMBER_SECTION_PER_PAGE);
+}
+
+export const getRunningSectionTotalPages = () => {
+    return Math.ceil(sections.filter((section) => !section.endTime).length / NUMBER_SECTION_PER_PAGE);
+}

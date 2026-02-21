@@ -4,19 +4,20 @@ import SectionCard from "@/components/SectionCard";
 import { lusitana } from "@/utils/fonts";
 import { FaSearch } from "react-icons/fa";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import { getSectionPage, getSectionTotalPages } from "@/utils/mock-api";
+import { getRunningSectionPage, getRunningSectionTotalPages, getSectionPage, getSectionTotalPages } from "@/utils/mock-api";
 import { useQuery, queryOptions } from "@tanstack/react-query";
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
 import clsx from "clsx";
+import CurrentSectionCard from "@/components/CurrentSectionCard";
 
 const sectionListOptions = (page: number) => queryOptions({
     queryKey: ['sections', { page }],
-    queryFn: () => getSectionPage(page),
+    queryFn: () => getRunningSectionPage(page),
 });
 
 const sectionTotalPagesOptions = () => queryOptions({
     queryKey: ['sections', 'totalPages'],
-    queryFn: () => getSectionTotalPages(),
+    queryFn: () => getRunningSectionTotalPages(),
 });
 
 export default function SectionPage() {
@@ -55,7 +56,7 @@ export default function SectionPage() {
 
     return (
         <div className="w-4/5 m-2 ml-0">
-            <h3 className={`${lusitana.className} text-2xl my-4 mb-6`}>Danh sách buổi học</h3>
+            <h3 className={`${lusitana.className} text-2xl my-4 mb-6`}>Danh sách buổi học hiện tại</h3>
 
             <div className="flex flex-row justify-between my-4">
                 <div className="w-[68%] px-3 py-2 flex flex-row items-center border rounded-md">
@@ -73,7 +74,7 @@ export default function SectionPage() {
             <div className="overflow-y-hidden flex flex-col gap-2 my-8">
                 {
                     sections.map((section) => (
-                        <SectionCard key={section.id} id={section.id} name={section.name} className={section.classId} startTime={new Date(section.startTime)} endTime={new Date(section.endTime || "")} />
+                        <CurrentSectionCard key={section.id} id={section.id} name={section.name} className={section.classId} startTime={new Date(section.startTime)} endTime={new Date(section.endTime ?? "")} />
                     ))
                 }
             </div>
