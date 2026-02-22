@@ -3,11 +3,11 @@ import SectionForm from "@/components/SectionForm";
 import { lusitana } from "@/utils/fonts";
 import { use } from "react";
 import { queryOptions, useQuery } from "@tanstack/react-query";
-import { getSectionById } from "@/utils/mock-api";
+import { getRunningSectionById } from "@/utils/mock-api";
 
 const sectionOptions = (sectionId: string) => queryOptions({
     queryKey: ['section', sectionId],
-    queryFn: () => getSectionById(sectionId),
+    queryFn: () => getRunningSectionById(sectionId),
 });
 
 export default function EndSessionPage({ params }: { params: Promise<{ section_id: string }> }) {

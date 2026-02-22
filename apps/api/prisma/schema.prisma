@@ -20,13 +20,14 @@ model Student {
 }
 
 model Class {
-  id             String           @id @default(cuid())
-  name           String
-  section_fee    Int?
-  section_count  Int?
-  students_count Int?
-  students       StudentInClass[]
-  sections       Section[]
+  id              String           @id @default(cuid())
+  name            String
+  section_fee     Int?
+  section_count   Int?
+  students_count  Int?
+  students        StudentInClass[]
+  sections        Section[]
+  runningSections RunningSection[]
 }
 
 model Section {
@@ -36,6 +37,15 @@ model Section {
   startTime DateTime?
   endTime   DateTime?
   classId   String
+}
+
+model RunningSection {
+  id           String    @id @default(cuid())
+  name         String
+  class        Class     @relation(fields: [classId], references: [id])
+  startTime    DateTime?
+  classId      String
+  meettingLink String?
 }
 
 model StudentInClass {

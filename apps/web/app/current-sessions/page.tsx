@@ -61,7 +61,7 @@ export default function SectionPage() {
             <div className="overflow-y-hidden flex flex-col gap-2 my-4">
                 {
                     sections.map((section) => (
-                        <CurrentSectionCard key={section.id} id={section.id} name={section.name} className={section.classId} startTime={new Date(section.startTime)} endTime={new Date(section.endTime ?? "")} />
+                        <CurrentSectionCard key={section.id} id={section.id} name={section.name} className={section.classId} startTime={new Date(section.startTime)} meetingLink={section.meetingLink} />
                     ))
                 }
             </div>

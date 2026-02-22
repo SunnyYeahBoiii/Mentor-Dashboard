@@ -1,7 +1,7 @@
 'use client'
 
-import { sectionEndDto, sectionUpdateDto } from "@/dtos/section.dto";
-import { updateSectionById } from "@/utils/mock-api";
+import { sectionCreateDto, sectionEndDto, sectionTransferDto, sectionUpdateDto } from "@/dtos/section.dto";
+import { createSection, createSectionFromRunningSection, updateSectionById } from "@/utils/mock-api";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -23,7 +23,7 @@ export default function SectionForm({ section }: SectionFormProps) {
 
     const mutation = useMutation({
         mutationKey: ['section', section.id],
-        mutationFn: updateSectionById,
+        mutationFn: createSectionFromRunningSection,
         onSuccess: () => {
             router.push('/current-sessions');
         }
@@ -31,14 +31,14 @@ export default function SectionForm({ section }: SectionFormProps) {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const updatedSection: sectionUpdateDto = {
-            id: section.id,
+        const newSection: sectionTransferDto = {
+            runningId: section.id,
             name: name,
             classId: section.classId,
             startTime: startTime,
             endTime: endTime,
         };
-        mutation.mutate(updatedSection);
+        mutation.mutate(newSection);
     }
 
     return (
