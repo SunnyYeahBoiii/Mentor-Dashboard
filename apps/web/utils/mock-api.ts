@@ -41,6 +41,21 @@ export async function createStudent(student: studentCreateDto) {
     return students[students.length - 1];
 }
 
+export async function getAllStudent() {
+    return students.map((s) => {
+        return {
+            id: s.id,
+            name: s.firstName + " " + s.middleName + " " + s.lastName,
+        };
+    });
+}
+
+export function getStudentNotInClass(classId: string) {
+    const studentList = studentInClasses.filter((student) => student.classId === classId);
+    const studentIds = studentList.map((student) => student.studentId);
+    return students.filter((student) => !studentIds.includes(student.id));
+}
+
 export function getClassList() {
     return classes.map((c) => {
         return {
@@ -132,6 +147,10 @@ export const getRunningSectionById = (id: string) => {
     return runningSessions.find((section) => section.id === id);
 }
 
+export const getSectionByClassId = (classId: string) => {
+    return sections.filter((section) => section.classId === classId);
+}
+
 export const updateSectionById = async (section: sectionUpdateDto) => {
     return sections.filter((s) => s.id === section.id).map((s) => {
         s.name = section.name;
@@ -158,4 +177,17 @@ export const removeRunningSectionById = async (id: string) => {
     if (!object) return;
     const index = runningSessions.indexOf(object)
     runningSessions.splice(index, 1)
+}
+
+export const addStudentToClass = async (classId: string, studentId: string) => {
+    const newStudentInClass = {
+        classId,
+        studentId,
+    }
+    studentInClasses.push(newStudentInClass);
+    const classObj = classes.find((c) => c.id === classId);
+    if (classObj) {
+        classObj.students_count++;
+    }
+    return newStudentInClass;
 }

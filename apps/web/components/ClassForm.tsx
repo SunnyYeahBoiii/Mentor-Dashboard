@@ -1,12 +1,20 @@
 'use client';
 import { classInfoCreateDto } from "@/dtos/class.dto";
 import { studentCreateDto } from "@/dtos/student.dto";
-import { getClassById, createClass, updateClass, getStudentInClass } from "@/utils/mock-api";
+import { getClassById, createClass, updateClass, getStudentInClass, getAllStudent, getStudentNotInClass, addStudentToClass, getSectionByClassId } from "@/utils/mock-api";
 import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaCheck, FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+import {
+    Combobox,
+    ComboboxContent,
+    ComboboxEmpty,
+    ComboboxInput,
+    ComboboxItem,
+    ComboboxList,
+} from "@/components/ui/combobox"
 
 interface classFormProps {
     class_id: string;
@@ -15,6 +23,16 @@ interface classFormProps {
 const classDetailsOptions = (class_id: string) => queryOptions({
     queryKey: ['classes', class_id],
     queryFn: () => getClassById(class_id),
+});
+
+const classSectionOptions = (class_id: string) => queryOptions({
+    queryKey: ['classes', class_id, 'sections'],
+    queryFn: () => getSectionByClassId(class_id),
+});
+
+const studentListOptions = (class_id: string) => queryOptions({
+    queryKey: ['students'],
+    queryFn: () => getStudentNotInClass(class_id),
 });
 
 export function ClassForm({ class_id }: classFormProps) {
@@ -32,6 +50,7 @@ export function ClassForm({ class_id }: classFormProps) {
     const [sectionCount, setSectionCount] = useState<string>("");
     const [sectionFee, setSectionFee] = useState<string>("");
     const [studentCount, setStudentCount] = useState<string>("");
+    const [newStudentId, setNewStudent] = useState<string | null>("");
 
     useEffect(() => {
         if (classInfo) {
@@ -41,6 +60,8 @@ export function ClassForm({ class_id }: classFormProps) {
             setStudentCount(classInfo.students_count.toString() ?? "");
         }
     }, [classInfo]);
+
+    const { data: classSection } = useQuery(classSectionOptions(class_id));
 
     const updateMutation = useMutation({
         mutationFn: (updatedClass: classInfoCreateDto) => updateClass(updatedClass),
@@ -55,17 +76,17 @@ export function ClassForm({ class_id }: classFormProps) {
         queryFn: () => getStudentInClass(class_id),
     });
 
-    const createMutation = useMutation({
-        mutationFn: (newClass: classInfoCreateDto) => createClass(newClass),
+    const { data: studentOutList } = useQuery(studentListOptions(class_id))
+
+    const addStudentMutation = useMutation({
+        mutationFn: (student_id: string) => addStudentToClass(class_id, student_id),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['classes'] });
-            router.push('/classes');
+            queryClient.invalidateQueries({ queryKey: ['students'] });
+            queryClient.invalidateQueries({ queryKey: ['classes', class_id, 'students'] });
         },
     });
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
+    const handleSubmit = () => {
         const classInfo: classInfoCreateDto = {
             id: class_id,
             name,
@@ -74,14 +95,17 @@ export function ClassForm({ class_id }: classFormProps) {
             students_count: parseInt(studentCount),
         };
 
-        if (isNewClass) {
-            createMutation.mutate(classInfo);
-        } else {
-            updateMutation.mutate(classInfo);
-        }
+
+        updateMutation.mutate(classInfo);
     };
 
-    const isPending = updateMutation.isPending || createMutation.isPending;
+    const handleAddStudent = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        addStudentMutation.mutate(newStudentId!);
+    }
+
+    const isPending = updateMutation.isPending;
 
     if (!isNewClass) {
         if (isLoading) {
@@ -108,7 +132,7 @@ export function ClassForm({ class_id }: classFormProps) {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="m-2 ml-0 flex flex-col justify-between bg-(--dark-white) p-2 pt-4 pb-4 rounded-xl gap-4">
+        <div className="m-2 ml-0 flex flex-col justify-between bg-(--dark-white) p-2 pt-4 pb-4 rounded-xl gap-4">
             <div className="flex flex-col justify-between gap-4">
                 <div className="flex-1 bg-white px-2 py-1 rounded-sm">
                     <p className="text-xs text-black/50">Tên</p>
@@ -132,12 +156,60 @@ export function ClassForm({ class_id }: classFormProps) {
                 </div>
                 <div className="flex flex-row gap-4">
                     <div className="flex-1 h-60 bg-white px-2 py-1 rounded-sm">
-                        <p className="text-xs text-black/50">Danh sách buổi học | Tổng số buổi học: {classInfo?.section_count}</p>
+                        <p className="text-xs text-black/50">Danh sách buổi học </p>
+                        <p className="text-xs text-black/50">Tổng số buổi học: {classInfo?.section_count}</p>
 
+                        <div className="flex-1 overflow-y-scroll no-scrollbar">
+
+                            {classSection?.map((section, index) => (
+                                <div key={section.id} className={`flex flex-row py-3 border-black/10  ${index < classSection.length - 1 ? 'border-b' : 'border-none'}`}>
+                                    <p className="w-[40%]">{section.name}</p>
+                                    <p className="w-[45%]">{section.endTime?.toLocaleDateString()}</p>
+                                    <p className="w-[15%] text-center flex flex-row justify-center items-center">
+                                        <Link href={`/students/${section.id}`}>
+                                            <FaEdit className="text-2xl px-1 py-1 text-black/50 hover:text-black cursor-pointer" />
+                                        </Link>
+                                        <FaTrash className="text-2xl px-1 py-1 bg-white text-black/50 hover:text-red-500 cursor-pointer" />
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
                     <div className="flex-1 flex flex-col h-60 bg-white px-2 py-1 rounded-sm">
-                        <p className="text-xs text-black/50">Danh sách học sinh | Tổng số học sinh: {classInfo?.students_count}</p>
+                        <div className="flex flex-row justify-between">
+                            <div className="flex flex-col">
+                                <p className="text-xs text-black/50">Danh sách học sinh</p>
+                                <p className="text-xs text-black/50">Tổng số học sinh: {classInfo?.students_count}</p>
+                            </div>
+
+                            <form className="flex flex-row gap-2" onSubmit={handleAddStudent}>
+                                <Combobox
+                                    required
+                                    items={studentOutList}
+                                    itemToStringLabel={(item: studentCreateDto) => `${item.firstName} ${item.middleName} ${item.lastName}`}
+                                    onValueChange={(value: studentCreateDto | null) => {
+                                        if (value) setNewStudent(value.id);
+                                    }}
+                                >
+                                    <ComboboxInput required className="py-1 outline-0" placeholder="Thêm học sinh" />
+                                    <ComboboxContent>
+                                        <ComboboxEmpty>Không tìm thấy học sinh</ComboboxEmpty>
+                                        <ComboboxList>
+                                            {(item) => (
+                                                <ComboboxItem key={item.id} value={item}>
+                                                    {item.firstName} {item.middleName} {item.lastName}
+                                                </ComboboxItem>
+                                            )}
+                                        </ComboboxList>
+                                    </ComboboxContent>
+                                </Combobox>
+
+                                <button type="submit">
+                                    <FaPlus />
+                                </button>
+                            </form>
+                        </div>
                         <div className="flex-1 overflow-y-scroll no-scrollbar">
 
                             {studentList?.map((student, index) => (
@@ -167,13 +239,14 @@ export function ClassForm({ class_id }: classFormProps) {
                     Hủy bỏ
                 </button>
                 <button
-                    type="submit"
+                    onClick={handleSubmit}
+                    type="button"
                     disabled={isPending}
                     className="flex-1 flex flex-row bg-white hover:bg-green-300 cursor-pointer px-2 py-4 rounded-sm justify-center items-center disabled:opacity-50"
                 >
                     Lưu lại
                 </button>
             </div>
-        </form >
+        </div >
     );
 }
