@@ -1,5 +1,5 @@
 import { studentCreateDto } from "@/dtos/student.dto";
-import { classInfoCreateDto } from "@/dtos/class.dto";
+import { classCreateDto, classInfoCreateDto } from "@/dtos/class.dto";
 import { students, studentInClasses, runningSessions } from "./mock-data";
 import { classes } from "./mock-data";
 import { sessions as sections } from "./mock-data";
@@ -79,8 +79,13 @@ export function getClassById(id: string) {
     return classes.find((c) => c.id === id);
 }
 
-export async function createClass(newClass: classInfoCreateDto) {
-    classes.push(newClass);
+export async function createClass(newClass: classCreateDto) {
+    classes.push({
+        id: crypto.randomUUID(),
+        ...newClass,
+        section_count: 0,
+        students_count: 0,
+    });
     return classes[classes.length - 1];
 }
 

@@ -60,13 +60,7 @@ export default function SectionPage() {
             <div className="flex flex-row justify-between my-4 gap-2">
                 <div className="flex-7 px-3 py-2 flex flex-row items-center border rounded-md">
                     <FaSearch className="opacity-50" />
-                    <input placeholder="Tìm kiếm" className="ml-1 border-none outline-none rounded-xl pl-1" />
-                </div>
-                <div className="rounded-lg bg-(--blue-light) flex-3 flex flex-row justify-center">
-                    <div className="w-full opacity-50 hover:opacity-100 cursor-pointer flex flex-row justify-around items-center px-8">
-                        <p className="text-white">Thêm buổi học</p>
-                        <p className="text-white">+</p>
-                    </div>
+                    <input placeholder="Tìm kiếm" className="ml-1 flex-1 border-none outline-none rounded-xl pl-1" />
                 </div>
             </div>
 

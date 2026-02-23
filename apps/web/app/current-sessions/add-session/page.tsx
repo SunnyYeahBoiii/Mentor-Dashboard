@@ -18,7 +18,7 @@ import { runningSectionCreateDto } from "@/dtos/section.dto";
 import { Input } from "@/components/ui/input";
 
 const getClassListOptions = queryOptions({
-    queryKey: ["classes"],
+    queryKey: ["classes", "running-section"],
     queryFn: () => getClassList(),
 })
 

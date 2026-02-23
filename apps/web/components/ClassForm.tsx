@@ -15,6 +15,7 @@ import {
     ComboboxItem,
     ComboboxList,
 } from "@/components/ui/combobox"
+import { formatDateTimeLocal } from "@/utils/funcs";
 
 interface classFormProps {
     class_id: string;
@@ -164,7 +165,7 @@ export function ClassForm({ class_id }: classFormProps) {
                             {classSection?.map((section, index) => (
                                 <div key={section.id} className={`flex flex-row py-3 border-black/10  ${index < classSection.length - 1 ? 'border-b' : 'border-none'}`}>
                                     <p className="w-[40%]">{section.name}</p>
-                                    <p className="w-[45%]">{section.endTime?.toLocaleDateString()}</p>
+                                    <p className="w-[45%]">{formatDateTimeLocal(section.endTime as Date)}</p>
                                     <p className="w-[15%] text-center flex flex-row justify-center items-center">
                                         <Link href={`/students/${section.id}`}>
                                             <FaEdit className="text-2xl px-1 py-1 text-black/50 hover:text-black cursor-pointer" />

@@ -2,63 +2,41 @@
 
 import { sectionCreateDto, sectionEndDto, sectionTransferDto, sectionUpdateDto } from "@/dtos/section.dto";
 import { formatDateTimeLocal } from "@/utils/funcs";
-import { createSection, createSectionFromRunningSection, getClassList, updateSectionById } from "@/utils/mock-api";
-import { queryOptions, useMutation, useQuery } from "@tanstack/react-query";
+import { createSection, createSectionFromRunningSection, updateSectionById } from "@/utils/mock-api";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-
-import {
-    Combobox,
-    ComboboxContent,
-    ComboboxEmpty,
-    ComboboxInput,
-    ComboboxItem,
-    ComboboxList,
-} from "@/components/ui/combobox"
 
 interface SectionFormProps {
     section: sectionEndDto;
 }
 
-const getClassListOptions = queryOptions({
-    queryKey: ["classes", "running-section"],
-    queryFn: () => getClassList(),
-})
 
-export default function SectionForm({ section }: SectionFormProps) {
+
+export default function CurrentSectionForm({ section }: SectionFormProps) {
     const [name, setName] = useState(section.name);
-    const [selectedClass, setSelectedClass] = useState(section.classId);
     const [startTime, setStartTime] = useState<Date>(new Date(section.startTime as Date));
     const [endTime, setEndTime] = useState<Date>(new Date(section.endTime as Date));
     const router = useRouter();
 
-
     const mutation = useMutation({
         mutationKey: ['section', section.id],
-        mutationFn: updateSectionById,
+        mutationFn: createSectionFromRunningSection,
         onSuccess: () => {
             router.push('/current-sessions');
         }
     });
 
-    const { data: classList } = useQuery(getClassListOptions);
-
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const newSection: sectionUpdateDto = {
-            id: section.id,
+        const newSection: sectionTransferDto = {
+            runningId: section.id,
             name: name,
-            classId: selectedClass as string,
+            classId: section.classId,
             startTime: startTime,
             endTime: endTime,
         };
-
-        console.log(newSection);
-        // mutation.mutate(newSection);
-    }
-
-    if (!classList) {
-        return <div>Error</div>
+        mutation.mutate(newSection);
     }
 
     return (
@@ -72,33 +50,21 @@ export default function SectionForm({ section }: SectionFormProps) {
                     onChange={(e) => setName(e.target.value)}
                 />
             </div>
-            <div className="w-full p-2 border rounded bg-white">
+            <div className="w-full p-2 border rounded bg-white opacity-50 cursor-not-allowed">
                 <p className="text-sm text-gray-500">Lớp học</p>
-                <Combobox
-                    required
-                    items={classList}
-                    onValueChange={(value: any) => setSelectedClass(value.id)}
-                    itemToStringLabel={(item) => item.name}
-                    defaultValue={classList.find(item => item.id === section.classId)}
-                >
-                    <ComboboxInput placeholder="Chọn lớp học" />
-                    <ComboboxContent>
-                        <ComboboxEmpty>Không tìm thấy lớp học</ComboboxEmpty>
-                        <ComboboxList>
-                            {(item) => (
-                                <ComboboxItem key={item.id} value={item}>
-                                    {item.name}
-                                </ComboboxItem>
-                            )}
-                        </ComboboxList>
-                    </ComboboxContent>
-                </Combobox>
+                <input
+                    type="text"
+                    className="w-full opacity-50 cursor-not-allowed"
+                    value={section.classId}
+                    disabled
+                />
             </div>
-            <div className="w-full p-2 border rounded bg-white">
+            <div className="w-full p-2 border rounded bg-white opacity-50 cursor-not-allowed">
                 <p className="text-sm text-gray-500">Thời gian bắt đầu</p>
                 <input
+                    disabled
                     type="datetime-local"
-                    className="w-full"
+                    className="w-full opacity-50 cursor-not-allowed"
                     defaultValue={formatDateTimeLocal(startTime)}
                     onChange={(e) => setStartTime(new Date(e.target.value))}
                 />
@@ -129,6 +95,6 @@ export default function SectionForm({ section }: SectionFormProps) {
                     Xác nhận
                 </button>
             </div>
-        </form >
+        </form>
     );
 }

@@ -28,19 +28,19 @@ export function ClassCard({ id, name, section_count, section_fee, student_count 
                 </div>
             </span >
             <span className="flex flex-row justify-between gap-5">
-                <div className="flex flex-1 flex-col bg-white rounded-sm px-2 py-2">
+                <div className="flex w-1/5 flex-1 flex-col bg-white rounded-sm px-2 py-2">
                     <p className="text-left text-xs text-black/50">Mã lớp</p>
-                    <p className="text-left">{id}</p>
+                    <p className="text-left whitespace-nowrap overflow-scroll no-scrollbar h-5">{id}</p>
                 </div>
-                <div className="flex flex-1 flex-col bg-white rounded-sm px-2 py-2">
+                <div className="flex w-1/5 flex-1 flex-col bg-white rounded-sm px-2 py-2">
                     <p className="text-left text-xs text-black/50">Số lượng học sinh</p>
                     <p className="text-left">{student_count} học sinh</p>
                 </div>
-                <div className="flex flex-1 flex-col bg-white rounded-sm px-2 py-2">
+                <div className="flex w-1/5 flex-1 flex-col bg-white rounded-sm px-2 py-2">
                     <p className="text-left text-xs text-black/50">Phí buổi học</p>
                     <p className="text-left">{VNDFormat(section_fee)}</p>
                 </div>
-                <div className="flex flex-1 flex-col bg-white rounded-sm px-2 py-2">
+                <div className="flex w-1/5 flex-1 flex-col bg-white rounded-sm px-2 py-2">
                     <p className="text-left text-xs text-black/50">Số buổi học hiện tại</p>
                     <p className="text-left">{section_count} buổi</p>
                 </div>

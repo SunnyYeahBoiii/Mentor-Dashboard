@@ -5,3 +5,8 @@ export interface classInfoCreateDto {
     section_count: number;
     students_count: number;
 }
+
+export interface classCreateDto {
+    name: string;
+    section_fee: number;
+}
