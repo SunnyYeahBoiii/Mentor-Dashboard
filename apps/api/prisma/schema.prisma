@@ -57,3 +57,11 @@ model StudentInClass {
   @@id([studentId, classId])
   @@map("Student_in_Class")
 }
+
+model User {
+  id           String  @id @default(cuid())
+  email        String  @unique
+  fullName     String
+  avatar       String?
+  refreshToken String?
+}

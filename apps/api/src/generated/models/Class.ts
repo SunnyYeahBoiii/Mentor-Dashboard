@@ -226,6 +226,7 @@ export type ClassWhereInput = {
   students_count?: Prisma.IntNullableFilter<"Class"> | number | null
   students?: Prisma.StudentInClassListRelationFilter
   sections?: Prisma.SectionListRelationFilter
+  runningSections?: Prisma.RunningSectionListRelationFilter
 }
 
 export type ClassOrderByWithRelationInput = {
@@ -236,6 +237,7 @@ export type ClassOrderByWithRelationInput = {
   students_count?: Prisma.SortOrderInput | Prisma.SortOrder
   students?: Prisma.StudentInClassOrderByRelationAggregateInput
   sections?: Prisma.SectionOrderByRelationAggregateInput
+  runningSections?: Prisma.RunningSectionOrderByRelationAggregateInput
 }
 
 export type ClassWhereUniqueInput = Prisma.AtLeast<{
@@ -249,6 +251,7 @@ export type ClassWhereUniqueInput = Prisma.AtLeast<{
   students_count?: Prisma.IntNullableFilter<"Class"> | number | null
   students?: Prisma.StudentInClassListRelationFilter
   sections?: Prisma.SectionListRelationFilter
+  runningSections?: Prisma.RunningSectionListRelationFilter
 }, "id">
 
 export type ClassOrderByWithAggregationInput = {
@@ -283,6 +286,7 @@ export type ClassCreateInput = {
   students_count?: number | null
   students?: Prisma.StudentInClassCreateNestedManyWithoutClassInput
   sections?: Prisma.SectionCreateNestedManyWithoutClassInput
+  runningSections?: Prisma.RunningSectionCreateNestedManyWithoutClassInput
 }
 
 export type ClassUncheckedCreateInput = {
@@ -293,6 +297,7 @@ export type ClassUncheckedCreateInput = {
   students_count?: number | null
   students?: Prisma.StudentInClassUncheckedCreateNestedManyWithoutClassInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutClassInput
+  runningSections?: Prisma.RunningSectionUncheckedCreateNestedManyWithoutClassInput
 }
 
 export type ClassUpdateInput = {
@@ -303,6 +308,7 @@ export type ClassUpdateInput = {
   students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   students?: Prisma.StudentInClassUpdateManyWithoutClassNestedInput
   sections?: Prisma.SectionUpdateManyWithoutClassNestedInput
+  runningSections?: Prisma.RunningSectionUpdateManyWithoutClassNestedInput
 }
 
 export type ClassUncheckedUpdateInput = {
@@ -313,6 +319,7 @@ export type ClassUncheckedUpdateInput = {
   students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   students?: Prisma.StudentInClassUncheckedUpdateManyWithoutClassNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutClassNestedInput
+  runningSections?: Prisma.RunningSectionUncheckedUpdateManyWithoutClassNestedInput
 }
 
 export type ClassCreateManyInput = {
@@ -394,6 +401,20 @@ export type ClassUpdateOneRequiredWithoutSectionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ClassUpdateToOneWithWhereWithoutSectionsInput, Prisma.ClassUpdateWithoutSectionsInput>, Prisma.ClassUncheckedUpdateWithoutSectionsInput>
 }
 
+export type ClassCreateNestedOneWithoutRunningSectionsInput = {
+  create?: Prisma.XOR<Prisma.ClassCreateWithoutRunningSectionsInput, Prisma.ClassUncheckedCreateWithoutRunningSectionsInput>
+  connectOrCreate?: Prisma.ClassCreateOrConnectWithoutRunningSectionsInput
+  connect?: Prisma.ClassWhereUniqueInput
+}
+
+export type ClassUpdateOneRequiredWithoutRunningSectionsNestedInput = {
+  create?: Prisma.XOR<Prisma.ClassCreateWithoutRunningSectionsInput, Prisma.ClassUncheckedCreateWithoutRunningSectionsInput>
+  connectOrCreate?: Prisma.ClassCreateOrConnectWithoutRunningSectionsInput
+  upsert?: Prisma.ClassUpsertWithoutRunningSectionsInput
+  connect?: Prisma.ClassWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClassUpdateToOneWithWhereWithoutRunningSectionsInput, Prisma.ClassUpdateWithoutRunningSectionsInput>, Prisma.ClassUncheckedUpdateWithoutRunningSectionsInput>
+}
+
 export type ClassCreateNestedOneWithoutStudentsInput = {
   create?: Prisma.XOR<Prisma.ClassCreateWithoutStudentsInput, Prisma.ClassUncheckedCreateWithoutStudentsInput>
   connectOrCreate?: Prisma.ClassCreateOrConnectWithoutStudentsInput
@@ -415,6 +436,7 @@ export type ClassCreateWithoutSectionsInput = {
   section_count?: number | null
   students_count?: number | null
   students?: Prisma.StudentInClassCreateNestedManyWithoutClassInput
+  runningSections?: Prisma.RunningSectionCreateNestedManyWithoutClassInput
 }
 
 export type ClassUncheckedCreateWithoutSectionsInput = {
@@ -424,6 +446,7 @@ export type ClassUncheckedCreateWithoutSectionsInput = {
   section_count?: number | null
   students_count?: number | null
   students?: Prisma.StudentInClassUncheckedCreateNestedManyWithoutClassInput
+  runningSections?: Prisma.RunningSectionUncheckedCreateNestedManyWithoutClassInput
 }
 
 export type ClassCreateOrConnectWithoutSectionsInput = {
@@ -449,6 +472,7 @@ export type ClassUpdateWithoutSectionsInput = {
   section_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   students?: Prisma.StudentInClassUpdateManyWithoutClassNestedInput
+  runningSections?: Prisma.RunningSectionUpdateManyWithoutClassNestedInput
 }
 
 export type ClassUncheckedUpdateWithoutSectionsInput = {
@@ -458,6 +482,63 @@ export type ClassUncheckedUpdateWithoutSectionsInput = {
   section_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   students?: Prisma.StudentInClassUncheckedUpdateManyWithoutClassNestedInput
+  runningSections?: Prisma.RunningSectionUncheckedUpdateManyWithoutClassNestedInput
+}
+
+export type ClassCreateWithoutRunningSectionsInput = {
+  id?: string
+  name: string
+  section_fee?: number | null
+  section_count?: number | null
+  students_count?: number | null
+  students?: Prisma.StudentInClassCreateNestedManyWithoutClassInput
+  sections?: Prisma.SectionCreateNestedManyWithoutClassInput
+}
+
+export type ClassUncheckedCreateWithoutRunningSectionsInput = {
+  id?: string
+  name: string
+  section_fee?: number | null
+  section_count?: number | null
+  students_count?: number | null
+  students?: Prisma.StudentInClassUncheckedCreateNestedManyWithoutClassInput
+  sections?: Prisma.SectionUncheckedCreateNestedManyWithoutClassInput
+}
+
+export type ClassCreateOrConnectWithoutRunningSectionsInput = {
+  where: Prisma.ClassWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClassCreateWithoutRunningSectionsInput, Prisma.ClassUncheckedCreateWithoutRunningSectionsInput>
+}
+
+export type ClassUpsertWithoutRunningSectionsInput = {
+  update: Prisma.XOR<Prisma.ClassUpdateWithoutRunningSectionsInput, Prisma.ClassUncheckedUpdateWithoutRunningSectionsInput>
+  create: Prisma.XOR<Prisma.ClassCreateWithoutRunningSectionsInput, Prisma.ClassUncheckedCreateWithoutRunningSectionsInput>
+  where?: Prisma.ClassWhereInput
+}
+
+export type ClassUpdateToOneWithWhereWithoutRunningSectionsInput = {
+  where?: Prisma.ClassWhereInput
+  data: Prisma.XOR<Prisma.ClassUpdateWithoutRunningSectionsInput, Prisma.ClassUncheckedUpdateWithoutRunningSectionsInput>
+}
+
+export type ClassUpdateWithoutRunningSectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  section_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  section_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  students?: Prisma.StudentInClassUpdateManyWithoutClassNestedInput
+  sections?: Prisma.SectionUpdateManyWithoutClassNestedInput
+}
+
+export type ClassUncheckedUpdateWithoutRunningSectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  section_fee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  section_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  students?: Prisma.StudentInClassUncheckedUpdateManyWithoutClassNestedInput
+  sections?: Prisma.SectionUncheckedUpdateManyWithoutClassNestedInput
 }
 
 export type ClassCreateWithoutStudentsInput = {
@@ -467,6 +548,7 @@ export type ClassCreateWithoutStudentsInput = {
   section_count?: number | null
   students_count?: number | null
   sections?: Prisma.SectionCreateNestedManyWithoutClassInput
+  runningSections?: Prisma.RunningSectionCreateNestedManyWithoutClassInput
 }
 
 export type ClassUncheckedCreateWithoutStudentsInput = {
@@ -476,6 +558,7 @@ export type ClassUncheckedCreateWithoutStudentsInput = {
   section_count?: number | null
   students_count?: number | null
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutClassInput
+  runningSections?: Prisma.RunningSectionUncheckedCreateNestedManyWithoutClassInput
 }
 
 export type ClassCreateOrConnectWithoutStudentsInput = {
@@ -501,6 +584,7 @@ export type ClassUpdateWithoutStudentsInput = {
   section_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   sections?: Prisma.SectionUpdateManyWithoutClassNestedInput
+  runningSections?: Prisma.RunningSectionUpdateManyWithoutClassNestedInput
 }
 
 export type ClassUncheckedUpdateWithoutStudentsInput = {
@@ -510,6 +594,7 @@ export type ClassUncheckedUpdateWithoutStudentsInput = {
   section_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   students_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   sections?: Prisma.SectionUncheckedUpdateManyWithoutClassNestedInput
+  runningSections?: Prisma.RunningSectionUncheckedUpdateManyWithoutClassNestedInput
 }
 
 
@@ -520,11 +605,13 @@ export type ClassUncheckedUpdateWithoutStudentsInput = {
 export type ClassCountOutputType = {
   students: number
   sections: number
+  runningSections: number
 }
 
 export type ClassCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   students?: boolean | ClassCountOutputTypeCountStudentsArgs
   sections?: boolean | ClassCountOutputTypeCountSectionsArgs
+  runningSections?: boolean | ClassCountOutputTypeCountRunningSectionsArgs
 }
 
 /**
@@ -551,6 +638,13 @@ export type ClassCountOutputTypeCountSectionsArgs<ExtArgs extends runtime.Types.
   where?: Prisma.SectionWhereInput
 }
 
+/**
+ * ClassCountOutputType without action
+ */
+export type ClassCountOutputTypeCountRunningSectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RunningSectionWhereInput
+}
+
 
 export type ClassSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -560,6 +654,7 @@ export type ClassSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   students_count?: boolean
   students?: boolean | Prisma.Class$studentsArgs<ExtArgs>
   sections?: boolean | Prisma.Class$sectionsArgs<ExtArgs>
+  runningSections?: boolean | Prisma.Class$runningSectionsArgs<ExtArgs>
   _count?: boolean | Prisma.ClassCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["class"]>
 
@@ -591,6 +686,7 @@ export type ClassOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
 export type ClassInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   students?: boolean | Prisma.Class$studentsArgs<ExtArgs>
   sections?: boolean | Prisma.Class$sectionsArgs<ExtArgs>
+  runningSections?: boolean | Prisma.Class$runningSectionsArgs<ExtArgs>
   _count?: boolean | Prisma.ClassCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ClassIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -601,6 +697,7 @@ export type $ClassPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     students: Prisma.$StudentInClassPayload<ExtArgs>[]
     sections: Prisma.$SectionPayload<ExtArgs>[]
+    runningSections: Prisma.$RunningSectionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1004,6 +1101,7 @@ export interface Prisma__ClassClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   students<T extends Prisma.Class$studentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Class$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentInClassPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sections<T extends Prisma.Class$sectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Class$sectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  runningSections<T extends Prisma.Class$runningSectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Class$runningSectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RunningSectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1471,6 +1569,30 @@ export type Class$sectionsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.SectionScalarFieldEnum | Prisma.SectionScalarFieldEnum[]
+}
+
+/**
+ * Class.runningSections
+ */
+export type Class$runningSectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RunningSection
+   */
+  select?: Prisma.RunningSectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RunningSection
+   */
+  omit?: Prisma.RunningSectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RunningSectionInclude<ExtArgs> | null
+  where?: Prisma.RunningSectionWhereInput
+  orderBy?: Prisma.RunningSectionOrderByWithRelationInput | Prisma.RunningSectionOrderByWithRelationInput[]
+  cursor?: Prisma.RunningSectionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RunningSectionScalarFieldEnum | Prisma.RunningSectionScalarFieldEnum[]
 }
 
 /**

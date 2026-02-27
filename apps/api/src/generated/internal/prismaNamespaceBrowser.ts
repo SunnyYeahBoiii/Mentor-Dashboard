@@ -54,7 +54,9 @@ export const ModelName = {
   Student: 'Student',
   Class: 'Class',
   Section: 'Section',
-  StudentInClass: 'StudentInClass'
+  RunningSection: 'RunningSection',
+  StudentInClass: 'StudentInClass',
+  User: 'User'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -108,12 +110,35 @@ export const SectionScalarFieldEnum = {
 export type SectionScalarFieldEnum = (typeof SectionScalarFieldEnum)[keyof typeof SectionScalarFieldEnum]
 
 
+export const RunningSectionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  startTime: 'startTime',
+  classId: 'classId',
+  meettingLink: 'meettingLink'
+} as const
+
+export type RunningSectionScalarFieldEnum = (typeof RunningSectionScalarFieldEnum)[keyof typeof RunningSectionScalarFieldEnum]
+
+
 export const StudentInClassScalarFieldEnum = {
   studentId: 'studentId',
   classId: 'classId'
 } as const
 
 export type StudentInClassScalarFieldEnum = (typeof StudentInClassScalarFieldEnum)[keyof typeof StudentInClassScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  fullName: 'fullName',
+  avatar: 'avatar',
+  emailVerified: 'emailVerified',
+  refreshToken: 'refreshToken'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
 export const SortOrder = {

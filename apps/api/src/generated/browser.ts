@@ -33,7 +33,17 @@ export type Class = Prisma.ClassModel
  */
 export type Section = Prisma.SectionModel
 /**
+ * Model RunningSection
+ * 
+ */
+export type RunningSection = Prisma.RunningSectionModel
+/**
  * Model StudentInClass
  * 
  */
 export type StudentInClass = Prisma.StudentInClassModel
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel

@@ -5,7 +5,19 @@ export class studentCreateDto {
         description: 'The full name of the student',
         example: 'John Doe'
     })
-    name: string;
+    firstName: string;
+
+    @ApiProperty({
+        description: 'The middle name of the student',
+        example: 'Doe'
+    })
+    middleName: string;
+
+    @ApiProperty({
+        description: 'The last name of the student',
+        example: 'Doe'
+    })
+    lastName: string;
 
     @ApiProperty({
         description: 'The age of the student',
