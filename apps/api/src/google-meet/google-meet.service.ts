@@ -14,15 +14,14 @@ export class MeetService {
     async createMeetLink(userAccessToken: string, userRefreshToken: string) {
         const auth = this.createOAuthClient();
 
-        console.log(userAccessToken)
-        console.log(userRefreshToken)
-
         auth.setCredentials({
             access_token: userAccessToken,
             refresh_token: userRefreshToken,
         });
 
-        const calendar = google.calendar({ version: 'v3', auth });
+        const calendar = google.calendar({
+            version: 'v3', auth
+        });
 
         const event = {
             summary: 'Meet Link Generation',
@@ -48,13 +47,36 @@ export class MeetService {
             const meetingUri = res.data.conferenceData?.entryPoints?.[0]?.uri;
             const eventId = res.data.id;
 
-            // Note: In your script you were deleting the event immediately.
-            // If you just want the link and no calendar entry, keep the delete:
+            if (!eventId) {
+                throw new InternalServerErrorException('Failed to generate Meet link');
+            }
+
+            await calendar.events.delete({
+                calendarId: 'primary',
+                eventId,
+            });
 
             return { meetingUri, eventId };
         } catch (error) {
             console.error('Google Calendar Error:', error.response?.data || error.message);
             throw new InternalServerErrorException('Failed to generate Meet link');
+        }
+    }
+
+    async refreshUserTokens(refreshToken: string): Promise<any> {
+        const auth = this.createOAuthClient();
+        auth.setCredentials({
+            refresh_token: refreshToken,
+            scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid https://www.googleapis.com/auth/calendar'
+        });
+        try {
+            const { credentials } = await auth.refreshAccessToken();
+            // credentials contains:
+            // { access_token, refresh_token, expiry_date, token_type, id_token, scope }
+
+            return credentials;
+        } catch (error) {
+            throw new InternalServerErrorException('Failed to refresh Google token');
         }
     }
 }

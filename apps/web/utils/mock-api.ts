@@ -4,7 +4,8 @@ import { students, studentInClasses, runningSessions } from "./mock-data";
 import { classes } from "./mock-data";
 import { sessions as sections } from "./mock-data";
 import { runningSectionCreateDto, runningSectionInfoDto, sectionCreateDto, sectionEndDto, sectionInfoDto, sectionTransferDto, sectionUpdateDto } from "@/dtos/section.dto";
-
+import axios from "axios";
+import { createMeet } from "./api";
 
 const NUMBER_STUDENT_PER_PAGE = 8
 const NUMBER_CLASS_PER_PAGE = 3
@@ -170,7 +171,7 @@ export const createRunningSection = async (sectionInfo: runningSectionCreateDto)
         id: crypto.randomUUID(),
         ...sectionInfo,
         startTime: new Date(),
-        meetingLink: "https://meet.google.com/qbf-jpsp-kqn",
+        meetingLink: await createMeet(),
     }
 
     runningSessions.push(newRunningSection)

@@ -5,15 +5,15 @@ import { lusitana } from "@/utils/fonts";
 import { SlPeople } from "react-icons/sl";
 import { SlNote } from "react-icons/sl";
 import { SlNotebook } from "react-icons/sl";
-import { FaPlus } from "react-icons/fa";
+import { FaGoogle, FaPlus } from "react-icons/fa";
 
 const icons = [(< SlPeople />), (< SlNote />), (< SlNotebook />)];
 const buttonTexts: string[] = ["Học Sinh", "Lớp Học", "Buổi Học"];
 const links: string[] = ["/students?page=1", "/classes?page=1", "/sessions"];
 
-const current_icons = [(< SlNote />), (< FaPlus />)];
-const current_buttonTexts: string[] = ["Buổi học hiện tại", "Thêm buổi học"];
-const current_links: string[] = ["/current-sessions", "/current-sessions/add-session"];
+const current_icons = [(< SlNote />), (< FaPlus />), (<FaGoogle />)];
+const current_buttonTexts: string[] = ["Buổi học hiện tại", "Thêm buổi học", "Đăng nhập Google"];
+const current_links: string[] = ["/current-sessions", "/current-sessions/add-session", process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/google"];
 
 export default function Sidebar() {
     return (

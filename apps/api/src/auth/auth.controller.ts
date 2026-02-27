@@ -33,13 +33,25 @@ export class AuthController {
             maxAge: 60 * 60 * 24 * 7,
         });
 
-        return this.prisma.user.create({
-            data: {
+        this.prisma.user.upsert({
+            create: {
                 email: req.user.email,
                 fullName: req.user.fullName,
                 avatar: req.user.avatar,
                 refreshToken: req.user.refreshToken,
             },
-        });
+            update: {
+                refreshToken: req.user.refreshToken,
+            },
+            where: {
+                email: req.user.email,
+            },
+        }).then((user) => {
+
+        }).catch((error) => {
+            console.error('Error upserting user:', error);
+        })
+
+        return res.redirect('http://localhost:3000')
     }
 }

@@ -3,7 +3,6 @@
 import { lusitana } from "@/utils/fonts";
 import { createRunningSection, getClassList } from "@/utils/mock-api";
 import { mutationOptions, queryOptions, useMutation, useQuery } from "@tanstack/react-query";
-import { FaSearch } from "react-icons/fa";
 
 import {
     Combobox,
@@ -16,6 +15,11 @@ import {
 import { useState } from "react";
 import { runningSectionCreateDto } from "@/dtos/section.dto";
 import { Input } from "@/components/ui/input";
+import axios from "axios";
+import { api } from "@/utils/client";
+import { createMeet } from "@/utils/api";
+import { useRouter } from "next/navigation";
+
 
 const getClassListOptions = queryOptions({
     queryKey: ["classes", "running-section"],
@@ -32,14 +36,17 @@ export default function AddSessionPage() {
     const createSectionMutation = useMutation(createSectionOptions)
     const [selectedClass, setSelectedClass] = useState<string | null>(null)
     const [name, setName] = useState<string>("")
+    const router = useRouter();
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         console.log(selectedClass, name)
-        createSectionMutation.mutate({
+        const section = await createSectionMutation.mutateAsync({
             name: name,
             classId: selectedClass as string,
         })
+
+        router.push("/current-sessions/end-session/" + section.id)
     }
 
     return (
