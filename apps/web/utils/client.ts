@@ -12,7 +12,7 @@ let refreshPromise: Promise<void | null> | null = null;
 
 const isPublicRoute = (pathname: string): boolean => {
     return (
-        pathname === '/current-sessions/add-session'
+        pathname !== '/current-sessions/add-session'
     );
 };
 
@@ -24,7 +24,7 @@ const shouldAttemptRefresh = (config?: AxiosRequestConfig): boolean => {
     const url = config.url.toString();
 
     // Do not ever try to refresh for the refresh endpoint itself
-    if (url.includes('/auth/refresh')) {
+    if (url.includes('/meet/refresh')) {
         return false;
     }
 
@@ -33,7 +33,7 @@ const shouldAttemptRefresh = (config?: AxiosRequestConfig): boolean => {
 
 const refresh = async (): Promise<void | null> => {
     try {
-        await api.post('/auth/refresh');
+        await api.post('/meet/refresh');
         return;
     } catch {
         return null;
@@ -70,6 +70,7 @@ api.interceptors.response.use(
             }
         }
 
+        console.log('NGU');
         if (typeof window !== 'undefined' && status === 401) {
             const pathname = window.location.pathname;
             if (!isPublicRoute(pathname)) {

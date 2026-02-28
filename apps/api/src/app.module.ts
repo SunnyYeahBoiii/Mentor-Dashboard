@@ -9,7 +9,7 @@ import { MeetModule } from './google-meet/google-meet.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [AuthModule, PrismaModule, MeetModule, StudentModule, ClassModule, StudentClassModule],
+  imports: [AuthModule, MeetModule, PrismaModule, StudentModule, ClassModule, StudentClassModule],
   controllers: [AppController],
   providers: [AppService],
 })

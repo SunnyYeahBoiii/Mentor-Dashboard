@@ -11,7 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <html>
             <body className={`${inter.className} overflow-x-hidden min-w-screen min-h-screen`}>
-                <div className="h-screen rounded-xl flex flex-row bg-(--light-gray)">
+                <div className="min-h-screen rounded-xl flex flex-row bg-(--light-gray)">
                     <Sidebar />
                     <QueryClientProvider client={queryClient}>
                         {children}

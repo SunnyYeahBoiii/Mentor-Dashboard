@@ -1,6 +1,6 @@
 'use client';
 import { studentCreateDto } from "@/dtos/student.dto";
-import { getStudentById, updateStudent, createStudent } from "@/utils/mock-api";
+import { getStudentById, updateStudent, createStudent, deleteStudentById } from "@/utils/mock-api";
 import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -53,6 +53,14 @@ export function StudentForm({ student_id }: StudentFormProps) {
 
     const createMutation = useMutation({
         mutationFn: (newStudent: studentCreateDto) => createStudent(newStudent),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['students'] });
+            router.push('/students');
+        },
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: (id: string) => deleteStudentById(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['students'] });
             router.push('/students');

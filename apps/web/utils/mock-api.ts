@@ -51,6 +51,22 @@ export async function getAllStudent() {
     });
 }
 
+export async function deleteStudentById(id: string) {
+    students.splice(students.findIndex((s) => s.id === id), 1);
+}
+
+export async function deleteClassById(id: string) {
+    classes.splice(classes.findIndex((c) => c.id === id), 1);
+}
+
+export async function deleteSectionById(id: string) {
+    sections.splice(sections.findIndex((s) => s.id === id), 1);
+}
+
+export async function deleteRunningSectionById(id: string) {
+    runningSessions.splice(runningSessions.findIndex((s) => s.id === id), 1);
+}
+
 export function getStudentNotInClass(classId: string) {
     const studentList = studentInClasses.filter((student) => student.classId === classId);
     const studentIds = studentList.map((student) => student.studentId);

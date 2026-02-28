@@ -5,8 +5,8 @@ import { studentCreateDto } from "@/dtos/student.dto";
 import { FaSearch, FaEdit, FaTrash } from "react-icons/fa";
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import { getStudentPage, getStudentTotalPages } from "@/utils/mock-api";
-import { useQuery, queryOptions } from "@tanstack/react-query";
+import { deleteStudentById, getStudentPage, getStudentTotalPages } from "@/utils/mock-api";
+import { useQuery, queryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import Link from "next/link";
 import StudentSkeleton from "@/components/skeletons/StudentSkeleton";
@@ -29,6 +29,14 @@ export default function StudentPage() {
 
     const { data: students, isLoading: isStudentsLoading, isError: isStudentsError } = useQuery(studentListOptions(page));
     const { data: totalPages = 1 } = useQuery(studentTotalPagesOptions());
+
+    const queryClient = useQueryClient();
+    const deleteMutation = useMutation({
+        mutationFn: (id: string) => deleteStudentById(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['students'] });
+        },
+    });
 
     const setPage = (newPage: number) => {
         if (newPage < 1 || newPage > totalPages) return;
@@ -89,7 +97,7 @@ export default function StudentPage() {
                                 <Link href={`/students/${student.id}`}>
                                     <FaEdit className="text-2xl px-1 py-1 text-black/50 hover:text-black cursor-pointer" />
                                 </Link>
-                                <FaTrash className="text-2xl px-1 py-1 bg-white text-black/50 hover:text-red-500 cursor-pointer" />
+                                <FaTrash onClick={() => deleteMutation.mutate(student.id)} className="text-2xl px-1 py-1 bg-white text-black/50 hover:text-red-500 cursor-pointer" />
                             </p>
                         </div>
                     ))}

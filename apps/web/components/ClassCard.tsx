@@ -1,5 +1,7 @@
 
 import { VNDFormat } from "@/utils/funcs";
+import { deleteClassById } from "@/utils/mock-api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 
 interface ClassCardProps {
@@ -11,6 +13,14 @@ interface ClassCardProps {
 }
 
 export function ClassCard({ id, name, section_count, section_fee, student_count }: ClassCardProps) {
+    const queryClient = useQueryClient();
+    const mutation = useMutation({
+        mutationFn: () => deleteClassById(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["classes"] });
+        },
+    })
+
     return (
         <div className="w-full rounded-xl bg-(--dark-white) flex flex-col justify-between p-2 gap-2">
             <span className="flex flex-row justify-between gap-5">

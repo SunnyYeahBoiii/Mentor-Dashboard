@@ -17,7 +17,6 @@ import { runningSectionCreateDto } from "@/dtos/section.dto";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { api } from "@/utils/client";
-import { createMeet } from "@/utils/api";
 import { useRouter } from "next/navigation";
 
 
