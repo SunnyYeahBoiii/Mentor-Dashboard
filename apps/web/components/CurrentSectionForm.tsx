@@ -54,7 +54,7 @@ export default function CurrentSectionForm({ section }: RunningSectionFormProps)
                 <input
                     type="text"
                     className="w-full opacity-50 cursor-not-allowed"
-                    value={section.classId}
+                    value={section.className}
                     disabled
                 />
             </div>

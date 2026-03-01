@@ -82,7 +82,8 @@ export const StudentScalarFieldEnum = {
   lastName: 'lastName',
   birthyear: 'birthyear',
   school: 'school',
-  province: 'province'
+  province: 'province',
+  paid_sections: 'paid_sections'
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
@@ -115,7 +116,8 @@ export const RunningSectionScalarFieldEnum = {
   name: 'name',
   startTime: 'startTime',
   classId: 'classId',
-  meettingLink: 'meettingLink'
+  className: 'className',
+  meetingLink: 'meetingLink'
 } as const
 
 export type RunningSectionScalarFieldEnum = (typeof RunningSectionScalarFieldEnum)[keyof typeof RunningSectionScalarFieldEnum]

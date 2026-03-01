@@ -19,24 +19,25 @@ export class MeetService {
             refresh_token: userRefreshToken,
         });
 
-        const calendar = google.calendar({
-            version: 'v3', auth
-        });
-
-        const event = {
-            summary: 'Meet Link Generation',
-            description: 'Automated Meeting Space',
-            start: { dateTime: new Date().toISOString() },
-            end: { dateTime: new Date(Date.now() + 30 * 60000).toISOString() }, // 30 mins later
-            conferenceData: {
-                createRequest: {
-                    requestId: `meet-${Date.now()}`, // Must be unique
-                    conferenceSolutionKey: { type: 'hangoutsMeet' },
-                },
-            },
-        };
-
         try {
+            const calendar = google.calendar({
+                version: 'v3',
+                auth,
+            });
+
+            const event = {
+                summary: 'Meet Link Generation',
+                description: 'Automated Meeting Space',
+                start: { dateTime: new Date().toISOString() },
+                end: { dateTime: new Date(Date.now() + 30 * 60000).toISOString() }, // 30 mins later
+                conferenceData: {
+                    createRequest: {
+                        requestId: `meet-${Date.now()}`, // Must be unique
+                        conferenceSolutionKey: { type: 'hangoutsMeet' },
+                    },
+                },
+            };
+
             // 1. Insert the event with conferenceDataVersion: 1 to trigger Meet creation
             const res = await calendar.events.insert({
                 calendarId: 'primary',
@@ -48,7 +49,9 @@ export class MeetService {
             const eventId = res.data.id;
 
             if (!eventId) {
-                throw new InternalServerErrorException('Failed to generate Meet link');
+                throw new InternalServerErrorException(
+                    'Failed to generate Meet link',
+                );
             }
 
             await calendar.events.delete({
@@ -58,8 +61,13 @@ export class MeetService {
 
             return { meetingUri, eventId };
         } catch (error) {
-            console.error('Google Calendar Error:', error.response?.data || error.message);
-            throw new InternalServerErrorException('Failed to generate Meet link');
+            console.error(
+                'Google Calendar Error:',
+                error.response?.data || error.message,
+            );
+            throw new InternalServerErrorException(
+                'Failed to generate Meet link',
+            );
         }
     }
 
@@ -67,7 +75,7 @@ export class MeetService {
         const auth = this.createOAuthClient();
         auth.setCredentials({
             refresh_token: refreshToken,
-            scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid https://www.googleapis.com/auth/calendar'
+            scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid https://www.googleapis.com/auth/calendar',
         });
         try {
             const { credentials } = await auth.refreshAccessToken();
@@ -76,7 +84,9 @@ export class MeetService {
 
             return credentials;
         } catch (error) {
-            throw new InternalServerErrorException('Failed to refresh Google token');
+            throw new InternalServerErrorException(
+                'Failed to refresh Google token',
+            );
         }
     }
 }

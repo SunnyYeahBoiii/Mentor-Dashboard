@@ -1,5 +1,5 @@
 generator client {
-  provider     = "prisma-client-js"
+  provider     = "prisma-client"
   output       = "../generated"
   moduleFormat = "cjs"
 }
@@ -9,14 +9,15 @@ datasource db {
 }
 
 model Student {
-  id         String           @id @default(cuid())
-  firstName  String
-  middleName String
-  lastName   String
-  birthyear  Int?
-  school     String?
-  province   String?
-  classes    StudentInClass[]
+  id            String           @id @default(cuid())
+  firstName     String
+  middleName    String
+  lastName      String
+  birthyear     Int?
+  school        String?
+  province      String?
+  paid_sections Int              @default(0)
+  classes       StudentInClass[]
 }
 
 model Class {
@@ -40,12 +41,13 @@ model Section {
 }
 
 model RunningSection {
-  id           String    @id @default(cuid())
-  name         String
-  class        Class     @relation(fields: [classId], references: [id])
-  startTime    DateTime?
-  classId      String
-  meettingLink String?
+  id          String    @id @default(cuid())
+  name        String
+  class       Class     @relation(fields: [classId], references: [id])
+  startTime   DateTime?
+  classId     String
+  className   String
+  meetingLink String?
 }
 
 model StudentInClass {
@@ -63,5 +65,5 @@ model User {
   email        String  @unique
   fullName     String
   avatar       String?
-  refreshToken String?
+  refreshToken String
 }

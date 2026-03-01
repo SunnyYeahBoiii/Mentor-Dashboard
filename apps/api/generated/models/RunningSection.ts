@@ -29,7 +29,8 @@ export type RunningSectionMinAggregateOutputType = {
   name: string | null
   startTime: Date | null
   classId: string | null
-  meettingLink: string | null
+  className: string | null
+  meetingLink: string | null
 }
 
 export type RunningSectionMaxAggregateOutputType = {
@@ -37,7 +38,8 @@ export type RunningSectionMaxAggregateOutputType = {
   name: string | null
   startTime: Date | null
   classId: string | null
-  meettingLink: string | null
+  className: string | null
+  meetingLink: string | null
 }
 
 export type RunningSectionCountAggregateOutputType = {
@@ -45,7 +47,8 @@ export type RunningSectionCountAggregateOutputType = {
   name: number
   startTime: number
   classId: number
-  meettingLink: number
+  className: number
+  meetingLink: number
   _all: number
 }
 
@@ -55,7 +58,8 @@ export type RunningSectionMinAggregateInputType = {
   name?: true
   startTime?: true
   classId?: true
-  meettingLink?: true
+  className?: true
+  meetingLink?: true
 }
 
 export type RunningSectionMaxAggregateInputType = {
@@ -63,7 +67,8 @@ export type RunningSectionMaxAggregateInputType = {
   name?: true
   startTime?: true
   classId?: true
-  meettingLink?: true
+  className?: true
+  meetingLink?: true
 }
 
 export type RunningSectionCountAggregateInputType = {
@@ -71,7 +76,8 @@ export type RunningSectionCountAggregateInputType = {
   name?: true
   startTime?: true
   classId?: true
-  meettingLink?: true
+  className?: true
+  meetingLink?: true
   _all?: true
 }
 
@@ -152,7 +158,8 @@ export type RunningSectionGroupByOutputType = {
   name: string
   startTime: Date | null
   classId: string
-  meettingLink: string | null
+  className: string
+  meetingLink: string | null
   _count: RunningSectionCountAggregateOutputType | null
   _min: RunningSectionMinAggregateOutputType | null
   _max: RunningSectionMaxAggregateOutputType | null
@@ -181,7 +188,8 @@ export type RunningSectionWhereInput = {
   name?: Prisma.StringFilter<"RunningSection"> | string
   startTime?: Prisma.DateTimeNullableFilter<"RunningSection"> | Date | string | null
   classId?: Prisma.StringFilter<"RunningSection"> | string
-  meettingLink?: Prisma.StringNullableFilter<"RunningSection"> | string | null
+  className?: Prisma.StringFilter<"RunningSection"> | string
+  meetingLink?: Prisma.StringNullableFilter<"RunningSection"> | string | null
   class?: Prisma.XOR<Prisma.ClassScalarRelationFilter, Prisma.ClassWhereInput>
 }
 
@@ -190,7 +198,8 @@ export type RunningSectionOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   startTime?: Prisma.SortOrderInput | Prisma.SortOrder
   classId?: Prisma.SortOrder
-  meettingLink?: Prisma.SortOrderInput | Prisma.SortOrder
+  className?: Prisma.SortOrder
+  meetingLink?: Prisma.SortOrderInput | Prisma.SortOrder
   class?: Prisma.ClassOrderByWithRelationInput
 }
 
@@ -202,7 +211,8 @@ export type RunningSectionWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"RunningSection"> | string
   startTime?: Prisma.DateTimeNullableFilter<"RunningSection"> | Date | string | null
   classId?: Prisma.StringFilter<"RunningSection"> | string
-  meettingLink?: Prisma.StringNullableFilter<"RunningSection"> | string | null
+  className?: Prisma.StringFilter<"RunningSection"> | string
+  meetingLink?: Prisma.StringNullableFilter<"RunningSection"> | string | null
   class?: Prisma.XOR<Prisma.ClassScalarRelationFilter, Prisma.ClassWhereInput>
 }, "id">
 
@@ -211,7 +221,8 @@ export type RunningSectionOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   startTime?: Prisma.SortOrderInput | Prisma.SortOrder
   classId?: Prisma.SortOrder
-  meettingLink?: Prisma.SortOrderInput | Prisma.SortOrder
+  className?: Prisma.SortOrder
+  meetingLink?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.RunningSectionCountOrderByAggregateInput
   _max?: Prisma.RunningSectionMaxOrderByAggregateInput
   _min?: Prisma.RunningSectionMinOrderByAggregateInput
@@ -225,14 +236,16 @@ export type RunningSectionScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"RunningSection"> | string
   startTime?: Prisma.DateTimeNullableWithAggregatesFilter<"RunningSection"> | Date | string | null
   classId?: Prisma.StringWithAggregatesFilter<"RunningSection"> | string
-  meettingLink?: Prisma.StringNullableWithAggregatesFilter<"RunningSection"> | string | null
+  className?: Prisma.StringWithAggregatesFilter<"RunningSection"> | string
+  meetingLink?: Prisma.StringNullableWithAggregatesFilter<"RunningSection"> | string | null
 }
 
 export type RunningSectionCreateInput = {
   id?: string
   name: string
   startTime?: Date | string | null
-  meettingLink?: string | null
+  className: string
+  meetingLink?: string | null
   class: Prisma.ClassCreateNestedOneWithoutRunningSectionsInput
 }
 
@@ -241,14 +254,16 @@ export type RunningSectionUncheckedCreateInput = {
   name: string
   startTime?: Date | string | null
   classId: string
-  meettingLink?: string | null
+  className: string
+  meetingLink?: string | null
 }
 
 export type RunningSectionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  meettingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  className?: Prisma.StringFieldUpdateOperationsInput | string
+  meetingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   class?: Prisma.ClassUpdateOneRequiredWithoutRunningSectionsNestedInput
 }
 
@@ -257,7 +272,8 @@ export type RunningSectionUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classId?: Prisma.StringFieldUpdateOperationsInput | string
-  meettingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  className?: Prisma.StringFieldUpdateOperationsInput | string
+  meetingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RunningSectionCreateManyInput = {
@@ -265,14 +281,16 @@ export type RunningSectionCreateManyInput = {
   name: string
   startTime?: Date | string | null
   classId: string
-  meettingLink?: string | null
+  className: string
+  meetingLink?: string | null
 }
 
 export type RunningSectionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  meettingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  className?: Prisma.StringFieldUpdateOperationsInput | string
+  meetingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RunningSectionUncheckedUpdateManyInput = {
@@ -280,7 +298,8 @@ export type RunningSectionUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classId?: Prisma.StringFieldUpdateOperationsInput | string
-  meettingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  className?: Prisma.StringFieldUpdateOperationsInput | string
+  meetingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RunningSectionListRelationFilter = {
@@ -298,7 +317,8 @@ export type RunningSectionCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   classId?: Prisma.SortOrder
-  meettingLink?: Prisma.SortOrder
+  className?: Prisma.SortOrder
+  meetingLink?: Prisma.SortOrder
 }
 
 export type RunningSectionMaxOrderByAggregateInput = {
@@ -306,7 +326,8 @@ export type RunningSectionMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   classId?: Prisma.SortOrder
-  meettingLink?: Prisma.SortOrder
+  className?: Prisma.SortOrder
+  meetingLink?: Prisma.SortOrder
 }
 
 export type RunningSectionMinOrderByAggregateInput = {
@@ -314,7 +335,8 @@ export type RunningSectionMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   classId?: Prisma.SortOrder
-  meettingLink?: Prisma.SortOrder
+  className?: Prisma.SortOrder
+  meetingLink?: Prisma.SortOrder
 }
 
 export type RunningSectionCreateNestedManyWithoutClassInput = {
@@ -363,14 +385,16 @@ export type RunningSectionCreateWithoutClassInput = {
   id?: string
   name: string
   startTime?: Date | string | null
-  meettingLink?: string | null
+  className: string
+  meetingLink?: string | null
 }
 
 export type RunningSectionUncheckedCreateWithoutClassInput = {
   id?: string
   name: string
   startTime?: Date | string | null
-  meettingLink?: string | null
+  className: string
+  meetingLink?: string | null
 }
 
 export type RunningSectionCreateOrConnectWithoutClassInput = {
@@ -407,35 +431,40 @@ export type RunningSectionScalarWhereInput = {
   name?: Prisma.StringFilter<"RunningSection"> | string
   startTime?: Prisma.DateTimeNullableFilter<"RunningSection"> | Date | string | null
   classId?: Prisma.StringFilter<"RunningSection"> | string
-  meettingLink?: Prisma.StringNullableFilter<"RunningSection"> | string | null
+  className?: Prisma.StringFilter<"RunningSection"> | string
+  meetingLink?: Prisma.StringNullableFilter<"RunningSection"> | string | null
 }
 
 export type RunningSectionCreateManyClassInput = {
   id?: string
   name: string
   startTime?: Date | string | null
-  meettingLink?: string | null
+  className: string
+  meetingLink?: string | null
 }
 
 export type RunningSectionUpdateWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  meettingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  className?: Prisma.StringFieldUpdateOperationsInput | string
+  meetingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RunningSectionUncheckedUpdateWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  meettingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  className?: Prisma.StringFieldUpdateOperationsInput | string
+  meetingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RunningSectionUncheckedUpdateManyWithoutClassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  meettingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  className?: Prisma.StringFieldUpdateOperationsInput | string
+  meetingLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -445,7 +474,8 @@ export type RunningSectionSelect<ExtArgs extends runtime.Types.Extensions.Intern
   name?: boolean
   startTime?: boolean
   classId?: boolean
-  meettingLink?: boolean
+  className?: boolean
+  meetingLink?: boolean
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["runningSection"]>
 
@@ -454,7 +484,8 @@ export type RunningSectionSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   name?: boolean
   startTime?: boolean
   classId?: boolean
-  meettingLink?: boolean
+  className?: boolean
+  meetingLink?: boolean
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["runningSection"]>
 
@@ -463,7 +494,8 @@ export type RunningSectionSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   name?: boolean
   startTime?: boolean
   classId?: boolean
-  meettingLink?: boolean
+  className?: boolean
+  meetingLink?: boolean
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["runningSection"]>
 
@@ -472,10 +504,11 @@ export type RunningSectionSelectScalar = {
   name?: boolean
   startTime?: boolean
   classId?: boolean
-  meettingLink?: boolean
+  className?: boolean
+  meetingLink?: boolean
 }
 
-export type RunningSectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "startTime" | "classId" | "meettingLink", ExtArgs["result"]["runningSection"]>
+export type RunningSectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "startTime" | "classId" | "className" | "meetingLink", ExtArgs["result"]["runningSection"]>
 export type RunningSectionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
 }
@@ -496,7 +529,8 @@ export type $RunningSectionPayload<ExtArgs extends runtime.Types.Extensions.Inte
     name: string
     startTime: Date | null
     classId: string
-    meettingLink: string | null
+    className: string
+    meetingLink: string | null
   }, ExtArgs["result"]["runningSection"]>
   composites: {}
 }
@@ -925,7 +959,8 @@ export interface RunningSectionFieldRefs {
   readonly name: Prisma.FieldRef<"RunningSection", 'String'>
   readonly startTime: Prisma.FieldRef<"RunningSection", 'DateTime'>
   readonly classId: Prisma.FieldRef<"RunningSection", 'String'>
-  readonly meettingLink: Prisma.FieldRef<"RunningSection", 'String'>
+  readonly className: Prisma.FieldRef<"RunningSection", 'String'>
+  readonly meetingLink: Prisma.FieldRef<"RunningSection", 'String'>
 }
     
 

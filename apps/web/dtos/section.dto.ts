@@ -24,6 +24,8 @@ export interface sectionInfoDto extends sectionCreateDto {
 export interface runningSectionCreateDto {
     name: string;
     classId: string;
+    meetingLink?: string;
+    className: string;
 }
 
 export interface runningSectionInfoDto extends runningSectionCreateDto {

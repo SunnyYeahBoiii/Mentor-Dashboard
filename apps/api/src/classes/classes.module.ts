@@ -8,4 +8,4 @@ import { ClassController } from './classes.controller';
     controllers: [ClassController],
     providers: [ClassService],
 })
-export class ClassModule { }
+export class ClassModule {}

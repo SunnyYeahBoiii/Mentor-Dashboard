@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { api } from "@/utils/client";
 import { useRouter } from "next/navigation";
+import { createMeet } from "@/utils/api";
 
 
 const getClassListOptions = queryOptions({
@@ -34,16 +35,20 @@ export default function AddSessionPage() {
     const classList = useQuery(getClassListOptions)
     const createSectionMutation = useMutation(createSectionOptions)
     const [selectedClass, setSelectedClass] = useState<string | null>(null)
+    const [selectedClassName, setSelectedClassName] = useState<string | null>(null)
     const [name, setName] = useState<string>("")
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(selectedClass, name)
         const section = await createSectionMutation.mutateAsync({
             name: name,
             classId: selectedClass as string,
+            className: selectedClassName as string,
+            meetingLink: await createMeet()
         })
+
+        console.log(section)
 
         router.push("/current-sessions/end-session/" + section.id)
     }
@@ -64,7 +69,10 @@ export default function AddSessionPage() {
                     <Combobox
                         required
                         items={classList.data}
-                        onValueChange={(value: any) => setSelectedClass(value.id)}
+                        onValueChange={(value: any) => {
+                            setSelectedClass(value.id)
+                            setSelectedClassName(value.name)
+                        }}
                         itemToStringLabel={(item) => item.name}
                     >
                         <ComboboxInput placeholder="Chọn lớp học" />

@@ -28,10 +28,12 @@ export type AggregateStudent = {
 
 export type StudentAvgAggregateOutputType = {
   birthyear: number | null
+  paid_sections: number | null
 }
 
 export type StudentSumAggregateOutputType = {
   birthyear: number | null
+  paid_sections: number | null
 }
 
 export type StudentMinAggregateOutputType = {
@@ -42,6 +44,7 @@ export type StudentMinAggregateOutputType = {
   birthyear: number | null
   school: string | null
   province: string | null
+  paid_sections: number | null
 }
 
 export type StudentMaxAggregateOutputType = {
@@ -52,6 +55,7 @@ export type StudentMaxAggregateOutputType = {
   birthyear: number | null
   school: string | null
   province: string | null
+  paid_sections: number | null
 }
 
 export type StudentCountAggregateOutputType = {
@@ -62,16 +66,19 @@ export type StudentCountAggregateOutputType = {
   birthyear: number
   school: number
   province: number
+  paid_sections: number
   _all: number
 }
 
 
 export type StudentAvgAggregateInputType = {
   birthyear?: true
+  paid_sections?: true
 }
 
 export type StudentSumAggregateInputType = {
   birthyear?: true
+  paid_sections?: true
 }
 
 export type StudentMinAggregateInputType = {
@@ -82,6 +89,7 @@ export type StudentMinAggregateInputType = {
   birthyear?: true
   school?: true
   province?: true
+  paid_sections?: true
 }
 
 export type StudentMaxAggregateInputType = {
@@ -92,6 +100,7 @@ export type StudentMaxAggregateInputType = {
   birthyear?: true
   school?: true
   province?: true
+  paid_sections?: true
 }
 
 export type StudentCountAggregateInputType = {
@@ -102,6 +111,7 @@ export type StudentCountAggregateInputType = {
   birthyear?: true
   school?: true
   province?: true
+  paid_sections?: true
   _all?: true
 }
 
@@ -199,6 +209,7 @@ export type StudentGroupByOutputType = {
   birthyear: number | null
   school: string | null
   province: string | null
+  paid_sections: number
   _count: StudentCountAggregateOutputType | null
   _avg: StudentAvgAggregateOutputType | null
   _sum: StudentSumAggregateOutputType | null
@@ -232,6 +243,7 @@ export type StudentWhereInput = {
   birthyear?: Prisma.IntNullableFilter<"Student"> | number | null
   school?: Prisma.StringNullableFilter<"Student"> | string | null
   province?: Prisma.StringNullableFilter<"Student"> | string | null
+  paid_sections?: Prisma.IntFilter<"Student"> | number
   classes?: Prisma.StudentInClassListRelationFilter
 }
 
@@ -243,6 +255,7 @@ export type StudentOrderByWithRelationInput = {
   birthyear?: Prisma.SortOrderInput | Prisma.SortOrder
   school?: Prisma.SortOrderInput | Prisma.SortOrder
   province?: Prisma.SortOrderInput | Prisma.SortOrder
+  paid_sections?: Prisma.SortOrder
   classes?: Prisma.StudentInClassOrderByRelationAggregateInput
 }
 
@@ -257,6 +270,7 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   birthyear?: Prisma.IntNullableFilter<"Student"> | number | null
   school?: Prisma.StringNullableFilter<"Student"> | string | null
   province?: Prisma.StringNullableFilter<"Student"> | string | null
+  paid_sections?: Prisma.IntFilter<"Student"> | number
   classes?: Prisma.StudentInClassListRelationFilter
 }, "id">
 
@@ -268,6 +282,7 @@ export type StudentOrderByWithAggregationInput = {
   birthyear?: Prisma.SortOrderInput | Prisma.SortOrder
   school?: Prisma.SortOrderInput | Prisma.SortOrder
   province?: Prisma.SortOrderInput | Prisma.SortOrder
+  paid_sections?: Prisma.SortOrder
   _count?: Prisma.StudentCountOrderByAggregateInput
   _avg?: Prisma.StudentAvgOrderByAggregateInput
   _max?: Prisma.StudentMaxOrderByAggregateInput
@@ -286,6 +301,7 @@ export type StudentScalarWhereWithAggregatesInput = {
   birthyear?: Prisma.IntNullableWithAggregatesFilter<"Student"> | number | null
   school?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   province?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  paid_sections?: Prisma.IntWithAggregatesFilter<"Student"> | number
 }
 
 export type StudentCreateInput = {
@@ -296,6 +312,7 @@ export type StudentCreateInput = {
   birthyear?: number | null
   school?: string | null
   province?: string | null
+  paid_sections?: number
   classes?: Prisma.StudentInClassCreateNestedManyWithoutStudentInput
 }
 
@@ -307,6 +324,7 @@ export type StudentUncheckedCreateInput = {
   birthyear?: number | null
   school?: string | null
   province?: string | null
+  paid_sections?: number
   classes?: Prisma.StudentInClassUncheckedCreateNestedManyWithoutStudentInput
 }
 
@@ -318,6 +336,7 @@ export type StudentUpdateInput = {
   birthyear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   school?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paid_sections?: Prisma.IntFieldUpdateOperationsInput | number
   classes?: Prisma.StudentInClassUpdateManyWithoutStudentNestedInput
 }
 
@@ -329,6 +348,7 @@ export type StudentUncheckedUpdateInput = {
   birthyear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   school?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paid_sections?: Prisma.IntFieldUpdateOperationsInput | number
   classes?: Prisma.StudentInClassUncheckedUpdateManyWithoutStudentNestedInput
 }
 
@@ -340,6 +360,7 @@ export type StudentCreateManyInput = {
   birthyear?: number | null
   school?: string | null
   province?: string | null
+  paid_sections?: number
 }
 
 export type StudentUpdateManyMutationInput = {
@@ -350,6 +371,7 @@ export type StudentUpdateManyMutationInput = {
   birthyear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   school?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paid_sections?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type StudentUncheckedUpdateManyInput = {
@@ -360,6 +382,7 @@ export type StudentUncheckedUpdateManyInput = {
   birthyear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   school?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paid_sections?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type StudentCountOrderByAggregateInput = {
@@ -370,10 +393,12 @@ export type StudentCountOrderByAggregateInput = {
   birthyear?: Prisma.SortOrder
   school?: Prisma.SortOrder
   province?: Prisma.SortOrder
+  paid_sections?: Prisma.SortOrder
 }
 
 export type StudentAvgOrderByAggregateInput = {
   birthyear?: Prisma.SortOrder
+  paid_sections?: Prisma.SortOrder
 }
 
 export type StudentMaxOrderByAggregateInput = {
@@ -384,6 +409,7 @@ export type StudentMaxOrderByAggregateInput = {
   birthyear?: Prisma.SortOrder
   school?: Prisma.SortOrder
   province?: Prisma.SortOrder
+  paid_sections?: Prisma.SortOrder
 }
 
 export type StudentMinOrderByAggregateInput = {
@@ -394,10 +420,12 @@ export type StudentMinOrderByAggregateInput = {
   birthyear?: Prisma.SortOrder
   school?: Prisma.SortOrder
   province?: Prisma.SortOrder
+  paid_sections?: Prisma.SortOrder
 }
 
 export type StudentSumOrderByAggregateInput = {
   birthyear?: Prisma.SortOrder
+  paid_sections?: Prisma.SortOrder
 }
 
 export type StudentScalarRelationFilter = {
@@ -419,6 +447,14 @@ export type NullableIntFieldUpdateOperationsInput = {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type StudentCreateNestedOneWithoutClassesInput = {
@@ -443,6 +479,7 @@ export type StudentCreateWithoutClassesInput = {
   birthyear?: number | null
   school?: string | null
   province?: string | null
+  paid_sections?: number
 }
 
 export type StudentUncheckedCreateWithoutClassesInput = {
@@ -453,6 +490,7 @@ export type StudentUncheckedCreateWithoutClassesInput = {
   birthyear?: number | null
   school?: string | null
   province?: string | null
+  paid_sections?: number
 }
 
 export type StudentCreateOrConnectWithoutClassesInput = {
@@ -479,6 +517,7 @@ export type StudentUpdateWithoutClassesInput = {
   birthyear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   school?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paid_sections?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type StudentUncheckedUpdateWithoutClassesInput = {
@@ -489,6 +528,7 @@ export type StudentUncheckedUpdateWithoutClassesInput = {
   birthyear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   school?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paid_sections?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -530,6 +570,7 @@ export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   birthyear?: boolean
   school?: boolean
   province?: boolean
+  paid_sections?: boolean
   classes?: boolean | Prisma.Student$classesArgs<ExtArgs>
   _count?: boolean | Prisma.StudentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
@@ -542,6 +583,7 @@ export type StudentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   birthyear?: boolean
   school?: boolean
   province?: boolean
+  paid_sections?: boolean
 }, ExtArgs["result"]["student"]>
 
 export type StudentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -552,6 +594,7 @@ export type StudentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   birthyear?: boolean
   school?: boolean
   province?: boolean
+  paid_sections?: boolean
 }, ExtArgs["result"]["student"]>
 
 export type StudentSelectScalar = {
@@ -562,9 +605,10 @@ export type StudentSelectScalar = {
   birthyear?: boolean
   school?: boolean
   province?: boolean
+  paid_sections?: boolean
 }
 
-export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "middleName" | "lastName" | "birthyear" | "school" | "province", ExtArgs["result"]["student"]>
+export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "middleName" | "lastName" | "birthyear" | "school" | "province" | "paid_sections", ExtArgs["result"]["student"]>
 export type StudentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   classes?: boolean | Prisma.Student$classesArgs<ExtArgs>
   _count?: boolean | Prisma.StudentCountOutputTypeDefaultArgs<ExtArgs>
@@ -585,6 +629,7 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     birthyear: number | null
     school: string | null
     province: string | null
+    paid_sections: number
   }, ExtArgs["result"]["student"]>
   composites: {}
 }
@@ -1016,6 +1061,7 @@ export interface StudentFieldRefs {
   readonly birthyear: Prisma.FieldRef<"Student", 'Int'>
   readonly school: Prisma.FieldRef<"Student", 'String'>
   readonly province: Prisma.FieldRef<"Student", 'String'>
+  readonly paid_sections: Prisma.FieldRef<"Student", 'Int'>
 }
     
 

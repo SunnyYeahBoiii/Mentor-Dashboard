@@ -1,5 +1,5 @@
 'use client';
-import { studentCreateDto } from "@/dtos/student.dto";
+import { studentCreateDto, studentDto } from "@/dtos/student.dto";
 import { getStudentById, updateStudent, createStudent, deleteStudentById } from "@/utils/mock-api";
 import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -44,7 +44,7 @@ export function StudentForm({ student_id }: StudentFormProps) {
     }, [student]);
 
     const updateMutation = useMutation({
-        mutationFn: (updatedStudent: studentCreateDto) => updateStudent(updatedStudent),
+        mutationFn: (updatedStudent: studentDto) => updateStudent(updatedStudent),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['students'] });
             router.push('/students');
@@ -71,7 +71,6 @@ export function StudentForm({ student_id }: StudentFormProps) {
         e.preventDefault();
 
         const studentData: studentCreateDto = {
-            id: student_id,
             firstName,
             middleName,
             lastName,
@@ -83,7 +82,10 @@ export function StudentForm({ student_id }: StudentFormProps) {
         if (isNewStudent) {
             createMutation.mutate(studentData);
         } else {
-            updateMutation.mutate(studentData);
+            updateMutation.mutate({
+                ...studentData,
+                id: student_id,
+            } as studentDto);
         }
     };
 

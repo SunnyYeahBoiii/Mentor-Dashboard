@@ -1,15 +1,40 @@
-import { Body, Controller, Post } from "@nestjs/common";
-import { ClassService } from "./classes.service";
-import { classCreateDto } from "../../dtos/class-dtos";
-import { ApiTags } from "@nestjs/swagger";
-import { IdDto } from "dtos/common-dtos";
-import { UpdateClassDto } from "dtos/update-dtos";
-
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { ClassService } from './classes.service';
+import { classCreateDto } from '../../dtos/class-dtos';
+import { ApiTags } from '@nestjs/swagger';
+import { IdDto } from 'dtos/common-dtos';
+import { UpdateClassDto } from 'dtos/update-dtos';
 
 @ApiTags('classes')
 @Controller('classes')
 export class ClassController {
-    constructor(private readonly classService: ClassService) { }
+    constructor(private readonly classService: ClassService) {}
+
+    @Get('/list')
+    async getClassList() {
+        return this.classService.getClassList();
+    }
+
+    @Get('/page')
+    async getClassPage(
+        @Query('page') page: string,
+        @Query('pageSize') pageSize: string = '3',
+    ) {
+        const pageNum = parseInt(page) || 1;
+        const size = parseInt(pageSize) || 3;
+        return this.classService.getClassPage(pageNum, size);
+    }
+
+    @Get('/total-pages')
+    async getClassTotalPages(@Query('pageSize') pageSize: string = '3') {
+        const size = parseInt(pageSize) || 3;
+        return this.classService.getClassTotalPages(size);
+    }
+
+    @Get('/:id')
+    async getClassById(@Param('id') id: string) {
+        return this.classService.getClassById(id);
+    }
 
     @Post('/add-class')
     async createClass(@Body() classInfo: classCreateDto) {

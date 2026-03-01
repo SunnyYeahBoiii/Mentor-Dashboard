@@ -10,3 +10,7 @@ export interface classCreateDto {
     name: string;
     section_fee: number;
 }
+
+export interface classUpdateDto extends classCreateDto {
+    id: string;
+}

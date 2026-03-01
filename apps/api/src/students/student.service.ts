@@ -1,31 +1,97 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service";
-import { studentCreateDto } from "../../dtos/student-dtos";
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { studentCreateDto } from '../../dtos/student-dtos';
 
 @Injectable()
 export class StudentService {
-    constructor(private readonly prisma: PrismaService) { }
+    constructor(private readonly prisma: PrismaService) {}
 
     async createStudent(student: studentCreateDto) {
-        return this.prisma.student.create({
-            data: student
-        })
+        return this.prisma.$transaction(async (tx) => {
+            return tx.student.create({
+                data: student,
+            });
+        });
     }
 
     async getAllStudents() {
-        return this.prisma.student.findMany()
+        const students = await this.prisma.student.findMany();
+        return students.map((s) => ({
+            id: s.id,
+            name: s.firstName + ' ' + s.middleName + ' ' + s.lastName,
+        }));
     }
 
     async deleteStudent(id: string) {
-        return this.prisma.student.delete({
-            where: { id }
-        })
+        return this.prisma.$transaction(async (tx) => {
+            await tx.studentInClass.deleteMany({
+                where: { studentId: id },
+            });
+
+            return tx.student.delete({
+                where: { id },
+            });
+        });
     }
 
     async editStudent(id: string, student: studentCreateDto) {
         return this.prisma.student.update({
             where: { id },
-            data: student
-        })
+            data: student,
+        });
+    }
+
+    async getStudentById(id: string) {
+        if (id === 'None') return null;
+        return this.prisma.student.findUnique({
+            where: { id },
+        });
+    }
+
+    async getStudentPage(page: number, pageSize: number = 8) {
+        console.log(page , pageSize);
+        const skip = (page - 1) * pageSize;
+        const [students, total] = await Promise.all([
+            this.prisma.student.findMany({
+                skip: skip,
+                take: pageSize,
+            }),
+            this.prisma.student.count(),
+        ]);
+        return {
+            data: students,
+            total,
+            totalPages: Math.ceil(total / pageSize),
+            currentPage: page,
+        };
+    }
+
+    async getStudentTotalPages(pageSize: number = 8) {
+        const total = await this.prisma.student.count();
+        return Math.ceil(total / pageSize);
+    }
+
+    async studentPaySections(studentId: string, sectionPaid: number) {
+        return this.prisma.$transaction(async (tx) => {
+            return tx.student.update({
+                where: {
+                    id: studentId,
+                },
+                data: {
+                    paid_sections: { increment: sectionPaid },
+                },
+            });
+        });
+    }
+
+    async getStudentsWithSectionCount() {
+        return this.prisma.$queryRaw`
+            SELECT s.*, COUNT(sect.id) as section_count
+            FROM "Student" s
+            JOIN "Student_in_Class" sic ON s.id = sic."studentId"
+            JOIN "Class" c ON sic."classId" = c.id
+            JOIN "Section" sect ON c.id = sect."classId"
+            GROUP BY s.id
+        `;
     }
 }
