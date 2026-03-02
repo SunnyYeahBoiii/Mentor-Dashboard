@@ -5,7 +5,7 @@ import { paymentDto } from "@/dtos/payment.dto";
 import { FaEdit, FaSearch } from "react-icons/fa";
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import { getPaymentPage, getPaymentTotalPages, paymentApply } from "@/utils/mock-api";
+import { getPaymentPage, getPaymentTotalPages } from "@/utils/mock-api";
 import { useQuery, queryOptions } from "@tanstack/react-query";
 import clsx from "clsx";
 import Link from "next/link";

@@ -59,14 +59,6 @@ export function StudentForm({ student_id }: StudentFormProps) {
         },
     });
 
-    const deleteMutation = useMutation({
-        mutationFn: (id: string) => deleteStudentById(id),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['students'] });
-            router.push('/students');
-        },
-    });
-
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 

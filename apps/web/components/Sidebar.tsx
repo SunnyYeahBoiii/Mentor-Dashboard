@@ -1,4 +1,3 @@
-import Link from "next/link";
 import "../app/global.css";
 import Button from "./Button";
 import { lusitana } from "@/utils/fonts";

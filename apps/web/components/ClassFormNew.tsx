@@ -1,21 +1,9 @@
 'use client';
-import { classCreateDto, classInfoCreateDto } from "@/dtos/class.dto";
-import { studentCreateDto } from "@/dtos/student.dto";
-import { getClassById, createClass, updateClass, getStudentInClass, getAllStudent, getStudentNotInClass, addStudentToClass, getSectionByClassId } from "@/utils/mock-api";
-import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import Link from "next/link";
+import { classCreateDto } from "@/dtos/class.dto";
+import { createClass } from "@/utils/mock-api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { FaCheck, FaEdit, FaPlus, FaTrash } from "react-icons/fa";
-import {
-    Combobox,
-    ComboboxContent,
-    ComboboxEmpty,
-    ComboboxInput,
-    ComboboxItem,
-    ComboboxList,
-} from "@/components/ui/combobox"
-import { formatDateTimeLocal } from "@/utils/funcs";
+import React, { useState } from "react";
 
 
 export function NewClassForm() {

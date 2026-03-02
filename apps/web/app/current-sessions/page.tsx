@@ -1,15 +1,11 @@
 "use client";
 
-import SectionCard from "@/components/SectionCard";
 import { runningSectionInfoDto } from "@/dtos/section.dto";
 import { lusitana } from "@/utils/fonts";
-import { FaSearch } from "react-icons/fa";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import {
   getRunningSectionPage,
   getRunningSectionTotalPages,
-  getSectionPage,
-  getSectionTotalPages,
 } from "@/utils/mock-api";
 import { useQuery, queryOptions } from "@tanstack/react-query";
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";

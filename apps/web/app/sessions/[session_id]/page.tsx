@@ -1,6 +1,5 @@
 'use client';
 
-import SectionCard from "@/components/SectionCard";
 import SectionForm from "@/components/SectionForm";
 import { lusitana } from "@/utils/fonts";
 import { getSectionById } from "@/utils/mock-api";

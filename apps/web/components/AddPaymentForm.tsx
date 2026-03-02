@@ -1,8 +1,13 @@
 "use client";
 
 import { paymentDto } from "@/dtos/payment.dto";
-import { getStudentById, getStudentPayment, paymentApply } from "@/utils/mock-api";
-import { mutationOptions, QueryClient, queryOptions, useMutation, useQuery } from "@tanstack/react-query";
+import { getStudentPayment, paymentApply } from "@/utils/mock-api";
+import {
+  QueryClient,
+  queryOptions,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -29,9 +34,12 @@ export function AddPaymentForm({ student_id }: AddPaymentFormProps) {
 
   const mutation = useMutation({
     mutationKey: ["student-payment", student_id],
-    mutationFn: (sectionCount: number) => paymentApply(student_id, sectionCount),
+    mutationFn: (sectionCount: number) =>
+      paymentApply(student_id, sectionCount),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["student-payment", student_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["student-payment", student_id],
+      });
       router.push("/payments");
     },
   });
@@ -90,7 +98,9 @@ export function AddPaymentForm({ student_id }: AddPaymentFormProps) {
         </div>
         <div className="flex-1 bg-white px-2 py-1 rounded-sm">
           <p className="text-xs text-black/50">Tổng số buổi học</p>
-          <p className="w-full outline-none">{student.section_count - student.paid_sections}</p>
+          <p className="w-full outline-none">
+            {student.section_count - student.paid_sections}
+          </p>
         </div>
         <div className="flex-1 bg-white px-2 py-1 rounded-sm">
           <p className="text-xs text-black/50">Số buổi thanh toán</p>
@@ -126,6 +136,5 @@ export function AddPaymentForm({ student_id }: AddPaymentFormProps) {
         </button>
       </div>
     </form>
-
   );
 }

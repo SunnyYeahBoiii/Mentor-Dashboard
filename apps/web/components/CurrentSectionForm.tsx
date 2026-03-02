@@ -1,8 +1,8 @@
 'use client'
 
-import { runningSectionInfoDto, sectionCreateDto, sectionEndDto, sectionTransferDto, sectionUpdateDto } from "@/dtos/section.dto";
+import { runningSectionInfoDto, sectionTransferDto } from "@/dtos/section.dto";
 import { formatDateTimeLocal } from "@/utils/funcs";
-import { createSection, createSectionFromRunningSection, updateSectionById } from "@/utils/mock-api";
+import { createSectionFromRunningSection } from "@/utils/mock-api";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -82,7 +82,7 @@ export default function CurrentSectionForm({ section }: RunningSectionFormProps)
             <div className="flex-10 bg-white rounded-sm p-2">
                 <p className="text-left text-xs text-black/50">Link buổi học</p>
                 <span className="flex flex-row gap-4 items-center">
-                    <a className="text-left text-blue-500 hover:text-blue-800 cursor-pointer" href={section.meetingLink} target="_blank">{section.meetingLink}</a>
+                    <a className="text-left text-blue-500 hover:text-blue-800 cursor-pointer" href={section.meetingLink} target="_blank" rel="noreferrer">{section.meetingLink}</a>
                     <FaCopy onClick={() => navigator.clipboard.writeText(section.meetingLink)} className="cursor-pointer text-black/50 hover:text-black" />
                 </span>
             </div>

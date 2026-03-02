@@ -1,24 +1,17 @@
 "use client";
-import {
-  classCreateDto,
-  classInfoCreateDto,
-  classUpdateDto,
-} from "@/dtos/class.dto";
-import { studentCreateDto, studentDto } from "@/dtos/student.dto";
+import { classUpdateDto } from "@/dtos/class.dto";
+import { studentDto } from "@/dtos/student.dto";
 import { sectionInfoDto } from "@/dtos/section.dto";
 import {
   getClassById,
-  createClass,
   updateClass,
   getStudentInClass,
-  getAllStudent,
   getStudentNotInClass,
   addStudentToClass,
   getSectionByClassId,
   removeStudentToClass,
 } from "@/utils/mock-api";
 import {
-  mutationOptions,
   queryOptions,
   useMutation,
   useQuery,
@@ -27,7 +20,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { FaCheck, FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import {
   Combobox,
   ComboboxContent,
@@ -76,9 +69,9 @@ export function ClassForm({ class_id }: classFormProps) {
   });
 
   const [name, setName] = useState<string>("");
-  const [sectionCount, setSectionCount] = useState<string>("");
+  const [_sectionCount, setSectionCount] = useState<string>("");
   const [sectionFee, setSectionFee] = useState<string>("");
-  const [studentCount, setStudentCount] = useState<string>("");
+  const [_studentCount, setStudentCount] = useState<string>("");
   const [newStudentId, setNewStudent] = useState<string | null>("");
 
   useEffect(() => {
@@ -118,7 +111,7 @@ export function ClassForm({ class_id }: classFormProps) {
     },
   });
 
-  const { data: studentList, refetch: refetchStudent } = useQuery({
+  const { data: studentList } = useQuery({
     queryKey: ["students", class_id],
     queryFn: () => getStudentInClass(class_id),
   });

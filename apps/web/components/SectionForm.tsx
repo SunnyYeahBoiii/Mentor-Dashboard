@@ -1,16 +1,12 @@
 "use client";
 
 import {
-  sectionCreateDto,
   sectionEndDto,
-  sectionTransferDto,
   sectionUpdateDto,
 } from "@/dtos/section.dto";
 import { classInfoCreateDto } from "@/dtos/class.dto";
 import { formatDateTimeLocal } from "@/utils/funcs";
 import {
-  createSection,
-  createSectionFromRunningSection,
   getClassList,
   updateSectionById,
 } from "@/utils/mock-api";
@@ -39,6 +35,7 @@ const getClassListOptions = queryOptions({
 export default function SectionForm({ section }: SectionFormProps) {
   const [name, setName] = useState(section.name);
   const [selectedClass, setSelectedClass] = useState(section.classId);
+  const [selectedClassName, setSelectedClassName] = useState(section.className);
   const [startTime, setStartTime] = useState<Date>(
     new Date(section.startTime as Date),
   );
@@ -63,6 +60,7 @@ export default function SectionForm({ section }: SectionFormProps) {
       id: section.id,
       name: name,
       classId: selectedClass as string,
+      className: selectedClassName as string,
       startTime: startTime,
       endTime: endTime,
     };
@@ -94,7 +92,10 @@ export default function SectionForm({ section }: SectionFormProps) {
         <Combobox
           required
           items={classList}
-          onValueChange={(value: any) => setSelectedClass(value.id)}
+          onValueChange={(value: classInfoCreateDto) => {
+            setSelectedClass(value.id);
+            setSelectedClassName(value.name);
+          }}
           itemToStringLabel={(item) => item.name}
           defaultValue={classList.find(
             (item: classInfoCreateDto) => item.id === section.classId,

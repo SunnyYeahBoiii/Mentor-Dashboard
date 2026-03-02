@@ -1,8 +1,13 @@
-'use client'
+"use client";
 
 import { lusitana } from "@/utils/fonts";
 import { createRunningSection, getClassList } from "@/utils/mock-api";
-import { mutationOptions, queryOptions, useMutation, useQuery } from "@tanstack/react-query";
+import {
+    mutationOptions,
+    queryOptions,
+    useMutation,
+    useQuery,
+} from "@tanstack/react-query";
 
 import {
     Combobox,
@@ -11,51 +16,54 @@ import {
     ComboboxInput,
     ComboboxItem,
     ComboboxList,
-} from "@/components/ui/combobox"
+} from "@/components/ui/combobox";
 import { useState } from "react";
 import { runningSectionCreateDto } from "@/dtos/section.dto";
 import { Input } from "@/components/ui/input";
-import axios from "axios";
-import { api } from "@/utils/client";
 import { useRouter } from "next/navigation";
 import { createMeet } from "@/utils/api";
-
+import { classInfoCreateDto } from "@/dtos/class.dto";
 
 const getClassListOptions = queryOptions({
     queryKey: ["classes", "running-section"],
     queryFn: () => getClassList(),
-})
+});
 
 const createSectionOptions = mutationOptions({
     mutationKey: ["section"],
-    mutationFn: (sectionInfo: runningSectionCreateDto) => createRunningSection(sectionInfo),
-})
+    mutationFn: (sectionInfo: runningSectionCreateDto) =>
+        createRunningSection(sectionInfo),
+});
 
 export default function AddSessionPage() {
-    const classList = useQuery(getClassListOptions)
-    const createSectionMutation = useMutation(createSectionOptions)
-    const [selectedClass, setSelectedClass] = useState<string | null>(null)
-    const [selectedClassName, setSelectedClassName] = useState<string | null>(null)
-    const [name, setName] = useState<string>("")
+    const classList = useQuery(getClassListOptions);
+    const createSectionMutation = useMutation(createSectionOptions);
+    const [selectedClass, setSelectedClass] = useState<string | null>(null);
+    const [selectedClassName, setSelectedClassName] = useState<string | null>(
+        null,
+    );
+    const [name, setName] = useState<string>("");
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+        e.preventDefault();
         const section = await createSectionMutation.mutateAsync({
             name: name,
             classId: selectedClass as string,
             className: selectedClassName as string,
-            meetingLink: await createMeet()
-        })
+            meetingLink: await createMeet(),
+        });
 
-        console.log(section)
+        console.log(section);
 
-        router.push("/current-sessions/end-session/" + section.id)
-    }
+        router.push("/current-sessions/end-session/" + section.id);
+    };
 
     return (
         <div className="w-4/5 m-2 ml-0 flex flex-col">
-            <h3 className={`${lusitana.className} absolute text-2xl my-4 mb-6`}>Tạo buổi học mới</h3>
+            <h3 className={`${lusitana.className} absolute text-2xl my-4 mb-6`}>
+                Tạo buổi học mới
+            </h3>
 
             <div className="flex-1 flex justify-center items-center">
                 <form onSubmit={handleSubmit} className="w-1/2 flex flex-col gap-6">
@@ -69,11 +77,12 @@ export default function AddSessionPage() {
                     <Combobox
                         required
                         items={classList.data}
-                        onValueChange={(value: any) => {
-                            setSelectedClass(value.id)
-                            setSelectedClassName(value.name)
+                        onValueChange={(value: classInfoCreateDto | null) => {
+                            if (!value) return;
+                            setSelectedClass(value.id);
+                            setSelectedClassName(value.name);
                         }}
-                        itemToStringLabel={(item) => item.name}
+                        itemToStringLabel={(item: classInfoCreateDto) => item.name}
                     >
                         <ComboboxInput placeholder="Chọn lớp học" />
                         <ComboboxContent>
@@ -96,6 +105,6 @@ export default function AddSessionPage() {
                     </button>
                 </form>
             </div>
-        </div >
+        </div>
     );
 }

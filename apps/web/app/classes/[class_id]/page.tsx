@@ -3,7 +3,6 @@
 import { lusitana } from "@/utils/fonts";
 import { useRouter } from "next/navigation";
 import { use } from "react";
-import { StudentForm } from "@/components/StudentForm";
 import { ClassForm } from "@/components/ClassForm";
 
 export default function EditClassPage({ params }: { params: Promise<{ class_id: string }> }) {

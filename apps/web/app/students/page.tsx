@@ -1,7 +1,7 @@
 "use client";
 
 import { lusitana } from "@/utils/fonts";
-import { studentCreateDto, studentDto } from "@/dtos/student.dto";
+import { studentDto } from "@/dtos/student.dto";
 import { FaSearch, FaEdit, FaTrash } from "react-icons/fa";
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
