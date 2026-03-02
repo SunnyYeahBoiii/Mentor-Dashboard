@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { lusitana } from "@/utils/fonts";
 import { paymentDto } from "@/dtos/payment.dto";
 import { FaEdit, FaSearch } from "react-icons/fa";
@@ -283,5 +284,15 @@ function PaymentPageContent() {
 }
 
 export default function PaymentPage() {
-  return <PaymentPageContent />;
+  return (
+    <Suspense
+      fallback={
+        <div className="w-4/5 m-2 ml-0">
+          <p className="animate-pulse">Loading...</p>
+        </div>
+      }
+    >
+      <PaymentPageContent />
+    </Suspense>
+  );
 }
