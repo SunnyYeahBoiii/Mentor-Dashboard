@@ -31,7 +31,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         };
     }
 
-    validate(
+    async validate(
         _access_token: string,
         _refresh_token: string,
         profile: Profile,
@@ -47,7 +47,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
             // refreshToken: _refresh_token,
         };
 
-        this.prisma.user
+        await this.prisma.user
             .upsert({
                 create: {
                     email: user.email,
@@ -62,12 +62,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
                     email: user.email,
                 },
             })
-            .then((user) => {
-                return user;
-            })
-            .catch((error) => {
-                console.error('Error upserting user:', error);
-            });
 
         cb(null, user);
     }
