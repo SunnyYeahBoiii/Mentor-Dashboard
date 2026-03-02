@@ -27,18 +27,15 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);
 
+    const allowedOrigins = (process.env.ALLOWED_ORIGINS ?? 'http://localhost:3000')
+        .split(',')
+        .map((o) => o.trim());
+
     app.use(
         cors({
-            // 1. Phải chỉ định rõ Origin của Frontend (Không được dùng '*')
-            origin: 'http://localhost:3000',
-
-            // 2. Cho phép gửi Cookie/Header Authorization
+            origin: allowedOrigins,
             credentials: true,
-
-            // 3. Các method bạn sử dụng
             methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-
-            // 4. Các header cho phép từ phía Client
             allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
         }),
     );
