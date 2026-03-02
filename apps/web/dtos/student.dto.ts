@@ -9,4 +9,5 @@ export interface studentCreateDto {
 
 export interface studentDto extends studentCreateDto {
     id: string;
+    paid_sections: number;
 }

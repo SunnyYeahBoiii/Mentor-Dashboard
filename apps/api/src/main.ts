@@ -1,6 +1,12 @@
 import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+
+// Patch BigInt serialization for JSON.stringify
+(BigInt.prototype as any).toJSON = function () {
+    return this.toString();
+};
+
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';

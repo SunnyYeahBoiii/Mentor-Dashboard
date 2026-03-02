@@ -922,7 +922,8 @@ export const SectionScalarFieldEnum = {
   name: 'name',
   startTime: 'startTime',
   endTime: 'endTime',
-  classId: 'classId'
+  classId: 'classId',
+  className: 'className'
 } as const
 
 export type SectionScalarFieldEnum = (typeof SectionScalarFieldEnum)[keyof typeof SectionScalarFieldEnum]

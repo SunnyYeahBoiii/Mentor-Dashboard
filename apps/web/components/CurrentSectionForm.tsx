@@ -32,6 +32,7 @@ export default function CurrentSectionForm({ section }: RunningSectionFormProps)
             runningId: section.id,
             name: name,
             classId: section.classId,
+            className: section.className,
             startTime: startTime,
             endTime: endTime,
         };

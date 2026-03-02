@@ -14,6 +14,12 @@ export class sectionCreateDto {
     classId: string;
 
     @ApiProperty({
+        description: 'The name of the class',
+        example: 'Math',
+    })
+    className: string;
+
+    @ApiProperty({
         description: 'The start time of the section',
         required: false,
         example: '2024-01-01T09:00:00Z',
@@ -82,6 +88,12 @@ export class sectionUpdateDto {
     classId: string;
 
     @ApiProperty({
+        description: 'The name of the class',
+        example: 'Math',
+    })
+    className: string;
+
+    @ApiProperty({
         description: 'The start time of the section',
         required: false,
         example: '2024-01-01T09:00:00Z',
@@ -114,6 +126,12 @@ export class sectionTransferDto {
         example: 'class-123',
     })
     classId: string;
+
+    @ApiProperty({
+        description: 'The name of the class',
+        example: 'Math',
+    })
+    className: string;
 
     @ApiProperty({
         description: 'The start time of the section',

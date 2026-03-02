@@ -38,6 +38,7 @@ model Section {
   startTime DateTime?
   endTime   DateTime?
   classId   String
+  className String
 }
 
 model RunningSection {

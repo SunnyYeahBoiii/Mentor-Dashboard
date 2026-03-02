@@ -1,6 +1,7 @@
 export interface sectionCreateDto {
     name: string;
     classId: string;
+    className: string;
     startTime: Date;
     endTime?: Date;
 }
@@ -9,6 +10,7 @@ export interface sectionEndDto {
     id: string;
     name: string;
     classId: string;
+    className: string;
     startTime?: Date;
     endTime?: Date;
 }
@@ -38,6 +40,7 @@ export interface sectionTransferDto {
     runningId: string;
     name: string;
     classId: string;
+    className: string;
     startTime: Date;
     endTime: Date;
 }

@@ -8,7 +8,7 @@ import { UpdateStudentDto } from 'dtos/update-dtos';
 @ApiTags('students')
 @Controller('students')
 export class StudentController {
-    constructor(private readonly studentService: StudentService) {}
+    constructor(private readonly studentService: StudentService) { }
 
     @Get('/page')
     async getStudentPage(
@@ -24,11 +24,6 @@ export class StudentController {
     async getStudentTotalPages(@Query('pageSize') pageSize: string = '8') {
         const size = parseInt(pageSize) || 8;
         return this.studentService.getStudentTotalPages(size);
-    }
-
-    @Get('/:id')
-    async getStudentById(@Param('id') id: string) {
-        return this.studentService.getStudentById(id);
     }
 
     @Get('/all')
@@ -52,7 +47,38 @@ export class StudentController {
     }
 
     @Get('/with-section-count')
-    async getStudentsWithSectionCount() {
-        return this.studentService.getStudentsWithSectionCount();
+    async getAllPayment() {
+        return this.studentService.getAllPayment();
+    }
+
+    @Get('/payment-page')
+    async getPaymentPage(
+        @Query('page') page: string,
+        @Query('pageSize') pageSize: string = '8',
+    ) {
+        const pageNum = parseInt(page) || 1;
+        const size = parseInt(pageSize) || 8;
+        return this.studentService.getPaymentPage(pageNum, size);
+    }
+
+    @Get('/payment-total-pages')
+    async getPaymentTotalPages(@Query('pageSize') pageSize: string = '8') {
+        const size = parseInt(pageSize) || 8;
+        return this.studentService.getPaymentTotalPages(size);
+    }
+
+    @Get('/payment/:studentId')
+    async getStudentPayment(@Param('studentId') studentId: string) {
+        return this.studentService.getStudentPayment(studentId);
+    }
+
+    @Post('/payment/:studentId')
+    async paymentApply(@Param('studentId') studentId: string, @Body() data: any) {
+        return this.studentService.studentPaySections(studentId, data.section_paid);
+    }
+
+    @Get('/:id')
+    async getStudentById(@Param('id') id: string) {
+        return this.studentService.getStudentById(id);
     }
 }

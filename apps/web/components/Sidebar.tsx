@@ -5,11 +5,11 @@ import { lusitana } from "@/utils/fonts";
 import { SlPeople } from "react-icons/sl";
 import { SlNote } from "react-icons/sl";
 import { SlNotebook } from "react-icons/sl";
-import { FaGoogle, FaPlus } from "react-icons/fa";
+import { FaCashRegister, FaGoogle, FaPlus } from "react-icons/fa";
 
-const icons = [(< SlPeople />), (< SlNote />), (< SlNotebook />)];
-const buttonTexts: string[] = ["Học Sinh", "Lớp Học", "Buổi Học"];
-const links: string[] = ["/students?page=1", "/classes?page=1", "/sessions"];
+const icons = [(< SlPeople />), (< SlNote />), (< SlNotebook />), (< FaCashRegister />)];
+const buttonTexts: string[] = ["Học Sinh", "Lớp Học", "Buổi Học", "Học Phí"];
+const links: string[] = ["/students?page=1", "/classes?page=1", "/sessions", "/payments?page=1"];
 
 const current_icons = [(< SlNote />), (< FaPlus />), (<FaGoogle />)];
 const current_buttonTexts: string[] = ["Buổi học hiện tại", "Thêm buổi học", "Đăng nhập Google"];

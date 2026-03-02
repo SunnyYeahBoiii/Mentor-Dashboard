@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { studentCreateDto } from '../../dtos/student-dtos';
+import { datacatalog } from 'googleapis/build/src/apis/datacatalog';
 
 @Injectable()
 export class StudentService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(private readonly prisma: PrismaService) { }
 
     async createStudent(student: studentCreateDto) {
         return this.prisma.$transaction(async (tx) => {
@@ -49,7 +50,7 @@ export class StudentService {
     }
 
     async getStudentPage(page: number, pageSize: number = 8) {
-        console.log(page , pageSize);
+        console.log(page, pageSize);
         const skip = (page - 1) * pageSize;
         const [students, total] = await Promise.all([
             this.prisma.student.findMany({
@@ -84,14 +85,79 @@ export class StudentService {
         });
     }
 
-    async getStudentsWithSectionCount() {
-        return this.prisma.$queryRaw`
-            SELECT s.*, COUNT(sect.id) as section_count
+    async getAllPayment() {
+        const data = await this.prisma.$queryRaw<any[]>`
+            SELECT s.*, COUNT(sect.id) as section_count, SUM(section_fee) as total_fee
             FROM "Student" s
             JOIN "Student_in_Class" sic ON s.id = sic."studentId"
             JOIN "Class" c ON sic."classId" = c.id
             JOIN "Section" sect ON c.id = sect."classId"
             GROUP BY s.id
         `;
+
+        return data.map((item) => ({
+            ...item,
+            section_count: Number(item.section_count),
+        }));
+    }
+
+    async getPaymentPage(page: number, pageSize: number = 8) {
+        const skip = (page - 1) * pageSize;
+        const [students, total] = await Promise.all([
+            this.prisma.$queryRaw<any[]>`
+                SELECT s.*, COUNT(sect.id) as section_count , SUM(section_fee) as total_fee
+                FROM "Student" s
+                JOIN "Student_in_Class" sic ON s.id = sic."studentId"
+                JOIN "Class" c ON sic."classId" = c.id
+                JOIN "Section" sect ON c.id = sect."classId"
+                GROUP BY s.id
+                LIMIT ${pageSize} OFFSET ${skip}
+            `,
+            this.prisma.$queryRaw<any[]>`
+                SELECT COUNT(*) as total
+                FROM "Student" s
+                JOIN "Student_in_Class" sic ON s.id = sic."studentId"
+                JOIN "Class" c ON sic."classId" = c.id
+                JOIN "Section" sect ON c.id = sect."classId"
+            `,
+        ]);
+        return {
+            data: students.map((student) => ({
+                ...student,
+                section_count: Number(student.section_count),
+                total_fee: Number(student.total_fee),
+            })),
+            total: Number(total[0].total),
+            totalPages: Math.ceil(Number(total[0].total) / pageSize),
+            currentPage: page,
+        };
+    }
+
+    async getPaymentTotalPages(pageSize: number = 8) {
+        const total = await this.prisma.$queryRaw<any[]>`
+            SELECT COUNT(*) as total
+            FROM "Student" s
+            JOIN "Student_in_Class" sic ON s.id = sic."studentId"
+            JOIN "Class" c ON sic."classId" = c.id
+            JOIN "Section" sect ON c.id = sect."classId"
+        `;
+        return Math.ceil(Number(total[0].total) / pageSize);
+    }
+
+    async getStudentPayment(studentId: string) {
+        const data = await this.prisma.$queryRaw<any[]>`
+            SELECT s.*, COUNT(sect.id) as section_count, SUM(section_fee) as total_fee
+            FROM "Student" s
+            JOIN "Student_in_Class" sic ON s.id = sic."studentId"
+            JOIN "Class" c ON sic."classId" = c.id
+            JOIN "Section" sect ON c.id = sect."classId"
+            WHERE s.id = ${studentId}
+            GROUP BY s.id
+        `;
+
+        return data.map((item) => ({
+            ...item,
+            section_count: Number(item.section_count),
+        }));
     }
 }

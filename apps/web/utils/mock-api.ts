@@ -1,5 +1,10 @@
 import { studentCreateDto, studentDto } from "@/dtos/student.dto";
-import { classCreateDto, classInfoCreateDto, classUpdateDto } from "@/dtos/class.dto";
+import { paymentDto } from "@/dtos/payment.dto";
+import {
+  classCreateDto,
+  classInfoCreateDto,
+  classUpdateDto,
+} from "@/dtos/class.dto";
 import {
   runningSectionCreateDto,
   runningSectionInfoDto,
@@ -214,5 +219,29 @@ export async function removeStudentToClass(classId: string, studentId: string) {
     classId,
     studentId,
   });
+  return response.data;
+}
+
+export async function getPaymentPage(pageNumber: number) {
+  const response = await api.get(
+    `/students/payment-page?page=${pageNumber}&pageSize=${NUMBER_STUDENT_PER_PAGE}`,
+  );
+  return response.data.data;
+}
+
+export async function getPaymentTotalPages() {
+  const response = await api.get(
+    `/students/payment-total-pages?pageSize=${NUMBER_STUDENT_PER_PAGE}`,
+  );
+  return response.data;
+}
+
+export async function getStudentPayment(studentId: string): Promise<paymentDto> {
+  const response = await api.get(`/students/payment/${studentId}`);
+  return response.data[0];
+}
+
+export async function paymentApply(studentId: string, section_paid: number) {
+  const response = await api.post(`/students/payment/${studentId}`, { section_paid });
   return response.data;
 }

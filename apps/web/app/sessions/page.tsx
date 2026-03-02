@@ -87,7 +87,7 @@ function SectionPageContent() {
             key={section.id}
             id={section.id}
             name={section.name}
-            className={section.classId}
+            classInfoName={section.className}
             startTime={new Date(section.startTime)}
             endTime={new Date(section.endTime || "")}
           />

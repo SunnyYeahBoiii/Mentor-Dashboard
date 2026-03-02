@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 interface SectionCardProps {
   id: string;
   name: string;
-  className: string;
+  classInfoName: string;
   startTime: Date;
   endTime: Date;
 }
@@ -13,7 +13,7 @@ interface SectionCardProps {
 export default function SectionCard({
   id,
   name,
-  className,
+  classInfoName,
   startTime,
   endTime,
 }: SectionCardProps) {
@@ -31,7 +31,7 @@ export default function SectionCard({
         <div className="flex-3 bg-white rounded-sm">
           <div className="m-2">
             <p className="text-left text-xs text-black/50">Lớp học</p>
-            <p className="text-left">{className}</p>
+            <p className="text-left">{classInfoName}</p>
           </div>
         </div>
         <div className="flex flex-row flex-1 gap-5">

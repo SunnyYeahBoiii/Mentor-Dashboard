@@ -63,6 +63,7 @@ export class SectionsService {
             data: {
                 name: sectionInfo.name,
                 classId: sectionInfo.classId,
+                className: sectionInfo.className,
                 startTime: sectionInfo.startTime,
                 endTime: sectionInfo.endTime,
             },
@@ -106,6 +107,7 @@ export class SectionsService {
                 data: {
                     name: runningSectionInfo.name,
                     classId: runningSectionInfo.classId,
+                    className: runningSectionInfo.className,
                     startTime: runningSectionInfo.startTime,
                     endTime: runningSectionInfo.endTime,
                 },
