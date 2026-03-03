@@ -1,4 +1,5 @@
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
 import { type Response } from 'express';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -6,7 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 // auth/auth.controller.ts
 @Controller('auth')
 export class AuthController {
-    constructor(readonly prisma: PrismaService) {}
+    constructor(readonly prisma: PrismaService , readonly config: ConfigService) {}
     @Get('google')
     @UseGuards(AuthGuard('google'))
     async googleAuth() {}
@@ -24,7 +25,7 @@ export class AuthController {
         });
 
         if (!user) {
-            return res.redirect('http://localhost:3000/login');
+            return res.redirect(this.config.getOrThrow<string>('FRONTEND_URL') + '/auth/google');
         }
 
         res.cookie('refresh_token', user.refreshToken, {
@@ -34,6 +35,6 @@ export class AuthController {
             maxAge: 1000 * 60 * 60 * 24 * 30,
         });
 
-        return res.redirect('http://localhost:3000');
+        return res.redirect(this.config.getOrThrow<string>('FRONTEND_URL'));
     }
 }
