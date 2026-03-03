@@ -4,7 +4,7 @@ import { lusitana } from "@/utils/fonts";
 import { SlPeople } from "react-icons/sl";
 import { SlNote } from "react-icons/sl";
 import { SlNotebook } from "react-icons/sl";
-import { FaCashRegister, FaGoogle, FaPlus } from "react-icons/fa";
+import { FaCashRegister, FaPlus, FaSignOutAlt, FaUser , FaGoogle } from "react-icons/fa";
 
 const icons = [(< SlPeople />), (< SlNote />), (< SlNotebook />), (< FaCashRegister />)];
 const buttonTexts: string[] = ["Học Sinh", "Lớp Học", "Buổi Học", "Học Phí"];
