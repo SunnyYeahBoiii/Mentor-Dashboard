@@ -55,13 +55,10 @@ const refresh = async (): Promise<void> => {
 api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    console.log("[Axios Interceptor] Response error caught");
     const status = error.response?.status;
     const originalRequest = error.config as
       | (AxiosRequestConfig & { _retry?: boolean })
       | undefined;
-
-    console.log("[Axios Interceptor] Error:", status, originalRequest?.url);
 
     if (
       (status === 401 || status === 500) &&
@@ -70,39 +67,25 @@ api.interceptors.response.use(
       shouldAttemptRefresh(originalRequest)
     ) {
       originalRequest._retry = true;
-      console.log("[Axios Interceptor] Attempting token refresh...");
 
       if (!isRefreshing) {
         isRefreshing = true;
-        console.log("[Axios Interceptor] Starting refresh process");
         refreshPromise = refresh()
           .then(() => {
-            console.log("[Axios Interceptor] Token refresh succeeded");
             processQueue(null);
           })
           .catch((err) => {
-            console.log("[Axios Interceptor] Token refresh failed:", err);
             processQueue(err as Error);
           })
           .finally(() => {
             isRefreshing = false;
             refreshPromise = null;
           });
-      } else {
-        console.log(
-          "[Axios Interceptor] Refresh already in progress, queuing request",
-        );
       }
 
       return new Promise((resolve, reject) => {
         failedQueue.push({
-          resolve: () => {
-            console.log(
-              "[Axios Interceptor] Retrying request:",
-              originalRequest.url,
-            );
-            resolve(api(originalRequest));
-          },
+          resolve: () => resolve(api(originalRequest)),
           reject: (err) => reject(err || error),
         });
       });
