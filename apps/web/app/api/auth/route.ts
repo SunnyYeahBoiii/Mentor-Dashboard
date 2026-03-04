@@ -63,7 +63,7 @@ export async function POST(request: Request) {
     name: AUTH_COOKIE_NAME,
     value: signToken(envCredentials.username, envCredentials.password),
     httpOnly: true,
-    sameSite: "lax",
+    sameSite: "strict",
     secure: process.env.NODE_ENV === "production",
     path: "/",
     maxAge: ONE_DAY_SECONDS,

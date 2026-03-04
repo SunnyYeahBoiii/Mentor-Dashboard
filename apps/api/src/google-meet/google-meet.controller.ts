@@ -35,7 +35,7 @@ export class MeetController {
         res.cookie('access_token', newAccessToken, {
             httpOnly: true,
             secure: true,
-            sameSite: 'strict',
+            sameSite: 'none',
             maxAge: 60 * 60 * 24 * 7,
         });
 

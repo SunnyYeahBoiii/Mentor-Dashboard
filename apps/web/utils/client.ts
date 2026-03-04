@@ -44,12 +44,11 @@ const shouldAttemptRefresh = (config?: AxiosRequestConfig): boolean => {
   return true;
 };
 
-const refresh = async (): Promise<void | null> => {
+const refresh = async (): Promise<void> => {
   try {
     await api.post("/meet/refresh");
-    return Promise.resolve();
   } catch {
-    return Promise.reject(new Error("Token refresh failed"));
+    throw new Error("Token refresh failed");
   }
 };
 
