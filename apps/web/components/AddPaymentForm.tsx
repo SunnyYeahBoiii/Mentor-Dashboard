@@ -24,6 +24,7 @@ export function AddPaymentForm({ student_id }: AddPaymentFormProps) {
   const router = useRouter();
   const queryClient = new QueryClient();
   const [sectionCount, setSectionCount] = useState<string>("");
+  const [tuitionPaid, setTuitionPaid] = useState<string>("0");
   const [error, setError] = useState<string>("");
 
   const {
@@ -32,10 +33,12 @@ export function AddPaymentForm({ student_id }: AddPaymentFormProps) {
     isError,
   } = useQuery(studentPaymentOptions(student_id));
 
+  console.log(student);
+
   const mutation = useMutation({
     mutationKey: ["student-payment", student_id],
-    mutationFn: (sectionCount: number) =>
-      paymentApply(student_id, sectionCount),
+    mutationFn: ({ sectionCount, tuitionPaid }: { sectionCount: number; tuitionPaid: number }) =>
+      paymentApply(student_id, sectionCount, tuitionPaid),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["student-payment", student_id],
@@ -48,18 +51,24 @@ export function AddPaymentForm({ student_id }: AddPaymentFormProps) {
     e.preventDefault();
 
     const count = parseInt(sectionCount);
-    const totalSection = (student as paymentDto)?.section_count || 0;
+    const paidValue = parseInt(tuitionPaid);
+    const remainingSection =
+      ((student as paymentDto)?.section_count || 0) -
+      ((student as paymentDto)?.paid_sections || 0);
 
-    if (count > totalSection) {
-      setError(`Số buổi học không được lớn hơn tổng số buổi (${totalSection})`);
+    if (count > remainingSection) {
+      setError(`Số buổi học không được lớn hơn số buổi còn lại (${remainingSection})`);
+      return;
+    }
+
+    if (!Number.isFinite(paidValue) || paidValue < 0) {
+      setError("Số tiền thanh toán phải lớn hơn hoặc bằng 0");
       return;
     }
 
     setError("");
 
-    mutation.mutateAsync(count);
-
-    router.push("/payments");
+    mutation.mutateAsync({ sectionCount: count, tuitionPaid: paidValue });
   };
 
   if (isLoading) {
@@ -103,6 +112,12 @@ export function AddPaymentForm({ student_id }: AddPaymentFormProps) {
           </p>
         </div>
         <div className="flex-1 bg-white px-2 py-1 rounded-sm">
+          <p className="text-xs text-black/50">Học phí còn lại</p>
+          <p className="w-full outline-none">
+            {(student.tuition_fee || 0).toLocaleString()} VND
+          </p>
+        </div>
+        <div className="flex-1 bg-white px-2 py-1 rounded-sm">
           <p className="text-xs text-black/50">Số buổi thanh toán</p>
           <input
             className="w-full outline-none"
@@ -112,6 +127,20 @@ export function AddPaymentForm({ student_id }: AddPaymentFormProps) {
             value={sectionCount}
             onChange={(e) => {
               setSectionCount(e.target.value);
+              setError("");
+            }}
+            required
+          />
+        </div>
+        <div className="flex-1 bg-white px-2 py-1 rounded-sm">
+          <p className="text-xs text-black/50">Học phí thanh toán</p>
+          <input
+            className="w-full outline-none"
+            type="number"
+            min="0"
+            value={tuitionPaid}
+            onChange={(e) => {
+              setTuitionPaid(e.target.value);
               setError("");
             }}
             required

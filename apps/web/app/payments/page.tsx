@@ -10,6 +10,7 @@ import { getPaymentPage, getPaymentTotalPages } from "@/utils/mock-api";
 import { useQuery, queryOptions } from "@tanstack/react-query";
 import clsx from "clsx";
 import Link from "next/link";
+import { VNDFormat } from "@/utils/funcs";
 
 const paymentListOptions = (page: number) =>
   queryOptions({
@@ -84,7 +85,7 @@ function PaymentPageContent() {
         <div className="flex flex-row justify-between">
           <p className="w-[40%] text-center">Họ tên</p>
           <p className="w-[20%] text-center">Số buổi học</p>
-          <p className="w-[30%] text-center">Tổng học phí</p>
+          <p className="w-[30%] text-center">Học phí còn lại</p>
           <p className="w-[10%] text-center">Thanh toán</p>
         </div>
         <div className="bg-white no-scrollbar flex flex-col rounded-xl mt-2">
@@ -98,7 +99,7 @@ function PaymentPageContent() {
               </p>
               <p className="w-[20%] text-center">{payment.section_count - payment.paid_sections}</p>
               <p className="w-[30%] text-center">
-                {payment.total_fee.toLocaleString()} VND
+                {VNDFormat(payment.total_fee - payment.amount_paid)}
               </p>
               <p className="w-[10%] text-center">
                 <Link

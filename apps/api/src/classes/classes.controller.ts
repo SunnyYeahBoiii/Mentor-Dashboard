@@ -11,8 +11,13 @@ export class ClassController {
     constructor(private readonly classService: ClassService) {}
 
     @Get('/list')
-    async getClassList() {
-        return this.classService.getClassList();
+    async getClassList(
+        @Query('page') page: string = '1',
+        @Query('pageSize') pageSize: string = '200',
+    ) {
+        const pageNum = parseInt(page) || 1;
+        const size = parseInt(pageSize) || 200;
+        return this.classService.getClassList(pageNum, size);
     }
 
     @Get('/page')

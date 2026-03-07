@@ -12,7 +12,7 @@ import { IdDto } from 'dtos/common-dtos';
 @ApiTags('sections')
 @Controller('sections')
 export class SectionsController {
-    constructor(private readonly sectionsService: SectionsService) { }
+    constructor(private readonly sectionsService: SectionsService) {}
 
     @Get('/page')
     async getSectionPage(
@@ -25,8 +25,18 @@ export class SectionsController {
     }
 
     @Get('/class/:classId')
-    async getSectionsByClassId(@Param('classId') classId: string) {
-        return this.sectionsService.getSectionsByClassId(classId);
+    async getSectionsByClassId(
+        @Param('classId') classId: string,
+        @Query('page') page: string = '1',
+        @Query('pageSize') pageSize: string = '200',
+    ) {
+        const pageNum = parseInt(page) || 1;
+        const size = parseInt(pageSize) || 200;
+        return this.sectionsService.getSectionsByClassId(
+            classId,
+            pageNum,
+            size,
+        );
     }
 
     @Get('/:id')

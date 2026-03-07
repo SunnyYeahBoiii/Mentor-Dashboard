@@ -9,7 +9,7 @@ import {
 
 @Injectable()
 export class SectionsService {
-    constructor(private readonly prisma: PrismaService) { }
+    constructor(private readonly prisma: PrismaService) {}
 
     async getSections(page: number, pageSize: number = 3) {
         const skip = (page - 1) * pageSize;
@@ -28,9 +28,17 @@ export class SectionsService {
         };
     }
 
-    async getSectionsByClassId(classId: string) {
+    async getSectionsByClassId(
+        classId: string,
+        page: number = 1,
+        pageSize: number = 200,
+    ) {
+        const safePageSize = Math.min(Math.max(pageSize, 1), 200);
+        const skip = (Math.max(page, 1) - 1) * safePageSize;
         return this.prisma.section.findMany({
             where: { classId },
+            skip,
+            take: safePageSize,
         });
     }
 
@@ -147,9 +155,7 @@ export class SectionsService {
         });
     }
 
-    async createRunningSection(
-        sectionInfo: runningSectionCreateDto,
-    ) {
+    async createRunningSection(sectionInfo: runningSectionCreateDto) {
         return this.prisma.runningSection.create({
             data: {
                 name: sectionInfo.name,

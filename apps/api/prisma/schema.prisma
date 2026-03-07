@@ -17,6 +17,7 @@ model Student {
   school        String?
   province      String?
   paid_sections Int              @default(0)
+  amount_paid   Int              @default(0)
   classes       StudentInClass[]
 }
 

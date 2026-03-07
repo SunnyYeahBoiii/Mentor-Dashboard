@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { StudentClassService } from './student-class.service';
 import { ApiTags } from '@nestjs/swagger';
 import { AssignStudentToClassDto } from '../../dtos/student-class-dtos';
@@ -9,13 +9,33 @@ export class StudentClassController {
     constructor(private readonly studentClassService: StudentClassService) {}
 
     @Get('/class/:classId/students')
-    async getStudentInClass(@Param('classId') classId: string) {
-        return this.studentClassService.getStudentInClass(classId);
+    async getStudentInClass(
+        @Param('classId') classId: string,
+        @Query('page') page: string = '1',
+        @Query('pageSize') pageSize: string = '200',
+    ) {
+        const pageNum = parseInt(page) || 1;
+        const size = parseInt(pageSize) || 200;
+        return this.studentClassService.getStudentInClass(
+            classId,
+            pageNum,
+            size,
+        );
     }
 
     @Get('/class/:classId/not-in-class')
-    async getStudentNotInClass(@Param('classId') classId: string) {
-        return this.studentClassService.getStudentNotInClass(classId);
+    async getStudentNotInClass(
+        @Param('classId') classId: string,
+        @Query('page') page: string = '1',
+        @Query('pageSize') pageSize: string = '200',
+    ) {
+        const pageNum = parseInt(page) || 1;
+        const size = parseInt(pageSize) || 200;
+        return this.studentClassService.getStudentNotInClass(
+            classId,
+            pageNum,
+            size,
+        );
     }
 
     @Post('/add-student-to-class')

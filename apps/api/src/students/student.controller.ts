@@ -8,7 +8,7 @@ import { UpdateStudentDto } from 'dtos/update-dtos';
 @ApiTags('students')
 @Controller('students')
 export class StudentController {
-    constructor(private readonly studentService: StudentService) { }
+    constructor(private readonly studentService: StudentService) {}
 
     @Get('/page')
     async getStudentPage(
@@ -27,8 +27,13 @@ export class StudentController {
     }
 
     @Get('/all')
-    async getAllStudents() {
-        return this.studentService.getAllStudents();
+    async getAllStudents(
+        @Query('page') page: string = '1',
+        @Query('pageSize') pageSize: string = '200',
+    ) {
+        const pageNum = parseInt(page) || 1;
+        const size = parseInt(pageSize) || 200;
+        return this.studentService.getAllStudents(pageNum, size);
     }
 
     @Post('/add-student')
@@ -47,8 +52,13 @@ export class StudentController {
     }
 
     @Get('/with-section-count')
-    async getAllPayment() {
-        return this.studentService.getAllPayment();
+    async getAllPayment(
+        @Query('page') page: string = '1',
+        @Query('pageSize') pageSize: string = '200',
+    ) {
+        const pageNum = parseInt(page) || 1;
+        const size = parseInt(pageSize) || 200;
+        return this.studentService.getAllPayment(pageNum, size);
     }
 
     @Get('/payment-page')
@@ -73,8 +83,15 @@ export class StudentController {
     }
 
     @Post('/payment/:studentId')
-    async paymentApply(@Param('studentId') studentId: string, @Body() data: any) {
-        return this.studentService.studentPaySections(studentId, data.section_paid);
+    async paymentApply(
+        @Param('studentId') studentId: string,
+        @Body() data: any,
+    ) {
+        return this.studentService.studentPaySections(
+            studentId,
+            data.section_paid,
+            data.tuition_paid,
+        );
     }
 
     @Get('/:id')

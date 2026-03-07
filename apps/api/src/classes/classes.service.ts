@@ -52,8 +52,13 @@ export class ClassService {
         });
     }
 
-    async getClassList() {
-        const classes = await this.prisma.class.findMany();
+    async getClassList(page: number = 1, pageSize: number = 200) {
+        const safePageSize = Math.min(Math.max(pageSize, 1), 200);
+        const skip = (Math.max(page, 1) - 1) * safePageSize;
+        const classes = await this.prisma.class.findMany({
+            skip,
+            take: safePageSize,
+        });
         return classes.map((c) => ({
             id: c.id,
             name: c.name,

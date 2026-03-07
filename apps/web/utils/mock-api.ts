@@ -77,13 +77,13 @@ export async function deleteRunningSectionById(id: string) {
 
 export async function getStudentNotInClass(classId: string) {
   const response = await api.get(
-    `/student-class/class/${classId}/not-in-class`,
+    `/student-class/class/${classId}/not-in-class?page=1&pageSize=200`,
   );
   return response.data;
 }
 
 export async function getClassList() {
-  const response = await api.get("/classes/list");
+  const response = await api.get("/classes/list?page=1&pageSize=200");
   return response.data;
 }
 
@@ -125,7 +125,9 @@ export async function updateClass(newClass: classUpdateDto) {
 }
 
 export async function getStudentInClass(classId: string) {
-  const response = await api.get(`/student-class/class/${classId}/students`);
+  const response = await api.get(
+    `/student-class/class/${classId}/students?page=1&pageSize=200`,
+  );
   return response.data;
 }
 
@@ -236,7 +238,14 @@ export async function getStudentPayment(studentId: string): Promise<paymentDto> 
   return response.data[0];
 }
 
-export async function paymentApply(studentId: string, section_paid: number) {
-  const response = await api.post(`/students/payment/${studentId}`, { section_paid });
+export async function paymentApply(
+  studentId: string,
+  section_paid: number,
+  tuition_paid: number,
+) {
+  const response = await api.post(`/students/payment/${studentId}`, {
+    section_paid,
+    tuition_paid,
+  });
   return response.data;
 }
