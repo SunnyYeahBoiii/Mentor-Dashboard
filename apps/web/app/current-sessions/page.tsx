@@ -15,13 +15,13 @@ import { Suspense } from "react";
 
 const sectionListOptions = (page: number) =>
   queryOptions({
-    queryKey: ["sections", { page }],
+    queryKey: ["current-sections", { page }],
     queryFn: () => getRunningSectionPage(page),
   });
 
 const sectionTotalPagesOptions = () =>
   queryOptions({
-    queryKey: ["sections", "totalPages"],
+    queryKey: ["current-sections", "totalPages"],
     queryFn: () => getRunningSectionTotalPages(),
   });
 
