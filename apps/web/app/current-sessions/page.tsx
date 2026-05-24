@@ -33,7 +33,7 @@ function CurrentSectionPageContent() {
 
   const {
     data: sections,
-    isLoading: isSeciontsLoading,
+    isLoading: isSectionsLoading,
     isError: isSectionsError,
   } = useQuery(sectionListOptions(page));
   const { data: totalPages = 1 } = useQuery(sectionTotalPagesOptions());
@@ -45,7 +45,7 @@ function CurrentSectionPageContent() {
     replace(pathname + "?" + params.toString());
   };
 
-  if (isSeciontsLoading) {
+  if (isSectionsLoading) {
     return (
       <div className="w-4/5 m-2 ml-0">
         <h3 className={`${lusitana.className} text-2xl my-4 mb-6`}>
@@ -63,6 +63,19 @@ function CurrentSectionPageContent() {
           Danh sách lớp
         </h3>
         <p>Error loading classes. Please try again later.</p>
+      </div>
+    );
+  }
+
+  if (sections.length === 0) {
+    return (
+      <div className="w-4/5 m-2 ml-0">
+        <h3 className={`${lusitana.className} text-2xl my-4 mb-6`}>
+          Danh sách buổi học hiện tại
+        </h3>
+        <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+          <p className="text-lg">Không có buổi học nào đang diễn ra</p>
+        </div>
       </div>
     );
   }

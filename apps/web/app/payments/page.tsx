@@ -66,6 +66,19 @@ function PaymentPageContent() {
     );
   }
 
+  if (payments.length === 0) {
+    return (
+      <div className="w-4/5 m-2 ml-0">
+        <h3 className={`${lusitana.className} text-2xl my-4 mb-6`}>
+          Thanh toán học phí
+        </h3>
+        <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+          <p className="text-lg">Chưa có khoản thanh toán nào</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-4/5 m-2 ml-0">
       <h3 className={`${lusitana.className} text-2xl my-4 mb-6`}>
