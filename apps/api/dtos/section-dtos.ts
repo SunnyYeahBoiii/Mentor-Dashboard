@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsOptional, IsDate } from 'class-validator';
+import { IsString, IsNumber, IsOptional, IsDateString } from 'class-validator';
 
 export class sectionCreateDto {
     @ApiProperty({
@@ -29,7 +29,7 @@ export class sectionCreateDto {
         example: '2024-01-01T09:00:00Z',
     })
     @IsOptional()
-    @IsDate()
+    @IsDateString()
     startTime?: Date;
 
     @ApiProperty({
@@ -38,7 +38,7 @@ export class sectionCreateDto {
         example: '2024-01-01T10:30:00Z',
     })
     @IsOptional()
-    @IsDate()
+    @IsDateString()
     endTime?: Date;
 }
 
@@ -111,7 +111,7 @@ export class sectionUpdateDto {
         example: '2024-01-01T09:00:00Z',
     })
     @IsOptional()
-    @IsDate()
+    @IsDateString()
     startTime?: Date;
 
     @ApiProperty({
@@ -120,7 +120,7 @@ export class sectionUpdateDto {
         example: '2024-01-01T10:30:00Z',
     })
     @IsOptional()
-    @IsDate()
+    @IsDateString()
     endTime?: Date;
 }
 
@@ -159,7 +159,7 @@ export class sectionTransferDto {
         example: '2024-01-01T09:00:00Z',
     })
     @IsOptional()
-    @IsDate()
+    @IsDateString()
     startTime?: Date;
 
     @ApiProperty({
@@ -168,7 +168,7 @@ export class sectionTransferDto {
         example: '2024-01-01T10:30:00Z',
     })
     @IsOptional()
-    @IsDate()
+    @IsDateString()
     endTime?: Date;
 }
 
