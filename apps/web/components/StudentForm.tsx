@@ -4,6 +4,7 @@ import { getStudentById, updateStudent, createStudent, deleteStudentById } from 
 import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
 
 interface StudentFormProps {
     student_id: string;
@@ -110,29 +111,26 @@ export function StudentForm({ student_id }: StudentFormProps) {
     return (
         <form onSubmit={handleSubmit} className="m-2 ml-0 flex flex-col justify-between bg-(--dark-white) p-2 pt-4 pb-4 rounded-xl gap-4">
             <div className="flex flex-col justify-between gap-4">
-                <div className="flex-1 bg-white px-2 py-1 rounded-sm">
-                    <p className="text-xs text-black/50">Họ</p>
-                    <input
-                        className="w-full outline-none"
+                <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-medium">Họ</label>
+                    <Input
                         type="text"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         required
                     />
                 </div>
-                <div className="flex-1 bg-white px-2 py-1 rounded-sm">
-                    <p className="text-xs text-black/50">Tên đệm</p>
-                    <input
-                        className="w-full outline-none"
+                <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-medium">Tên đệm</label>
+                    <Input
                         type="text"
                         value={middleName}
                         onChange={(e) => setMiddleName(e.target.value)}
                     />
                 </div>
-                <div className="flex-1 bg-white px-2 py-1 rounded-sm">
-                    <p className="text-xs text-black/50">Tên</p>
-                    <input
-                        className="w-full outline-none"
+                <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-medium">Tên</label>
+                    <Input
                         type="text"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
@@ -141,30 +139,27 @@ export function StudentForm({ student_id }: StudentFormProps) {
                 </div>
             </div>
             <div className="flex flex-col justify-between gap-4">
-                <div className="flex-1 bg-white px-2 py-1 rounded-sm">
-                    <p className="text-xs text-black/50">Năm sinh</p>
-                    <input
-                        className="w-full outline-none"
+                <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-medium">Năm sinh</label>
+                    <Input
                         type="text"
                         value={birthyear}
                         onChange={(e) => setBirthyear(e.target.value)}
                         required
                     />
                 </div>
-                <div className="flex-1 bg-white px-2 py-1 rounded-sm">
-                    <p className="text-xs text-black/50">Trường</p>
-                    <input
-                        className="w-full outline-none"
+                <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-medium">Trường</label>
+                    <Input
                         type="text"
                         value={school}
                         onChange={(e) => setSchool(e.target.value)}
                         required
                     />
                 </div>
-                <div className="flex-1 bg-white px-2 py-1 rounded-sm">
-                    <p className="text-xs text-black/50">Tỉnh</p>
-                    <input
-                        className="w-full outline-none"
+                <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-medium">Tỉnh</label>
+                    <Input
                         type="text"
                         value={province}
                         onChange={(e) => setProvince(e.target.value)}
