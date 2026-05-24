@@ -1,22 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNumber, IsOptional, IsDate } from 'class-validator';
 
 export class sectionCreateDto {
     @ApiProperty({
         description: 'The name of the section',
         example: 'Math Section A',
     })
+    @IsString()
     name: string;
 
     @ApiProperty({
         description: 'The class ID this section belongs to',
         example: 'class-123',
     })
+    @IsString()
     classId: string;
 
     @ApiProperty({
         description: 'The name of the class',
         example: 'Math',
     })
+    @IsString()
     className: string;
 
     @ApiProperty({
@@ -24,6 +28,8 @@ export class sectionCreateDto {
         required: false,
         example: '2024-01-01T09:00:00Z',
     })
+    @IsOptional()
+    @IsDate()
     startTime?: Date;
 
     @ApiProperty({
@@ -31,6 +37,8 @@ export class sectionCreateDto {
         required: false,
         example: '2024-01-01T10:30:00Z',
     })
+    @IsOptional()
+    @IsDate()
     endTime?: Date;
 }
 
@@ -73,24 +81,28 @@ export class sectionUpdateDto {
         description: 'The ID of the section',
         example: 'section-123',
     })
+    @IsString()
     id: string;
 
     @ApiProperty({
         description: 'The name of the section',
         example: 'Math Section A',
     })
+    @IsString()
     name: string;
 
     @ApiProperty({
         description: 'The class ID this section belongs to',
         example: 'class-123',
     })
+    @IsString()
     classId: string;
 
     @ApiProperty({
         description: 'The name of the class',
         example: 'Math',
     })
+    @IsString()
     className: string;
 
     @ApiProperty({
@@ -98,6 +110,8 @@ export class sectionUpdateDto {
         required: false,
         example: '2024-01-01T09:00:00Z',
     })
+    @IsOptional()
+    @IsDate()
     startTime?: Date;
 
     @ApiProperty({
@@ -105,6 +119,8 @@ export class sectionUpdateDto {
         required: false,
         example: '2024-01-01T10:30:00Z',
     })
+    @IsOptional()
+    @IsDate()
     endTime?: Date;
 }
 
@@ -113,24 +129,28 @@ export class sectionTransferDto {
         description: 'The ID of the running section to transfer',
         example: 'running-123',
     })
+    @IsString()
     runningId: string;
 
     @ApiProperty({
         description: 'The name of the section',
         example: 'Math Section A',
     })
+    @IsString()
     name: string;
 
     @ApiProperty({
         description: 'The class ID this section belongs to',
         example: 'class-123',
     })
+    @IsString()
     classId: string;
 
     @ApiProperty({
         description: 'The name of the class',
         example: 'Math',
     })
+    @IsString()
     className: string;
 
     @ApiProperty({
@@ -138,6 +158,8 @@ export class sectionTransferDto {
         required: false,
         example: '2024-01-01T09:00:00Z',
     })
+    @IsOptional()
+    @IsDate()
     startTime?: Date;
 
     @ApiProperty({
@@ -145,6 +167,8 @@ export class sectionTransferDto {
         required: false,
         example: '2024-01-01T10:30:00Z',
     })
+    @IsOptional()
+    @IsDate()
     endTime?: Date;
 }
 
@@ -153,24 +177,28 @@ export class runningSectionCreateDto {
         description: 'The name of the running section',
         example: 'Math Running Section',
     })
+    @IsString()
     name: string;
 
     @ApiProperty({
         description: 'The class ID this running section belongs to',
         example: 'class-123',
     })
+    @IsString()
     classId: string;
 
     @ApiProperty({
         description: 'The meeting link for the running section',
         example: 'https://meet.google.com/abc-defg-hij',
     })
+    @IsString()
     meetingLink: string;
 
     @ApiProperty({
         description: 'The name of the class',
         example: 'Math',
     })
+    @IsString()
     className: string;
 }
 
@@ -213,5 +241,6 @@ export class sectionEndDto {
         description: 'The ID of the running section to end',
         example: 'running-123',
     })
+    @IsString()
     id: string;
 }

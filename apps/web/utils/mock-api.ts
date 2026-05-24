@@ -38,9 +38,10 @@ export async function getStudentById(id: string) {
 }
 
 export async function updateStudent(student: studentDto) {
+  const { id, ...data } = student;
   const response = await api.post("/students/edit-student", {
-    id: student.id,
-    data: student,
+    id,
+    data,
   });
   return response.data;
 }
@@ -117,9 +118,10 @@ export async function createClass(newClass: classCreateDto) {
 }
 
 export async function updateClass(newClass: classUpdateDto) {
+  const { id, ...data } = newClass;
   const response = await api.post("/classes/edit-class", {
-    id: newClass.id,
-    data: newClass,
+    id,
+    data,
   });
   return response.data;
 }

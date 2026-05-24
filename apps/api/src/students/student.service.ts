@@ -7,10 +7,10 @@ export class StudentService {
     constructor(private readonly prisma: PrismaService) { }
 
     async createStudent(student: studentCreateDto) {
-        const { age, grade, ...rest } = student;
+        const { birthyear, ...rest } = student;
         return this.prisma.$transaction(async (tx) => {
             return tx.student.create({
-                data: { ...rest, birthyear: age },
+                data: { ...rest, birthyear: birthyear ?? undefined },
             });
         });
     }
@@ -41,10 +41,10 @@ export class StudentService {
     }
 
     async editStudent(id: string, student: studentCreateDto) {
-        const { age, grade, ...rest } = student;
+        const { birthyear, ...rest } = student;
         return this.prisma.student.update({
             where: { id },
-            data: { ...rest, birthyear: age },
+            data: { ...rest, birthyear: birthyear ?? undefined },
         });
     }
 

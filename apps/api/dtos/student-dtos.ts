@@ -1,42 +1,52 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNumber, IsOptional } from 'class-validator';
 
 export class studentCreateDto {
     @ApiProperty({
-        description: 'The full name of the student',
-        example: 'John Doe',
+        description: 'The first name of the student',
+        example: 'John',
     })
+    @IsString()
     firstName: string;
 
     @ApiProperty({
         description: 'The middle name of the student',
         example: 'Doe',
     })
+    @IsString()
     middleName: string;
 
     @ApiProperty({
         description: 'The last name of the student',
         example: 'Doe',
     })
+    @IsString()
     lastName: string;
 
     @ApiProperty({
-        description: 'The age of the student',
+        description: 'The birth year of the student',
         required: false,
-        example: 20,
+        example: 2000,
     })
-    age?: number;
+    @IsOptional()
+    @IsNumber()
+    birthyear?: number;
+
+    @ApiProperty({
+        description: 'The school of the student',
+        required: false,
+        example: 'High School A',
+    })
+    @IsOptional()
+    @IsString()
+    school?: string;
 
     @ApiProperty({
         description: 'The province where the student resides',
         required: false,
         example: 'TP HCM',
     })
+    @IsOptional()
+    @IsString()
     province?: string;
-
-    @ApiProperty({
-        description: 'The current grade level of the student',
-        required: false,
-        example: '12',
-    })
-    grade?: string;
 }
