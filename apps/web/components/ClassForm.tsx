@@ -129,6 +129,10 @@ export function ClassForm({ class_id }: classFormProps) {
         queryKey: ["classes", class_id],
       });
     },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || "Có lỗi xảy ra khi thêm học sinh";
+      alert(Array.isArray(message) ? message.join(", ") : message);
+    },
   });
 
   const handleSubmit = () => {
@@ -144,7 +148,12 @@ export function ClassForm({ class_id }: classFormProps) {
   const handleAddStudent = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    addStudentMutation.mutate(newStudentId!);
+    if (!newStudentId) {
+      alert("Vui lòng chọn học sinh cần thêm vào lớp");
+      return;
+    }
+
+    addStudentMutation.mutate(newStudentId);
   };
 
   const isPending = updateMutation.isPending;

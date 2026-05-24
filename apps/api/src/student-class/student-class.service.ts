@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -6,22 +6,38 @@ export class StudentClassService {
     constructor(private readonly prisma: PrismaService) {}
 
     async addStudentToClass(studentId: string, classId: string) {
+        // Verify student and class exist
+        const [student, classRecord] = await Promise.all([
+            this.prisma.student.findUnique({ where: { id: studentId } }),
+            this.prisma.class.findUnique({ where: { id: classId } }),
+        ]);
+
+        if (!student) throw new NotFoundException(`Student ${studentId} not found`);
+        if (!classRecord) throw new NotFoundException(`Class ${classId} not found`);
+
         return this.prisma.$transaction(async (tx) => {
-            const result = await tx.studentInClass.create({
-                data: {
-                    studentId,
-                    classId,
-                },
-            });
+            try {
+                const result = await tx.studentInClass.create({
+                    data: {
+                        studentId,
+                        classId,
+                    },
+                });
 
-            await tx.class.update({
-                where: { id: classId },
-                data: {
-                    students_count: { increment: 1 },
-                },
-            });
+                await tx.class.update({
+                    where: { id: classId },
+                    data: {
+                        students_count: { increment: 1 },
+                    },
+                });
 
-            return result;
+                return result;
+            } catch (error: any) {
+                if (error.code === 'P2002') {
+                    throw new ConflictException('Student is already in this class');
+                }
+                throw error;
+            }
         });
     }
 
