@@ -13,7 +13,7 @@ export class CookieAuthGuard implements CanActivate {
             throw new UnauthorizedException('No refresh token');
         }
 
-        const user = await this.prisma.user.findUnique({
+        const user = await this.prisma.user.findFirst({
             where: { refreshToken },
         });
 
