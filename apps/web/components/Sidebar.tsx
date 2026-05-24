@@ -21,7 +21,7 @@ export default function Sidebar() {
     const pathname = usePathname();
 
     const isActive = (link: string) => {
-        const basePath = link.split("?")[0];
+        const basePath = link.split("?")[0] ?? "";
         return pathname.startsWith(basePath);
     };
 
