@@ -77,6 +77,12 @@ export class StudentClassService {
             where: { classId },
         });
         const studentIds = studentList.map((student) => student.studentId);
+        if (studentIds.length === 0) {
+            return this.prisma.student.findMany({
+                skip,
+                take: safePageSize,
+            });
+        }
         return this.prisma.student.findMany({
             where: { id: { notIn: studentIds } },
             skip,
