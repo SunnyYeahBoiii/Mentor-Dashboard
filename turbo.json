@@ -1,6 +1,11 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "ui": "tui",
+  "globalEnv": [
+    "AUTH_USERNAME",
+    "AUTH_PASSWORD",
+    "NODE_ENV"
+  ],
   "tasks": {
     "build": {
       "dependsOn": [
@@ -11,6 +16,7 @@
         ".env*"
       ],
       "outputs": [
+        "dist/**",
         ".next/**",
         "!.next/cache/**"
       ]

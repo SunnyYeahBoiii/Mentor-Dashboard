@@ -10,7 +10,7 @@ import {
   getClassList,
   updateSectionById,
 } from "@/utils/mock-api";
-import { queryOptions, useMutation, useQuery } from "@tanstack/react-query";
+import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -37,18 +37,21 @@ export default function SectionForm({ section }: SectionFormProps) {
   const [selectedClass, setSelectedClass] = useState(section.classId);
   const [selectedClassName, setSelectedClassName] = useState(section.className);
   const [startTime, setStartTime] = useState<Date>(
-    new Date(section.startTime as Date),
+    new Date(section.startTime ?? Date.now()),
   );
   const [endTime, setEndTime] = useState<Date>(
-    new Date(section.endTime as Date),
+    new Date(section.endTime ?? Date.now()),
   );
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationKey: ["section", section.id],
     mutationFn: updateSectionById,
     onSuccess: () => {
-      router.push("/current-sessions");
+      queryClient.invalidateQueries({ queryKey: ["sections"] });
+      queryClient.invalidateQueries({ queryKey: ["classes", selectedClass, "sections"] });
+      router.push("/sessions");
     },
   });
 
@@ -61,12 +64,11 @@ export default function SectionForm({ section }: SectionFormProps) {
       name: name,
       classId: selectedClass as string,
       className: selectedClassName as string,
-      startTime: startTime,
-      endTime: endTime,
+      startTime: startTime.toISOString(),
+      endTime: endTime.toISOString(),
     };
 
-    console.log(newSection);
-    // mutation.mutate(newSection);
+    mutation.mutate(newSection);
   };
 
   if (!classList) {

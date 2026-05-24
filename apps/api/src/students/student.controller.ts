@@ -1,6 +1,14 @@
-import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    Post,
+    Query,
+    UseGuards,
+} from '@nestjs/common';
 import { StudentService } from './student.service';
-import { studentCreateDto } from 'dtos/student-dtos';
+import { PaymentApplyDto, studentCreateDto } from 'dtos/student-dtos';
 import { ApiTags } from '@nestjs/swagger';
 import { IdDto } from 'dtos/common-dtos';
 import { UpdateStudentDto } from 'dtos/update-dtos';
@@ -87,7 +95,7 @@ export class StudentController {
     @Post('/payment/:studentId')
     async paymentApply(
         @Param('studentId') studentId: string,
-        @Body() data: any,
+        @Body() data: PaymentApplyDto,
     ) {
         return this.studentService.studentPaySections(
             studentId,

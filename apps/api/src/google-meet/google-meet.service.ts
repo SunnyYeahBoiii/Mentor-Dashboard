@@ -1,5 +1,14 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+    ForbiddenException,
+    HttpException,
+    HttpStatus,
+    Injectable,
+    InternalServerErrorException,
+    ServiceUnavailableException,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { google } from 'googleapis';
+import { decryptGoogleToken } from 'src/auth/session';
 
 @Injectable()
 export class MeetService {
@@ -11,13 +20,18 @@ export class MeetService {
         );
     }
 
-    async createMeetLink(userAccessToken: string, userRefreshToken: string) {
+    private createAuthorizedClient(encryptedRefreshToken: string) {
         const auth = this.createOAuthClient();
-
         auth.setCredentials({
-            access_token: userAccessToken,
-            refresh_token: userRefreshToken,
+            refresh_token: decryptGoogleToken(encryptedRefreshToken),
         });
+        return auth;
+    }
+
+    async createMeetLink(
+        encryptedRefreshToken: string,
+    ): Promise<{ meetingUri: string; eventId: string }> {
+        const auth = this.createAuthorizedClient(encryptedRefreshToken);
 
         try {
             const calendar = google.calendar({
@@ -29,16 +43,17 @@ export class MeetService {
                 summary: 'Meet Link Generation',
                 description: 'Automated Meeting Space',
                 start: { dateTime: new Date().toISOString() },
-                end: { dateTime: new Date(Date.now() + 30 * 60000).toISOString() }, // 30 mins later
+                end: {
+                    dateTime: new Date(Date.now() + 30 * 60000).toISOString(),
+                },
                 conferenceData: {
                     createRequest: {
-                        requestId: `meet-${Date.now()}`, // Must be unique
+                        requestId: `meet-${Date.now()}`,
                         conferenceSolutionKey: { type: 'hangoutsMeet' },
                     },
                 },
             };
 
-            // 1. Insert the event with conferenceDataVersion: 1 to trigger Meet creation
             const res = await calendar.events.insert({
                 calendarId: 'primary',
                 conferenceDataVersion: 1,
@@ -48,7 +63,7 @@ export class MeetService {
             const meetingUri = res.data.conferenceData?.entryPoints?.[0]?.uri;
             const eventId = res.data.id;
 
-            if (!eventId) {
+            if (!eventId || !meetingUri) {
                 throw new InternalServerErrorException(
                     'Failed to generate Meet link',
                 );
@@ -60,33 +75,87 @@ export class MeetService {
             });
 
             return { meetingUri, eventId };
-        } catch (error) {
-            console.error(
-                'Google Calendar Error:',
-                error.response?.data || error.message,
-            );
-            throw new InternalServerErrorException(
-                'Failed to generate Meet link',
-            );
+        } catch (error: unknown) {
+            this.throwGoogleError(error);
         }
     }
 
-    async refreshUserTokens(refreshToken: string): Promise<any> {
-        const auth = this.createOAuthClient();
-        auth.setCredentials({
-            refresh_token: refreshToken,
-            scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid https://www.googleapis.com/auth/calendar',
-        });
+    async refreshUserTokens(
+        encryptedRefreshToken: string,
+    ): Promise<{ refreshed: true; expiresAt: number | null }> {
+        const auth = this.createAuthorizedClient(encryptedRefreshToken);
         try {
             const { credentials } = await auth.refreshAccessToken();
-            // credentials contains:
-            // { access_token, refresh_token, expiry_date, token_type, id_token, scope }
 
-            return credentials;
-        } catch (error) {
-            throw new InternalServerErrorException(
-                'Failed to refresh Google token',
+            if (!credentials.access_token) {
+                throw new UnauthorizedException({
+                    code: 'TOKEN_REFRESH_FAILED',
+                    message: 'Google did not return an access token',
+                });
+            }
+
+            return {
+                refreshed: true,
+                expiresAt: credentials.expiry_date ?? null,
+            };
+        } catch (error: unknown) {
+            this.throwGoogleError(error);
+        }
+    }
+
+    private throwGoogleError(error: unknown): never {
+        if (error instanceof HttpException) {
+            throw error;
+        }
+
+        const status = Number(this.getGoogleErrorStatus(error));
+
+        if (status === 401) {
+            throw new UnauthorizedException({
+                code: 'TOKEN_EXPIRED',
+                message: 'Google token is invalid or expired',
+            });
+        }
+
+        if (status === 403) {
+            throw new ForbiddenException({
+                code: 'GOOGLE_SCOPE_DENIED',
+                message: 'Google account has insufficient Calendar permission',
+            });
+        }
+
+        if (status === 429) {
+            throw new HttpException(
+                {
+                    code: 'GOOGLE_RATE_LIMITED',
+                    message: 'Google Calendar rate limit exceeded',
+                },
+                HttpStatus.TOO_MANY_REQUESTS,
             );
         }
+
+        if (status >= 500) {
+            throw new ServiceUnavailableException({
+                code: 'GOOGLE_UNAVAILABLE',
+                message: 'Google Calendar is unavailable',
+            });
+        }
+
+        throw new InternalServerErrorException({
+            code: 'MEET_LINK_FAILED',
+            message: 'Failed to generate Meet link',
+        });
+    }
+
+    private getGoogleErrorStatus(error: unknown): unknown {
+        if (typeof error !== 'object' || error === null) {
+            return undefined;
+        }
+
+        const maybeGoogleError = error as {
+            response?: { status?: unknown };
+            code?: unknown;
+        };
+        return maybeGoogleError.response?.status ?? maybeGoogleError.code;
     }
 }

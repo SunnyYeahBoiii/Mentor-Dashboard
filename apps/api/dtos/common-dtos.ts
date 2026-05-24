@@ -1,11 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class IdDto {
     @ApiProperty({
-        description: 'The unique identifier (UUID)',
-        example: '550e8400-e29b-41d4-a716-446655440000',
+        description: 'The unique Prisma CUID identifier',
+        example: 'clx123abc0000abcd1234efgh',
     })
-    @IsUUID()
+    @IsString()
+    @IsNotEmpty()
     id: string;
 }

@@ -43,18 +43,25 @@ export default function AddSessionPage() {
         null,
     );
     const [name, setName] = useState<string>("");
+    const [error, setError] = useState<string>("");
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!selectedClass || !selectedClassName) {
+            setError("Vui lòng chọn lớp học");
+            return;
+        }
+
+        setError("");
+        const meetingLink = await createMeet();
         const section = await createSectionMutation.mutateAsync({
             name: name,
-            classId: selectedClass as string,
-            className: selectedClassName as string,
-            meetingLink: await createMeet(),
+            classId: selectedClass,
+            className: selectedClassName,
+            meetingLink,
         });
-
-        console.log(section);
 
         router.push("/current-sessions/end-session/" + section.id);
     };
@@ -96,9 +103,11 @@ export default function AddSessionPage() {
                             </ComboboxList>
                         </ComboboxContent>
                     </Combobox>
+                    {error ? <p className="text-sm text-red-500">{error}</p> : null}
 
                     <button
                         type="submit"
+                        disabled={classList.isLoading || createSectionMutation.isPending}
                         className="cursor-pointer w-full bg-(--dark-white) hover:bg-(--gray) text-black py-2 rounded-lg"
                     >
                         Tạo buổi học

@@ -22,7 +22,7 @@ export default function CurrentSectionCard({
   const deleteMutation = useMutation({
     mutationFn: (id: string) => deleteRunningSectionById(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["sections"] });
+      queryClient.invalidateQueries({ queryKey: ["current-sections"] });
     },
   });
 

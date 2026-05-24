@@ -3,7 +3,7 @@
 import { runningSectionInfoDto, sectionTransferDto } from "@/dtos/section.dto";
 import { formatDateTimeLocal } from "@/utils/funcs";
 import { createSectionFromRunningSection } from "@/utils/mock-api";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FaCopy } from "react-icons/fa";
@@ -15,14 +15,17 @@ interface RunningSectionFormProps {
 
 export default function CurrentSectionForm({ section }: RunningSectionFormProps) {
     const [name, setName] = useState(section.name);
-    const [startTime, setStartTime] = useState<Date>(new Date(section.startTime as Date));
+    const [startTime, setStartTime] = useState<Date>(new Date(section.startTime));
     const [endTime, setEndTime] = useState<Date>(new Date());
     const router = useRouter();
+    const queryClient = useQueryClient();
 
     const mutation = useMutation({
         mutationKey: ['section', section.id],
         mutationFn: createSectionFromRunningSection,
         onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["current-sections"] });
+            queryClient.invalidateQueries({ queryKey: ["sections"] });
             router.push('/current-sessions');
         }
     });
@@ -34,8 +37,8 @@ export default function CurrentSectionForm({ section }: RunningSectionFormProps)
             name: name,
             classId: section.classId,
             className: section.className,
-            startTime: startTime,
-            endTime: endTime,
+            startTime: startTime.toISOString(),
+            endTime: endTime.toISOString(),
         };
         mutation.mutate(newSection);
     }

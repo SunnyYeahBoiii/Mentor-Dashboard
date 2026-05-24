@@ -13,14 +13,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <html>
             <body className={`${inter.className} overflow-x-hidden min-w-screen min-h-screen`}>
                 <AuthGate>
-                    {() => (
-                        <div className="min-h-screen rounded-xl flex flex-row bg-(--light-gray)">
-                            <Sidebar/>
-                            <QueryClientProvider client={queryClient}>
-                                {children}
-                            </QueryClientProvider>
-                        </div>
-                    )}
+                    {({ isAuthenticated }) =>
+                        isAuthenticated ? (
+                            <div className="min-h-screen rounded-xl flex flex-row bg-(--light-gray)">
+                                <Sidebar/>
+                                <QueryClientProvider client={queryClient}>
+                                    {children}
+                                </QueryClientProvider>
+                            </div>
+                        ) : null
+                    }
                 </AuthGate>
             </body>
         </html>

@@ -11,6 +11,7 @@ import { useQuery, queryOptions } from "@tanstack/react-query";
 import clsx from "clsx";
 import Link from "next/link";
 import { VNDFormat } from "@/utils/funcs";
+import { parsePositivePage } from "@/utils/pagination";
 
 const paymentListOptions = (page: number) =>
   queryOptions({
@@ -28,7 +29,7 @@ function PaymentPageContent() {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const pathname = usePathname();
-  const page = parseInt(searchParams.get("page") || "1");
+  const page = parsePositivePage(searchParams.get("page"));
 
   const {
     data: payments,

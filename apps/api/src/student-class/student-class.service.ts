@@ -1,5 +1,18 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+    ConflictException,
+    Injectable,
+    NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+
+function hasPrismaCode(error: unknown, code: string) {
+    return (
+        typeof error === 'object' &&
+        error !== null &&
+        'code' in error &&
+        (error as { code?: unknown }).code === code
+    );
+}
 
 @Injectable()
 export class StudentClassService {
@@ -12,8 +25,10 @@ export class StudentClassService {
             this.prisma.class.findUnique({ where: { id: classId } }),
         ]);
 
-        if (!student) throw new NotFoundException(`Student ${studentId} not found`);
-        if (!classRecord) throw new NotFoundException(`Class ${classId} not found`);
+        if (!student)
+            throw new NotFoundException(`Student ${studentId} not found`);
+        if (!classRecord)
+            throw new NotFoundException(`Class ${classId} not found`);
 
         return this.prisma.$transaction(async (tx) => {
             try {
@@ -32,9 +47,11 @@ export class StudentClassService {
                 });
 
                 return result;
-            } catch (error: any) {
-                if (error.code === 'P2002') {
-                    throw new ConflictException('Student is already in this class');
+            } catch (error: unknown) {
+                if (hasPrismaCode(error, 'P2002')) {
+                    throw new ConflictException(
+                        'Student is already in this class',
+                    );
                 }
                 throw error;
             }
@@ -52,8 +69,11 @@ export class StudentClassService {
                 },
             });
 
-            await tx.class.update({
-                where: { id: classId },
+            await tx.class.updateMany({
+                where: {
+                    id: classId,
+                    students_count: { gt: 0 },
+                },
                 data: {
                     students_count: { decrement: 1 },
                 },

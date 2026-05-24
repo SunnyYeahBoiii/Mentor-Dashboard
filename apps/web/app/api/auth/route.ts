@@ -1,4 +1,4 @@
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -11,8 +11,19 @@ function getEnvCredentials() {
   return { username, password };
 }
 
-function signToken(username: string, password: string) {
-  return createHmac("sha256", password).update(username).digest("hex");
+function signPayload(payload: string, password: string) {
+  return createHmac("sha256", password).update(payload).digest("base64url");
+}
+
+function createToken(username: string, password: string) {
+  const payload = Buffer.from(
+    JSON.stringify({
+      sub: username,
+      exp: Date.now() + ONE_DAY_SECONDS * 1000,
+      nonce: randomBytes(16).toString("base64url"),
+    }),
+  ).toString("base64url");
+  return `${payload}.${signPayload(payload, password)}`;
 }
 
 function safeEqual(left: string, right: string) {
@@ -30,8 +41,23 @@ async function isAuthenticated() {
 
   if (!token || !username || !password) return false;
 
-  const expectedToken = signToken(username, password);
-  return safeEqual(token, expectedToken);
+  const tokenParts = token.split(".");
+  if (tokenParts.length !== 2) return false;
+
+  const [payload, signature] = tokenParts;
+  if (!payload || !signature) return false;
+
+  const expectedSignature = signPayload(payload, password);
+  if (!safeEqual(signature, expectedSignature)) return false;
+
+  try {
+    const parsed = JSON.parse(
+      Buffer.from(payload, "base64url").toString("utf8"),
+    );
+    return parsed?.sub === username && Number(parsed?.exp) > Date.now();
+  } catch {
+    return false;
+  }
 }
 
 export async function GET() {
@@ -55,13 +81,16 @@ export async function POST(request: Request) {
     username !== envCredentials.username ||
     password !== envCredentials.password
   ) {
-    return NextResponse.json({ message: "Invalid credentials." }, { status: 401 });
+    return NextResponse.json(
+      { message: "Invalid credentials." },
+      { status: 401 },
+    );
   }
 
   const response = NextResponse.json({ authenticated: true });
   response.cookies.set({
     name: AUTH_COOKIE_NAME,
-    value: signToken(envCredentials.username, envCredentials.password),
+    value: createToken(envCredentials.username, envCredentials.password),
     httpOnly: true,
     sameSite: "strict",
     secure: process.env.NODE_ENV === "production",

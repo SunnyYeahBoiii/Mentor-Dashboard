@@ -8,7 +8,6 @@ const api: AxiosInstance = axios.create({
 });
 
 let isRefreshing = false;
-let refreshPromise: Promise<void | null> | null = null;
 let failedQueue: Array<{
   resolve: (value: unknown) => void;
   reject: (reason?: unknown) => void;
@@ -23,10 +22,6 @@ const processQueue = (error: Error | null) => {
     }
   });
   failedQueue = [];
-};
-
-const isPublicRoute = (pathname: string): boolean => {
-  return pathname !== "/current-sessions";
 };
 
 const shouldAttemptRefresh = (config?: AxiosRequestConfig): boolean => {
@@ -44,6 +39,23 @@ const shouldAttemptRefresh = (config?: AxiosRequestConfig): boolean => {
   return true;
 };
 
+const getErrorCode = (error: AxiosError): string | undefined => {
+  const data = error.response?.data;
+  if (data && typeof data === "object" && "code" in data) {
+    return String((data as { code?: unknown }).code);
+  }
+  if (
+    data &&
+    typeof data === "object" &&
+    "message" in data &&
+    typeof (data as { message?: unknown }).message === "object"
+  ) {
+    const message = (data as { message?: { code?: unknown } }).message;
+    return message?.code ? String(message.code) : undefined;
+  }
+  return undefined;
+};
+
 const refresh = async (): Promise<void> => {
   try {
     await api.post("/meet/refresh");
@@ -59,9 +71,11 @@ api.interceptors.response.use(
     const originalRequest = error.config as
       | (AxiosRequestConfig & { _retry?: boolean })
       | undefined;
+    const errorCode = getErrorCode(error);
 
     if (
-      (status === 401 || status === 500) &&
+      status === 401 &&
+      errorCode === "TOKEN_EXPIRED" &&
       originalRequest &&
       !originalRequest._retry &&
       shouldAttemptRefresh(originalRequest)
@@ -70,7 +84,7 @@ api.interceptors.response.use(
 
       if (!isRefreshing) {
         isRefreshing = true;
-        refreshPromise = refresh()
+        void refresh()
           .then(() => {
             processQueue(null);
           })
@@ -79,7 +93,6 @@ api.interceptors.response.use(
           })
           .finally(() => {
             isRefreshing = false;
-            refreshPromise = null;
           });
       }
 
@@ -91,11 +104,8 @@ api.interceptors.response.use(
       });
     }
 
-    if (typeof window !== "undefined" && (status === 401 || status === 500)) {
-      const pathname = window.location.pathname;
-      if (!isPublicRoute(pathname)) {
-        window.location.href = "/";
-      }
+    if (typeof window !== "undefined" && status === 401) {
+      window.location.href = "/";
     }
 
     return Promise.reject(error);

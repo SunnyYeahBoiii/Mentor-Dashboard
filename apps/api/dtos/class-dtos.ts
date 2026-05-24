@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsOptional } from 'class-validator';
+import { IsInt, IsString, Min } from 'class-validator';
 
 export class classCreateDto {
     @ApiProperty({
@@ -13,16 +13,7 @@ export class classCreateDto {
         description: 'The fee charged for this section',
         example: 150.0,
     })
-    @IsNumber()
+    @IsInt()
+    @Min(0)
     section_fee: number;
-
-    @ApiProperty({
-        description: 'The total number of sections available',
-        required: false,
-        example: 5,
-        default: 0,
-    })
-    @IsOptional()
-    @IsNumber()
-    section_count?: number;
 }

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsOptional } from 'class-validator';
+import { IsInt, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
 export class studentCreateDto {
     @ApiProperty({
@@ -49,4 +49,24 @@ export class studentCreateDto {
     @IsOptional()
     @IsString()
     province?: string;
+}
+
+export class PaymentApplyDto {
+    @ApiProperty({
+        description: 'Number of newly paid sections',
+        example: 1,
+        minimum: 0,
+    })
+    @IsInt()
+    @Min(0)
+    section_paid: number;
+
+    @ApiProperty({
+        description: 'Additional tuition paid in integer currency units',
+        example: 150000,
+        minimum: 0,
+    })
+    @IsInt()
+    @Min(0)
+    tuition_paid: number;
 }

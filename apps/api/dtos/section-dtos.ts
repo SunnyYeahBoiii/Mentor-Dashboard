@@ -30,7 +30,7 @@ export class sectionCreateDto {
     })
     @IsOptional()
     @IsDateString()
-    startTime?: Date;
+    startTime?: string;
 
     @ApiProperty({
         description: 'The end time of the section',
@@ -39,7 +39,7 @@ export class sectionCreateDto {
     })
     @IsOptional()
     @IsDateString()
-    endTime?: Date;
+    endTime?: string;
 }
 
 export class sectionInfoDto {
@@ -66,14 +66,14 @@ export class sectionInfoDto {
         required: false,
         example: '2024-01-01T09:00:00Z',
     })
-    startTime?: Date;
+    startTime?: string;
 
     @ApiProperty({
         description: 'The end time of the section',
         required: false,
         example: '2024-01-01T10:30:00Z',
     })
-    endTime?: Date;
+    endTime?: string;
 }
 
 export class sectionUpdateDto {

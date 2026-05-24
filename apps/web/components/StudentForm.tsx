@@ -1,6 +1,6 @@
 'use client';
 import { studentCreateDto, studentDto } from "@/dtos/student.dto";
-import { getStudentById, updateStudent, createStudent, deleteStudentById } from "@/utils/mock-api";
+import { getStudentById, updateStudent, createStudent } from "@/utils/mock-api";
 import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";

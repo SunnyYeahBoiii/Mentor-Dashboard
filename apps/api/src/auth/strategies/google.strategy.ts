@@ -1,15 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
-import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-    constructor(
-        readonly config: ConfigService,
-        readonly prisma: PrismaService,
-    ) {
+    constructor(readonly config: ConfigService) {
         const options = {
             clientID: config.getOrThrow<string>('GOOGLE_CLIENT_ID'),
             clientSecret: config.getOrThrow<string>('GOOGLE_CLIENT_SECRET'),
@@ -17,8 +13,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
             scope: [
                 'email',
                 'profile',
-                'https://www.googleapis.com/auth/calendar', // Full access to calendar
-                'https://www.googleapis.com/auth/calendar.events', // specifically for creating events
+                'https://www.googleapis.com/auth/calendar.events',
             ],
         };
         super(options);
@@ -31,38 +26,27 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         };
     }
 
-    async validate(
-        _access_token: string,
-        _refresh_token: string,
+    validate(
+        accessToken: string,
+        refreshToken: string,
         profile: Profile,
         cb: VerifyCallback,
     ) {
-        const user = {
-            email: profile.emails![0].value,
+        const email = profile.emails?.[0]?.value;
+
+        if (!email) {
+            cb(new UnauthorizedException('Google profile has no email'), false);
+            return;
+        }
+
+        cb(null, {
+            email,
             fullName:
                 `${profile.name?.givenName || ''} ${profile.name?.middleName || ''} ${profile.name?.familyName || ''}`.trim() ||
                 undefined,
-            avatar: profile.photos![0].value,
-            accessToken: _access_token,
-            refreshToken: _refresh_token,
-        };
-
-        await this.prisma.user
-            .upsert({
-                create: {
-                    email: user.email,
-                    fullName: user.fullName ?? '',
-                    avatar: user.avatar,
-                    refreshToken: _refresh_token,
-                },
-                update: {
-                    refreshToken: _refresh_token,
-                },
-                where: {
-                    email: user.email,
-                },
-            })
-
-        cb(null, user);
+            avatar: profile.photos?.[0]?.value,
+            accessToken,
+            refreshToken,
+        });
     }
 }

@@ -31,9 +31,7 @@ export default tseslint.config(
             '@typescript-eslint/no-unsafe-argument': 'warn',
             'prettier/prettier': [
                 'error',
-                { endOfLine: 'auto' },
-                "tabWidth": 4,
-                "useTabs": false
+                { endOfLine: 'auto', tabWidth: 4, useTabs: false },
             ],
         },
     },

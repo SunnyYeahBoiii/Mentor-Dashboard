@@ -6,6 +6,7 @@ import { lusitana } from "@/utils/fonts";
 import { FaSearch } from "react-icons/fa";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { getSectionPage, getSectionTotalPages } from "@/utils/mock-api";
+import { parsePositivePage } from "@/utils/pagination";
 import { useQuery, queryOptions } from "@tanstack/react-query";
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
 import clsx from "clsx";
@@ -27,7 +28,7 @@ function SectionPageContent() {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const pathname = usePathname();
-  const page = parseInt(searchParams.get("page") || "1");
+  const page = parsePositivePage(searchParams.get("page"));
 
   const {
     data: sections,

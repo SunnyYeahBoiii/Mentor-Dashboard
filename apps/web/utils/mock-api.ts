@@ -237,7 +237,7 @@ export async function getPaymentTotalPages() {
 
 export async function getStudentPayment(studentId: string): Promise<paymentDto> {
   const response = await api.get(`/students/payment/${studentId}`);
-  return response.data[0];
+  return response.data;
 }
 
 export async function paymentApply(

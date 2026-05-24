@@ -25,8 +25,8 @@ model Class {
   id              String           @id @default(cuid())
   name            String
   section_fee     Int?
-  section_count   Int?
-  students_count  Int?
+  section_count   Int              @default(0)
+  students_count  Int              @default(0)
   students        StudentInClass[]
   sections        Section[]
   runningSections RunningSection[]
@@ -63,9 +63,13 @@ model StudentInClass {
 }
 
 model User {
-  id           String  @id @default(cuid())
-  email        String  @unique
-  fullName     String
-  avatar       String?
-  refreshToken String
+  id                 String    @id @default(cuid())
+  email              String    @unique
+  fullName           String
+  avatar             String?
+  googleRefreshToken String?   @map("refreshToken")
+  sessionTokenHash   String?   @unique
+  sessionExpiresAt   DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 }

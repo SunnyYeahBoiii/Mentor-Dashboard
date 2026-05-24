@@ -2,8 +2,8 @@ export interface sectionCreateDto {
     name: string;
     classId: string;
     className: string;
-    startTime: Date;
-    endTime?: Date;
+    startTime: string;
+    endTime?: string;
 }
 
 export interface sectionEndDto {
@@ -11,8 +11,8 @@ export interface sectionEndDto {
     name: string;
     classId: string;
     className: string;
-    startTime?: Date;
-    endTime?: Date;
+    startTime?: string;
+    endTime?: string;
 }
 
 export interface sectionUpdateDto extends sectionCreateDto {
@@ -33,7 +33,7 @@ export interface runningSectionCreateDto {
 export interface runningSectionInfoDto extends runningSectionCreateDto {
     id: string;
     meetingLink: string;
-    startTime: Date;
+    startTime: string;
 }
 
 export interface sectionTransferDto {
@@ -41,6 +41,6 @@ export interface sectionTransferDto {
     name: string;
     classId: string;
     className: string;
-    startTime: Date;
-    endTime: Date;
+    startTime: string;
+    endTime: string;
 }

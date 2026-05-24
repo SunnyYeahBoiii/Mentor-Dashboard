@@ -7,14 +7,11 @@ export class ClassService {
     constructor(private readonly prisma: PrismaService) {}
 
     async createClass(classInfo: classCreateDto) {
-        if (!classInfo.section_count) {
-            classInfo.section_count = 0;
-        }
-
-        return this.prisma.$transaction(async (tx) => {
-            return tx.class.create({
-                data: classInfo,
-            });
+        return this.prisma.class.create({
+            data: {
+                name: classInfo.name,
+                section_fee: classInfo.section_fee,
+            },
         });
     }
 
@@ -41,7 +38,10 @@ export class ClassService {
     async editClass(id: string, classInfo: classCreateDto) {
         return this.prisma.class.update({
             where: { id },
-            data: classInfo,
+            data: {
+                name: classInfo.name,
+                section_fee: classInfo.section_fee,
+            },
         });
     }
 
@@ -66,24 +66,27 @@ export class ClassService {
     }
 
     async getClassPage(page: number, pageSize: number = 3) {
-        const skip = (page - 1) * pageSize;
+        const safePageSize = Math.min(Math.max(pageSize, 1), 200);
+        const safePage = Math.max(page, 1);
+        const skip = (safePage - 1) * safePageSize;
         const [classes, total] = await Promise.all([
             this.prisma.class.findMany({
                 skip,
-                take: pageSize,
+                take: safePageSize,
             }),
             this.prisma.class.count(),
         ]);
         return {
             data: classes,
             total,
-            totalPages: Math.ceil(total / pageSize),
-            currentPage: page,
+            totalPages: Math.ceil(total / safePageSize),
+            currentPage: safePage,
         };
     }
 
     async getClassTotalPages(pageSize: number = 3) {
+        const safePageSize = Math.min(Math.max(pageSize, 1), 200);
         const total = await this.prisma.class.count();
-        return Math.ceil(total / pageSize);
+        return Math.ceil(total / safePageSize);
     }
 }

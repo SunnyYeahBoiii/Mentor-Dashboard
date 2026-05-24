@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    Post,
+    Query,
+    UseGuards,
+} from '@nestjs/common';
 import { ClassService } from './classes.service';
 import { classCreateDto } from '../../dtos/class-dtos';
 import { ApiTags } from '@nestjs/swagger';

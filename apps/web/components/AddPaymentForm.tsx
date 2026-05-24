@@ -3,10 +3,10 @@
 import { paymentDto } from "@/dtos/payment.dto";
 import { getStudentPayment, paymentApply } from "@/utils/mock-api";
 import {
-  QueryClient,
   queryOptions,
   useMutation,
   useQuery,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -22,7 +22,7 @@ const studentPaymentOptions = (student_id: string) =>
   });
 export function AddPaymentForm({ student_id }: AddPaymentFormProps) {
   const router = useRouter();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const [sectionCount, setSectionCount] = useState<string>("");
   const [tuitionPaid, setTuitionPaid] = useState<string>("0");
   const [error, setError] = useState<string>("");
@@ -33,8 +33,6 @@ export function AddPaymentForm({ student_id }: AddPaymentFormProps) {
     isError,
   } = useQuery(studentPaymentOptions(student_id));
 
-  console.log(student);
-
   const mutation = useMutation({
     mutationKey: ["student-payment", student_id],
     mutationFn: ({ sectionCount, tuitionPaid }: { sectionCount: number; tuitionPaid: number }) =>
@@ -43,6 +41,7 @@ export function AddPaymentForm({ student_id }: AddPaymentFormProps) {
       queryClient.invalidateQueries({
         queryKey: ["student-payment", student_id],
       });
+      queryClient.invalidateQueries({ queryKey: ["payments"] });
       router.push("/payments");
     },
   });
@@ -55,6 +54,12 @@ export function AddPaymentForm({ student_id }: AddPaymentFormProps) {
     const remainingSection =
       ((student as paymentDto)?.section_count || 0) -
       ((student as paymentDto)?.paid_sections || 0);
+    const remainingTuition = (student as paymentDto)?.tuition_fee || 0;
+
+    if (!Number.isInteger(count) || count < 0) {
+      setError("Số buổi thanh toán phải là số nguyên không âm");
+      return;
+    }
 
     if (count > remainingSection) {
       setError(`Số buổi học không được lớn hơn số buổi còn lại (${remainingSection})`);
@@ -66,9 +71,14 @@ export function AddPaymentForm({ student_id }: AddPaymentFormProps) {
       return;
     }
 
+    if (paidValue > remainingTuition) {
+      setError(`Số tiền thanh toán không được lớn hơn học phí còn lại (${remainingTuition.toLocaleString()} VND)`);
+      return;
+    }
+
     setError("");
 
-    mutation.mutateAsync({ sectionCount: count, tuitionPaid: paidValue });
+    mutation.mutate({ sectionCount: count, tuitionPaid: paidValue });
   };
 
   if (isLoading) {
@@ -122,7 +132,7 @@ export function AddPaymentForm({ student_id }: AddPaymentFormProps) {
           <input
             className="w-full outline-none"
             type="number"
-            min="1"
+            min="0"
             max={student.section_count - student.paid_sections}
             value={sectionCount}
             onChange={(e) => {

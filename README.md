@@ -49,8 +49,8 @@ mentor-dashboard/
 - NestJS 11
 - Prisma 7 + PostgreSQL
 - Passport Google OAuth (`passport-google-oauth20`)
-- Swagger/OpenAPI at `http://localhost:3001/api`
-- Cookie-based session/token usage for Google integration
+- Swagger/OpenAPI at `http://localhost:21389/api`
+- HTTP-only cookies for local app auth, Google OAuth sessions, and OAuth CSRF state
 
 ### Tooling
 - `pnpm` workspaces
@@ -59,7 +59,7 @@ mentor-dashboard/
 
 ## Prerequisites
 
-- Node.js `>=18`
+- Node.js `>=20.9.0`
 - `pnpm` `10.30.2` (or compatible)
 - PostgreSQL database (or compatible Postgres URL)
 - Google Cloud OAuth credentials (for `/auth/google` and Meet link generation)
@@ -90,8 +90,8 @@ pnpm dev
 
 Default local URLs:
 - Frontend: `http://localhost:3000`
-- Backend: `http://localhost:3001`
-- API docs: `http://localhost:3001/api`
+- Backend: `http://localhost:21389`
+- API docs: `http://localhost:21389/api`
 
 ## Environment Variables
 
@@ -100,22 +100,27 @@ Create local `.env` files per app. Do not commit real secrets.
 ### `apps/api/.env`
 
 ```env
-PORT=3001
+PORT=21389
 DATABASE_URL="postgresql://<user>:<password>@<host>:<port>/<database>"
 GOOGLE_CLIENT_ID="<google-client-id>"
 GOOGLE_CLIENT_SECRET="<google-client-secret>"
-GOOGLE_CALLBACK_URL="http://localhost:3001/auth/google/callback"
+GOOGLE_CALLBACK_URL="http://localhost:21389/auth/google/callback"
+FRONTEND_URL="http://localhost:3000"
 ALLOWED_ORIGINS="http://localhost:3000"
+ALLOWED_GOOGLE_EMAILS="mentor@example.com"
+ALLOWED_GOOGLE_DOMAINS=""
+APP_SESSION_SECRET="<32-plus-character-random-secret>"
+GOOGLE_TOKEN_ENCRYPTION_KEY="<32-plus-character-random-secret>"
+AUTH_USERNAME="<local-gate-username>"
+AUTH_PASSWORD="<local-gate-password>"
 ```
 
-Also used by the backend flow:
-- `NODE_ENV` (affects secure cookie behavior in some paths)
-- optional Google token/session values depending on local flow
+`AUTH_USERNAME` / `AUTH_PASSWORD` must match the web app values so the API can verify the signed local auth cookie for non-Google CRUD requests.
 
 ### `apps/web/.env`
 
 ```env
-NEXT_PUBLIC_BACKEND_URL="http://localhost:3001"
+NEXT_PUBLIC_BACKEND_URL="http://localhost:21389"
 AUTH_USERNAME="<local-gate-username>"
 AUTH_PASSWORD="<local-gate-password>"
 ```
@@ -198,13 +203,16 @@ Two auth layers are currently present:
 
 1. Local frontend gate (`apps/web/app/api/auth/route.ts`)
 - Validates `AUTH_USERNAME` / `AUTH_PASSWORD`
-- Sets `md_auth_token` cookie for UI access gating
+- Sets a signed, expiring `md_auth_token` HTTP-only cookie for UI access gating
+- API guards accept this cookie for regular CRUD endpoints when backend credentials match
 
 2. Google OAuth + Meet token flow (`apps/api/src/auth`, `apps/api/src/google-meet`)
 - `GET /auth/google` and callback route handle Google sign-in
-- Backend stores Google refresh token in DB
-- `/meet/refresh` exchanges refresh token for access token and sets cookie
-- Frontend Axios client retries on auth failures after refresh
+- OAuth state is stored in an HTTP-only cookie and validated on callback
+- New Google accounts are restricted by `ALLOWED_GOOGLE_EMAILS` / `ALLOWED_GOOGLE_DOMAINS`
+- Backend encrypts the Google refresh token before storing it in DB
+- Backend issues an opaque `md_api_session` cookie; raw Google tokens are not returned to browser JavaScript
+- `/meet/refresh` validates refresh-token usability and frontend retries only on explicit `TOKEN_EXPIRED` 401 responses
 
 ## API Overview
 
@@ -219,7 +227,7 @@ Main backend route groups:
 
 OpenAPI docs are available at:
 
-`http://localhost:3001/api`
+`http://localhost:21389/api`
 
 ## Development Notes
 
@@ -234,9 +242,11 @@ OpenAPI docs are available at:
   - ensure `ALLOWED_ORIGINS` in `apps/api/.env` includes `http://localhost:3000`
 - Login modal does not unlock UI:
   - confirm `AUTH_USERNAME` and `AUTH_PASSWORD` are set in `apps/web/.env`
+- CRUD API returns 401 after local login:
+  - confirm matching `AUTH_USERNAME` and `AUTH_PASSWORD` are also set in `apps/api/.env`
 - API cannot connect to DB:
   - verify `DATABASE_URL` and that the database is reachable
 - Google OAuth redirect problems:
   - verify callback URL in both `.env` and Google Cloud console
-- 401/500 during protected API calls:
-  - check `/meet/refresh` behavior and cookie settings (`secure`, `sameSite`) for local vs prod
+- Google account is not connected during Meet creation:
+  - sign in through `/auth/google`; local app auth alone can use CRUD APIs but cannot create Meet links

@@ -1,6 +1,7 @@
 "use client";
 
 import { lusitana } from "@/utils/fonts";
+import { parsePositivePage } from "@/utils/pagination";
 import { studentDto } from "@/dtos/student.dto";
 import { FaSearch, FaEdit, FaTrash } from "react-icons/fa";
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
@@ -37,7 +38,7 @@ function StudentPageContent() {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const pathname = usePathname();
-  const page = parseInt(searchParams.get("page") || "1");
+  const page = parsePositivePage(searchParams.get("page"));
 
   const {
     data: students,

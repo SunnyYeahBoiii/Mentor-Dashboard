@@ -22,9 +22,15 @@ export function NewClassForm() {
     });
 
     const handleSubmit = () => {
+        const fee = Number.parseInt(sectionFee, 10);
+        if (!Number.isInteger(fee) || fee < 0) {
+            alert("Học phí theo buổi phải là số nguyên không âm");
+            return;
+        }
+
         const classInfo: classCreateDto = {
             name,
-            section_fee: parseInt(sectionFee),
+            section_fee: fee,
         };
 
 
@@ -50,7 +56,8 @@ export function NewClassForm() {
                     <p className="text-xs text-black/50">Học phí theo buổi</p>
                     <input
                         className="w-full outline-none"
-                        type="text"
+                        type="number"
+                        min="0"
                         value={sectionFee}
                         onChange={(e) => setSectionFee(e.target.value)}
                         required

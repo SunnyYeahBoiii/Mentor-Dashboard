@@ -69,17 +69,13 @@ export function ClassForm({ class_id }: classFormProps) {
   });
 
   const [name, setName] = useState<string>("");
-  const [_sectionCount, setSectionCount] = useState<string>("");
   const [sectionFee, setSectionFee] = useState<string>("");
-  const [_studentCount, setStudentCount] = useState<string>("");
   const [newStudentId, setNewStudent] = useState<string | null>("");
 
   useEffect(() => {
     if (classInfo) {
       setName(classInfo.name ?? "");
-      setSectionCount(classInfo.section_count.toString() ?? "");
       setSectionFee(classInfo.section_fee.toString() ?? "");
-      setStudentCount(classInfo.students_count.toString() ?? "");
     }
   }, [classInfo]);
 
@@ -129,17 +125,27 @@ export function ClassForm({ class_id }: classFormProps) {
         queryKey: ["classes", class_id],
       });
     },
-    onError: (error: any) => {
-      const message = error?.response?.data?.message || "Có lỗi xảy ra khi thêm học sinh";
+    onError: (error: unknown) => {
+      const apiError = error as {
+        response?: { data?: { message?: unknown } };
+      };
+      const message =
+        apiError.response?.data?.message || "Có lỗi xảy ra khi thêm học sinh";
       alert(Array.isArray(message) ? message.join(", ") : message);
     },
   });
 
   const handleSubmit = () => {
+    const fee = Number.parseInt(sectionFee, 10);
+    if (!Number.isInteger(fee) || fee < 0) {
+      alert("Học phí theo buổi phải là số nguyên không âm");
+      return;
+    }
+
     const classInfo: classUpdateDto = {
       id: class_id,
       name,
-      section_fee: parseInt(sectionFee),
+      section_fee: fee,
     };
 
     updateMutation.mutate(classInfo);
@@ -201,7 +207,8 @@ export function ClassForm({ class_id }: classFormProps) {
           <p className="text-xs text-black/50">Học phí theo buổi</p>
           <input
             className="w-full outline-none"
-            type="text"
+            type="number"
+            min="0"
             value={sectionFee}
             onChange={(e) => setSectionFee(e.target.value)}
             required
@@ -222,10 +229,10 @@ export function ClassForm({ class_id }: classFormProps) {
                 >
                   <p className="w-[40%]">{section.name}</p>
                   <p className="w-[45%]">
-                    {formatDateTimeLocal(section.endTime as Date)}
+                    {formatDateTimeLocal(new Date(section.endTime ?? Date.now()))}
                   </p>
                   <p className="w-[15%] text-center flex flex-row justify-center items-center">
-                    <Link href={`/students/${section.id}`}>
+                    <Link href={`/sessions/${section.id}`}>
                       <FaEdit className="text-2xl px-1 py-1 text-black/50 hover:text-black cursor-pointer" />
                     </Link>
                     <FaTrash className="text-2xl px-1 py-1 bg-white text-black/50 hover:text-red-500 cursor-pointer" />

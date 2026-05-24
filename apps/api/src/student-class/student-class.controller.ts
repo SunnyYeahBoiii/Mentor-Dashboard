@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    Post,
+    Query,
+    UseGuards,
+} from '@nestjs/common';
 import { StudentClassService } from './student-class.service';
 import { ApiTags } from '@nestjs/swagger';
 import { AssignStudentToClassDto } from '../../dtos/student-class-dtos';

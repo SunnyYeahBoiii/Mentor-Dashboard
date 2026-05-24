@@ -2,6 +2,7 @@
 
 import { runningSectionInfoDto } from "@/dtos/section.dto";
 import { lusitana } from "@/utils/fonts";
+import { parsePositivePage } from "@/utils/pagination";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import {
   getRunningSectionPage,
@@ -29,7 +30,7 @@ function CurrentSectionPageContent() {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const pathname = usePathname();
-  const page = parseInt(searchParams.get("page") || "1");
+  const page = parsePositivePage(searchParams.get("page"));
 
   const {
     data: sections,
