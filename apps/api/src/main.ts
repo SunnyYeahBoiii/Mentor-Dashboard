@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
 
 // Patch BigInt serialization for JSON.stringify
 (BigInt.prototype as any).toJSON = function () {
@@ -36,7 +37,14 @@ async function bootstrap() {
             origin: allowedOrigins,
             credentials: true,
             methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-            allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'], 
+            allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+        }),
+    );
+
+    app.useGlobalPipes(
+        new ValidationPipe({
+            whitelist: true,
+            transform: true,
         }),
     );
 
