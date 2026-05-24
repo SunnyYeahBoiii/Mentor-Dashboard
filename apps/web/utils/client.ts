@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:21389";
 
 const api: AxiosInstance = axios.create({
   baseURL: API_URL,
