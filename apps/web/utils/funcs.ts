@@ -5,7 +5,8 @@ export function VNDFormat(number: number) {
     }).format(number);
 }
 
-export const formatDateTimeLocal = (date: Date) => {
+export const formatDateTimeLocal = (date: string | Date) => {
+    const d = typeof date === "string" ? new Date(date) : date;
     const pad = (num: number) => num.toString().padStart(2, '0');
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 };
