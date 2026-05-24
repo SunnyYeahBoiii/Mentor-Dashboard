@@ -35,6 +35,20 @@ export class AuthController {
             maxAge: 1000 * 60 * 60 * 24 * 30,
         });
 
+        res.cookie('access_token', (req.user as any).accessToken, {
+            httpOnly: true,
+            sameSite: 'none',
+            secure: true,
+            maxAge: 60 * 60 * 1000,
+        });
+
+        return res.redirect(this.config.getOrThrow<string>('FRONTEND_URL'));
+    }
+
+    @Get('logout')
+    async logout(@Res({ passthrough: true }) res: Response) {
+        res.clearCookie('access_token');
+        res.clearCookie('refresh_token');
         return res.redirect(this.config.getOrThrow<string>('FRONTEND_URL'));
     }
 }

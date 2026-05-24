@@ -43,8 +43,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
                 `${profile.name?.givenName || ''} ${profile.name?.middleName || ''} ${profile.name?.familyName || ''}`.trim() ||
                 undefined,
             avatar: profile.photos![0].value,
-            // accessToken: _access_token,
-            // refreshToken: _refresh_token,
+            accessToken: _access_token,
+            refreshToken: _refresh_token,
         };
 
         await this.prisma.user
