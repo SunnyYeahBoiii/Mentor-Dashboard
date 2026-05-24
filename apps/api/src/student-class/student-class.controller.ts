@@ -1,9 +1,11 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { StudentClassService } from './student-class.service';
 import { ApiTags } from '@nestjs/swagger';
 import { AssignStudentToClassDto } from '../../dtos/student-class-dtos';
+import { CookieAuthGuard } from 'src/auth/guards/cookie-auth.guard';
 
 @ApiTags('student-class')
+@UseGuards(CookieAuthGuard)
 @Controller('student-class')
 export class StudentClassController {
     constructor(private readonly studentClassService: StudentClassService) {}

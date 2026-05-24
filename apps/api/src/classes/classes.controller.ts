@@ -1,11 +1,13 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ClassService } from './classes.service';
 import { classCreateDto } from '../../dtos/class-dtos';
 import { ApiTags } from '@nestjs/swagger';
 import { IdDto } from 'dtos/common-dtos';
 import { UpdateClassDto } from 'dtos/update-dtos';
+import { CookieAuthGuard } from 'src/auth/guards/cookie-auth.guard';
 
 @ApiTags('classes')
+@UseGuards(CookieAuthGuard)
 @Controller('classes')
 export class ClassController {
     constructor(private readonly classService: ClassService) {}

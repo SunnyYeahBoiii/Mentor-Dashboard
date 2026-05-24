@@ -4,10 +4,13 @@ import {
     Req,
     Res,
     UnauthorizedException,
+    UseGuards,
 } from '@nestjs/common';
 import { MeetService } from './google-meet.service';
 import { type Response } from 'express';
+import { CookieAuthGuard } from 'src/auth/guards/cookie-auth.guard';
 
+@UseGuards(CookieAuthGuard)
 @Controller('meet')
 export class MeetController {
     constructor(private readonly meetService: MeetService) {}
@@ -32,13 +35,13 @@ export class MeetController {
             req.cookies.refresh_token,
         );
 
-        res.cookie('access_token', newAccessToken, {
+        res.cookie('access_token', (newAccessToken as any).access_token, {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
             maxAge: 60 * 60 * 24 * 7,
         });
 
-        return { access_token: newAccessToken };
+        return { access_token: (newAccessToken as any).access_token };
     }
 }
