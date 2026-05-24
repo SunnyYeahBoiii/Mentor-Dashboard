@@ -7,9 +7,10 @@ export class StudentService {
     constructor(private readonly prisma: PrismaService) { }
 
     async createStudent(student: studentCreateDto) {
+        const { age, grade, ...rest } = student;
         return this.prisma.$transaction(async (tx) => {
             return tx.student.create({
-                data: student,
+                data: { ...rest, birthyear: age },
             });
         });
     }
@@ -40,9 +41,10 @@ export class StudentService {
     }
 
     async editStudent(id: string, student: studentCreateDto) {
+        const { age, grade, ...rest } = student;
         return this.prisma.student.update({
             where: { id },
-            data: student,
+            data: { ...rest, birthyear: age },
         });
     }
 
